@@ -11,6 +11,7 @@ public class Task1 {
         int[] arr = {4, 3, 2, 7, 8, 2, 3, 1};
         int[] arr2 = {10, 2, 5, 10, 9, 1, 1, 4, 3, 7};
         System.out.println(findDuplicates2(arr2));
+
     }
 
     // O(n) - time
