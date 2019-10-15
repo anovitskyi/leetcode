@@ -9,11 +9,12 @@ class Solution {
                 return false;
             } else {
                 char pop = stack.pop();
-                if (pop == '(' && ch != ')' || pop == '[' && ch != ']' || pop == '{' && ch != '}') {
+                if (ch == ')' && pop != '(' || ch == ']' && pop != '[' || ch == '}' && pop != '{') {
                     return false;
                 }
             }
         }
+        
         return stack.isEmpty();
     }
 }
