@@ -1,29 +1,17 @@
 class Solution {
-//     public int numberOfSteps (int num) {
-        
-//         if (num == 0) {
-//             return 0;
-//         } else if (num % 2 == 1) {
-//             num -= 1;
-//         } else {
-//             num /= 2;
-//         }
-        
-//         return 1 + numberOfSteps(num);
-//     }
-    
     public int numberOfSteps (int num) {
-        int counter = 0;
+        int steps = 0;
+        
         while (num > 0) {
-            ++counter;
-            
-            if (num % 2 == 1) {
-                --num;
+            if ((num & 1) == 0) {
+                num = num >> 1;
             } else {
-                num /= 2;
+                num -= 1;
             }
+            ++steps;
         }
         
-        return counter;
+        return steps;
     }
+    
 }
