@@ -3,13 +3,16 @@ class Solution {
         if (x < 0) {
             return false;
         }
-
-        int result = 0;
+        
         int copy = x;
+        int tmp = 0;
+        
         while (copy > 0) {
-            result = result * 10 + copy % 10;
+            tmp *= 10;
+            tmp += copy % 10;
             copy /= 10;
         }
-        return x == result;
+        
+        return tmp == x;
     }
 }
