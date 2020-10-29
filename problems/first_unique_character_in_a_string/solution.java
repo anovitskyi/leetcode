@@ -1,18 +1,16 @@
 class Solution {
     public int firstUniqChar(String s) {
-        int[] elems = new int[26];
-        char[] tab = s.toCharArray();
-        
-        for (int i = 0; i < tab.length; ++i) {
-            ++elems[tab[i] - 97];
+        int[] tab = new int[26];
+        char[] charr = s.toCharArray();
+        for (int i = 0; i < charr.length; ++i) {
+            ++tab[charr[i] - 'a'];
         }
         
-        for (int i = 0; i < tab.length; ++i) {
-            if (elems[tab[i] - 97] == 1) {
+        for (int i = 0; i < charr.length; ++i) {
+            if (tab[charr[i] - 'a'] == 1) {
                 return i;
             }
         }
-        
         return -1;
     }
 }
