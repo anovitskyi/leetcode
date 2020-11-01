@@ -3,26 +3,25 @@
  * public class ListNode {
  *     int val;
  *     ListNode next;
- *     ListNode(int x) { val = x; }
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  * }
  */
 class Solution {
     public int getDecimalValue(ListNode head) {
-        ListNode copy = head;
-        int size = -1;
-        
-        while (copy != null) {
+        ListNode sizeNode = head;
+        int size = 0;
+        while (sizeNode != null) {
             ++size;
-            copy = copy.next;
+            sizeNode = sizeNode.next;
         }
         
         int res = 0;
         while (head != null) {
-            res += Math.pow(2, size) * head.val;
+            res += ((int) Math.pow(2, --size)) * head.val;
             head = head.next;
-            --size;
         }
-        
         return res;
     }
 }
