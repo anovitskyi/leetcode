@@ -1,18 +1,15 @@
 class Solution {
-    public int maxPower(String s) {
-        if (s == null || s.isEmpty()) {
-            return 0;
-        }
-    
-        int max = 1;
-    
-        for (int i = 1; i < s.length(); ++i) {
-            int start = i - 1;
-            while (i < s.length() && s.charAt(start) == s.charAt(i)) {
-                ++i;
+    public int maxPower(String s) { // "abbcccddddeeeeedcba", length = 19
+        int max = Integer.MIN_VALUE; // -1
+        
+        for (int i = 0; i < s.length(); ) { // 0 < 19;
+            int length = i + 1; // 1
+            while (length < s.length() && s.charAt(i) == s.charAt(length)) {
+                ++length;
             }
             
-            max = Math.max(max, i - start);
+            max = Math.max(max, length - i);
+            i = length;
         }
         
         return max;
