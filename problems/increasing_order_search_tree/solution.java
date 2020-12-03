@@ -1,27 +1,28 @@
 class Solution {
     public TreeNode increasingBST(TreeNode root) {
-        if (root == null) {
-            return null;
-        }
-        
         List<TreeNode> list = new ArrayList<>();
-        traverse(root, list);
+        dfs(root, list);
         
-        for (int i = 1; i < list.size(); ++i) {
-            list.get(i).left = null;
-            list.get(i - 1).right = list.get(i);
+        for (int i = 0; i < list.size() - 1; ++i) {
+            TreeNode node = list.get(i);
+            node.left = null;
+            node.right = list.get(i + 1);
         }
+        list.get(list.size() - 1).left = null;
+        list.get(list.size() - 1).right = null;
         
         return list.get(0);
     }
     
-    private void traverse(TreeNode node, List<TreeNode> list) {
-        if (node == null) {
-            return;
+    private void dfs(TreeNode node, List<TreeNode> list) {
+        if (node.left != null) {
+            dfs(node.left, list);
         }
         
-        traverse(node.left, list);
         list.add(node);
-        traverse(node.right, list);
+        
+        if (node.right != null) {
+            dfs(node.right, list);
+        }
     }
 }
