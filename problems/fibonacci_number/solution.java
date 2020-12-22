@@ -1,22 +1,21 @@
 class Solution {
-    
-    public int fib(int N) {
-        if (N <= 0) {
-            return 0;
-        } else if (N == 1) {
-            return 1;
+    public int fib(int n) {
+        int prevprev = 0;
+        if (n == 0) {
+            return prevprev;
         }
         
         int prev = 1;
-        int sum = 1;
-        
-        for (int i = 3; i <= N; ++i) {
-            int tmp = sum + prev;
-            prev = sum;
-            sum = tmp;
+        if (n == 1) {
+            return prev;
         }
         
-        return sum;
-        
+        int actualSum = 1; 
+        for (int i = 2; i <= n; ++i) { // 5
+            actualSum = prevprev + prev; // 5
+            prevprev = prev; // 3
+            prev = actualSum; // 5
+        }
+        return prev;
     }
 }
