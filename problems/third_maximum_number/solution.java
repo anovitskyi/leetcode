@@ -1,32 +1,31 @@
 class Solution {
     public int thirdMax(int[] nums) {
-        Set<Integer> set = new HashSet<>(nums.length);
-        int first, second, third;
-        first = second = third = Integer.MIN_VALUE;
+        long first = Long.MIN_VALUE;
+        long second = Long.MIN_VALUE;
+        long third = Long.MIN_VALUE;
+        int distinct = 0;
         
-        for (int i = 0; i < nums.length; ++i) {
-            if (set.contains(nums[i])) {
-                continue;
-            }
+        for (int num : nums) {
+            if (num != first && num != second && num != third) {
+                ++distinct;
             
-            if (nums[i] > first) {
-                third = second;
-                second = first;
-                first = nums[i];
-            } else if (nums[i] > second) {
-                third = second;
-                second = nums[i];
-            } else if (nums[i] > third) {
-                third = nums[i];
+                if (num > first) {
+                    third = second;
+                    second = first;
+                    first = num;
+                } else if (num > second) {
+                    third = second;
+                    second = num;
+                } else if (num > third) {
+                    third = num;
+                }
             }
-            
-            set.add(nums[i]);
         }
         
-        if (set.size() < 3) {
-            return first;
+        if (distinct < 3) {
+            return (int) first;
         }
         
-        return third;
+        return (int) third;
     }
 }
