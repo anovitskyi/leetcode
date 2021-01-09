@@ -1,13 +1,15 @@
 class Solution {
-    public int numberOfMatches(int n) { // 1
-        int mod = 0;
-        int played = 0;
+    public int numberOfMatches(int n) {
+        int result = 0;
+        
         while (n > 1) {
-            mod = n % 2; // 0
-            int half = n / 2; // 1
-            played += half; // 3 5 6
-            n = half + mod;
+            result += n / 2;
+            int rest = n % 2;
+            n /= 2;
+            n += rest;
         }
-        return played;
+        
+        
+        return result;
     }
 }
