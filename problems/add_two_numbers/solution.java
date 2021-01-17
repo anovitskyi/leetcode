@@ -8,43 +8,37 @@
  *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  * }
  */
+
+// 9 9 9 9 9
+// 9 9 9
+// 8 9 9 0 0 1
 class Solution {
-    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) { // O(n + m)
         ListNode root = new ListNode();
         ListNode current = root;
         int carrying = 0;
         
-        while (l1 != null && l2 != null) {
-            int sum = l1.val + l2.val + carrying;
+        while (l1 != null || l2 != null) {
+            int sum = carrying;
+            if (l1 != null) {
+                sum += l1.val;
+                l1 = l1.next;
+            }
+            if (l2 != null) {
+                sum += l2.val;
+                l2 = l2.next;
+            }
+            
             carrying = sum / 10;
             sum = sum % 10;
-            
             ListNode tmp = new ListNode(sum);
             current.next = tmp;
             current = tmp;
-            l1 = l1.next;
-            l2 = l2.next;
         }
         
-        if (l1 != null) {
-            current.next = l1;
-        } else if (l2 != null) {
-            current.next = l2;
+        if (carrying != 0) {
+            current.next = new ListNode(carrying);
         }
-        
-        
-        while (carrying != 0) {
-            if (current.next == null) {
-                current.next = new ListNode(carrying);
-                carrying = 0;
-            } else {
-                int sum = current.next.val + carrying;
-                carrying = sum / 10;
-                current.next.val = sum % 10;
-                current = current.next;
-            }
-        }
-        
         
         return root.next;
     }
