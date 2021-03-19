@@ -1,13 +1,10 @@
 class Solution {
-    public int distributeCandies(int[] candies) {
-        int half = candies.length / 2;
-        Set<Integer> set = new HashSet<>(candies.length);
-        for (int type : candies) {
+    public int distributeCandies(int[] candyType) {
+        Set<Integer> set = new HashSet<>();
+        for (int type : candyType) {
             set.add(type);
-            if (set.size() >= half) {
-                return half;
-            }
         }
-        return set.size();
+        
+        return Math.min(set.size(), candyType.length / 2);
     }
 }
