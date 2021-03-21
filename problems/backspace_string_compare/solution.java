@@ -1,17 +1,14 @@
 class Solution {
     public boolean backspaceCompare(String S, String T) {
-        char[] a = S.toCharArray();
-        char[] b = T.toCharArray();
+        Stack<Character> sStack = convertToStack(S);
+        Stack<Character> tStack = convertToStack(T);
         
-        int aSize = replaceTab(a);
-        int bSize = replaceTab(b);
-        
-        if (aSize != bSize) {
+        if (sStack.size() != tStack.size()) {
             return false;
         }
         
-        for (int i = 0; i < aSize; ++i) {
-            if (a[i] != b[i]) {
+        while (!sStack.isEmpty()) {
+            if (sStack.pop() != tStack.pop()) {
                 return false;
             }
         }
@@ -19,19 +16,24 @@ class Solution {
         return true;
     }
     
-    private int replaceTab(char[] tab) {
-        int write = 0;
+    private Stack<Character> convertToStack(String word) {
+        Stack<Character> stack = new Stack<>();
+        int index = 0;
         
-        for (int i = 0; i < tab.length; ++i) {
-            if (tab[i] == '#') {
-                if (write > 0) {
-                    --write;   
+        while (index < word.length()) {
+            
+            if (word.charAt(index) == '#') {
+                if (!stack.isEmpty()) {
+                    stack.pop();
                 }
             } else {
-                tab[write++] = tab[i]; 
+                stack.push(word.charAt(index));
             }
+            ++index;
+            
+            
         }
         
-        return write;
+        return stack;
     }
 }
