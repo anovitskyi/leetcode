@@ -19,27 +19,30 @@ class Node {
 
 class Solution {
     public List<Integer> preorder(Node root) {
-        List<Integer> list = new LinkedList<>();
-        if (root == null) {
-            return list;
+        Stack<Iterator<Node>> stack = new Stack<>();
+        List<Integer> result = new LinkedList<>();
+        
+        if (root != null) {
+            stack.push(Arrays.asList(root).iterator());
         }
         
-        list.add(root.val);
-        for (Node child : root.children) {
-            list.addAll(preorder(child));
+        while (!stack.isEmpty()) {
+            Iterator<Node> peek = stack.peek();
+            
+            if (!peek.hasNext()) {
+                stack.pop();
+                continue;
+            }
+            
+            Node nextNode = peek.next();
+            if (nextNode.children != null && !nextNode.children.isEmpty()) {
+                stack.push(nextNode.children.iterator());
+            }
+                           
+            result.add(nextNode.val);
         }
         
-        return list;
-    }
-    
-    private void recursion(Node node, List<Integer> list) {
-        if (node == null) {
-            return;
-        }
         
-        list.add(node.val);
-        for (Node child : node.children) {
-            recursion(child, list);
-        }
+        return result;
     }
 }
