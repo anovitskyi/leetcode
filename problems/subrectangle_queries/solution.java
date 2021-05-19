@@ -1,6 +1,6 @@
 class SubrectangleQueries {
     
-    private final LinkedList<Change> changes;
+    private final LinkedList<Change> changes; // space - O(number of updateSubrectangle calls (max 500))
     private final int[][] rectangle;
 
     public SubrectangleQueries(int[][] rectangle) {
@@ -12,7 +12,7 @@ class SubrectangleQueries {
         changes.addFirst(new Change(row1, row2, col1, col2, newValue));
     }
     
-    public int getValue(int row, int col) {
+    public int getValue(int row, int col) { // time - O(number of updateSubrectangle calls (max 500))
         for (Change change : changes) {
             if (change.hasCoordinates(row, col)) {
                 return change.val;
@@ -29,7 +29,7 @@ class SubrectangleQueries {
         int toCol;
         int val;
         
-        private Change(int fr, int tr, int fc, int tc, int v) {
+        Change(int fr, int tr, int fc, int tc, int v) {
             fromRow = fr;
             toRow = tr;
             fromCol = fc;
