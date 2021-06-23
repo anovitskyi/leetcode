@@ -1,23 +1,22 @@
 class Solution {
     public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
         List<List<Integer>> result = new LinkedList<>();
-        List<Integer> current = new ArrayList<>(1);
-        current.add(0);
-        findPaths(graph, current, result);
+        List<Integer> currList = new LinkedList<>();
+        currList.add(0);
+        backtrack(graph, 0, currList, result);
         return result;
     }
     
-    private void findPaths(int[][] graph, List<Integer> current, List<List<Integer>> result) {
-        int last = current.get(current.size() - 1);
-        if (last == graph.length - 1) {
-            result.add(current);
+    private void backtrack(int[][] graph, int curr, List<Integer> currList, List<List<Integer>> result) {
+        if (curr == graph.length - 1) {
+            result.add(currList);
             return;
         }
         
-        for (int i = 0; i < graph[last].length; ++i) {
-            List<Integer> copy = new ArrayList<>(current);
-            copy.add(graph[last][i]);
-            findPaths(graph, copy, result);
+        for (int i = 0; i < graph[curr].length; ++i) {
+            List<Integer> copy = new LinkedList<>(currList);
+            copy.add(graph[curr][i]);
+            backtrack(graph, graph[curr][i], copy, result);
         }
     }
 }
