@@ -1,57 +1,50 @@
 class Solution {
-    
-    public List<List<Integer>> levelOrder(TreeNode root) {
-        List<List<Integer>> result = new ArrayList<>();
-        if (root == null) {
-            return result;
-        }
-        
-        Queue<TreeNode> queue = new LinkedList<>();
-        queue.offer(root);
-        while (!queue.isEmpty()) {
-            int size = queue.size();
-            List<Integer> list = new LinkedList<>();
-            while (--size >= 0) {
-                TreeNode node = queue.poll();
-                list.add(node.val);
-                
-                if (node.left != null) {
-                    queue.offer(node.left);
-                }
-                
-                if (node.right != null) {
-                    queue.offer(node.right);
-                }
-            }
-            result.add(list);
-        }
-        
-        
-        return result;
-    }
-    
-    
 //     public List<List<Integer>> levelOrder(TreeNode root) {
-//         List<List<Integer>> result = new ArrayList<>();
-//         dfs(root, result, 0);
-//         return result;
-//     }
-    
-//     private void dfs(TreeNode node, List<List<Integer>> result, int level) {
-//         if (node == null) {
-//             return;
+//         List<List<Integer>> result = new LinkedList<>();
+//         Queue<TreeNode> queue = new LinkedList<>();
+//         if (root != null) {
+//             queue.offer(root);
 //         }
         
-//         List<Integer> list = null;
-//         if (level < result.size()) {
-//             list = result.get(level);
-//         } else {
-//             list = new LinkedList<>();
+//         while (!queue.isEmpty()) {
+//             int size = queue.size();
+//             List<Integer> list = new LinkedList<>();
+//             while (size-- > 0) {
+//                 TreeNode node = queue.poll();
+//                 list.add(node.val);
+                
+//                 if (node.left != null) {
+//                     queue.offer(node.left);
+//                 }
+                
+//                 if (node.right != null) {
+//                     queue.offer(node.right);
+//                 }
+//             }
 //             result.add(list);
 //         }
         
-//         list.add(node.val);
-//         dfs(node.left, result, level + 1);
-//         dfs(node.right, result, level + 1);
+//         return result;
 //     }
+    
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<>();
+        traverse(result, 0, root); 
+        return result;
+    }
+    
+    private void traverse(List<List<Integer>> result, int level, TreeNode node) {
+        if (node == null) {
+            return;
+        }
+        
+        if (level >= result.size()) {
+            result.add(new ArrayList<>());
+        }
+        
+        List<Integer> list = result.get(level);
+        list.add(node.val);
+        traverse(result, level + 1, node.left);
+        traverse(result, level + 1, node.right);
+    }
 }
