@@ -1,53 +1,25 @@
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode() {}
- *     TreeNode(int val) { this.val = val; }
- *     TreeNode(int val, TreeNode left, TreeNode right) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
- * }
- */
 class Solution {
     public int findSecondMinimumValue(TreeNode root) {
-        Set<Integer> set = new HashSet<>();
-        
-        int min = Integer.MAX_VALUE;
-        
         Queue<TreeNode> queue = new LinkedList<>();
         queue.offer(root);
+        long result = Long.MAX_VALUE;
         
         while (!queue.isEmpty()) {
-            TreeNode tmp = queue.poll();
-            set.add(tmp.val);
-            if (tmp.val < min) {
-                min = tmp.val;
-            }
+            int size = queue.size();
             
-            if (tmp.left != null) {
-                queue.offer(tmp.left);
-            }
-            
-            if (tmp.right != null) {
-                queue.offer(tmp.right);
+            while (size-- > 0) {
+                TreeNode node = queue.poll();
+                if (node.val > root.val && node.val < result) {
+                    result = node.val;
+                }
+                
+                if (node.left != null) {
+                    queue.offer(node.left);
+                    queue.offer(node.right);
+                }
             }
         }
         
-        if (set.size() < 2) {
-            return -1;
-        }
-        
-        int res = Integer.MAX_VALUE;
-        for (int num : set) {
-            if (num < res && num > min) {
-                res = num;
-            }
-        }
-        return res;
+        return result == Long.MAX_VALUE ? -1 : (int) result;
     }
 }
