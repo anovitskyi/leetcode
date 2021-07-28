@@ -1,10 +1,13 @@
 class MyStack {
 
-    private final Queue<Integer> queue = new LinkedList<>();
+    private final Queue<Integer> queue;
+    
+    public MyStack() {
+        queue = new LinkedList<>();
+    }
     
     public void push(int x) {
         queue.offer(x);
-        
         int size = queue.size();
         while (--size > 0) {
             queue.offer(queue.poll());
@@ -16,7 +19,7 @@ class MyStack {
     }
     
     public int top() {
-        return queue.peek();
+        return queue.peek();    
     }
     
     public boolean empty() {
