@@ -1,9 +1,9 @@
 class Solution {
     public int missingNumber(int[] nums) {
-        int result = nums.length * (nums.length + 1) / 2;
+        int expected = (nums.length * nums.length + nums.length) / 2;
         for (int num : nums) {
-            result -= num;
+            expected -= num;
         }
-        return result;
+        return expected;
     }
 }
