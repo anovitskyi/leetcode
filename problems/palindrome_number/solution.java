@@ -6,12 +6,11 @@ class Solution {
         
         int copy = x;
         int tmp = 0;
-        
         while (copy > 0) {
-            tmp = tmp * 10 + (copy % 10);
+            tmp = tmp * 10 + copy % 10;
             copy /= 10;
         }
         
-        return tmp == x;
+        return x == tmp;
     }
 }
