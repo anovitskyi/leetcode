@@ -1,48 +1,27 @@
 class Solution {
     public String[] findWords(String[] words) {
-        Set<Character> first = new HashSet<>(20);
-        for (char ch : "QWERTYUIOPqwertyuiop".toCharArray()) {
-            first.add(ch);
-        }
-        Set<Character> second = new HashSet<>(18);
-        for (char ch : "ASDFGHJKLasdfghjkl".toCharArray()) {
-            second.add(ch);
-        }
-        Set<Character> third = new HashSet<>(14);
-        for (char ch : "ZXCVBNMzxcvbnm".toCharArray()) {
-            third.add(ch);
-        }
+        int[] letters = {2, 3, 3, 2, 1, 2, 2, 2, 1, 2, 2, 2, 3, 3, 1, 1, 1, 1, 2, 1, 1, 3, 1, 3, 1, 3};
         
         List<String> result = new LinkedList<>();
         for (String word : words) {
-            boolean shouldAdd = true;
-            if (first.contains(word.charAt(0))) {
-                for (char ch : word.toCharArray()) {
-                    if (!first.contains(ch)) {
-                        shouldAdd = false;
-                        break;
-                    }
-                }
-            } else if (second.contains(word.charAt(0))) {
-                for (char ch : word.toCharArray()) {
-                    if (!second.contains(ch)) {
-                        shouldAdd = false;
-                        break;
-                    }
-                }
-            } else if (third.contains(word.charAt(0))) {
-                for (char ch : word.toCharArray()) {
-                    if (!third.contains(ch)) {
-                        shouldAdd = false;
-                        break;
-                    }
-                }
-            }
-            
-            if (shouldAdd) {
+            if (isOnSameLine(word, letters)) {
                 result.add(word);
             }
         }
         return result.toArray(new String[result.size()]);
+    }
+    
+    private boolean isOnSameLine(String word, int[] letters) {
+        int prev = letters[Character.toLowerCase(word.charAt(0)) - 'a'];
+        for (int i = 1; i < word.length(); ++i) {
+            int cur = letters[Character.toLowerCase(word.charAt(i)) - 'a'];
+            
+            if (prev != cur) {
+                return false;
+            }
+            
+            prev = cur;
+        }
+        return true;
     }
 }
