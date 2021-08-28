@@ -1,23 +1,31 @@
 class Solution {
     public void rotate(int[][] matrix) {
         for (int row = 0; row < matrix.length / 2; ++row) {
-            for (int column = row; column < matrix[row].length - 1 - row; ++column) {
-                rotate(matrix, row, column);
+            for (int col = row; col < matrix[row].length - row - 1; ++col) {
+                rot(matrix, row, col);
             }
         }
     }
     
-    private void rotate(int[][] matrix, int row, int column) {
-        int prev = matrix[row][column];
-        prev = updateCell(matrix, column, matrix.length - 1 - row, prev);
-        prev = updateCell(matrix, matrix.length - 1 - row, matrix.length - 1 - column, prev);
-        prev = updateCell(matrix, matrix.length - 1 - column, row, prev);
-        prev = updateCell(matrix, row, column, prev);
+    private void rot(int[][] matrix, int row, int col) {
+        int prev = matrix[row][col];
+        
+        // top right
+        prev = replace(matrix, prev, col, matrix.length - 1 - row);
+        
+        // bottom right
+        prev = replace(matrix, prev, matrix.length - 1 - row, matrix.length - 1 - col);
+        
+        // bottom left
+        prev = replace(matrix, prev, matrix.length - 1 - col, row);
+        
+        // top left
+        replace(matrix, prev, row, col);
     }
     
-    private int updateCell(int[][] matrix, int row, int column, int val) {
-        int prev = matrix[row][column];
-        matrix[row][column] = val;
+    private int replace(int[][] matrix, int val, int row, int col) {
+        int prev = matrix[row][col];
+        matrix[row][col] = val;
         return prev;
     }
 }
