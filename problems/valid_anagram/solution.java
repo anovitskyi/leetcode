@@ -1,28 +1,18 @@
 class Solution {
-    public boolean isAnagram(String s, String t) {
-        if (s == null && t == null) {
-            return true;
-        }
-        
+    public boolean isAnagram(String s, String t) {    
         if (s.length() != t.length()) {
             return false;
         }
+        char[] sTab = s.toCharArray();
+        char[] tTab = t.toCharArray();
+        Arrays.sort(sTab);
+        Arrays.sort(tTab);
         
-        int[] tab = new int[26];
-        char[] stab = s.toCharArray();
-        char[] ttab = t.toCharArray();
-        
-        for (int i = 0; i < stab.length; ++i) {
-            ++tab[stab[i] - 'a'];
-            --tab[ttab[i] - 'a'];
-        }
-        
-        for (int i = 0; i < 26; ++i) {
-            if (tab[i] != 0) {
+        for (int i = 0; i < sTab.length; ++i) {
+            if (sTab[i] != tTab[i]) {
                 return false;
             }
         }
-        
         return true;
     }
 }
