@@ -7,10 +7,10 @@ class Solution {
         int left = 0;
         int right = x;
         
-        while (right - left > 1) {
+        while (left < right - 1) {
             int middle = ((right - left) / 2) + left;
             
-            if (isPotentialSquareRoot(middle, x)) {
+            if (isPotentialSquareRoot(x, middle)) {
                 left = middle;
             } else {
                 right = middle;
@@ -20,7 +20,7 @@ class Solution {
         return left;
     }
     
-    private boolean isPotentialSquareRoot(int num, int x) {
+    private boolean isPotentialSquareRoot(int x, int num) {
         return num <= (x / num);
     }
 }
