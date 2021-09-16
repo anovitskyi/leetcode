@@ -4,10 +4,10 @@ class Solution {
             return head;
         }
         
-        ListNode result = reverseList(head.next);
-        ListNode next = head.next;
-        next.next = head;
-        head.next = null;
-        return result;
+        ListNode last = reverseList(head.next);
+        ListNode next = head.next.next;
+        head.next.next = head;
+        head.next = next;
+        return last;
     }
 }
