@@ -1,15 +1,17 @@
 class Solution {
-    public boolean isAnagram(String s, String t) {    
+    public boolean isAnagram(String s, String t) {
         if (s.length() != t.length()) {
             return false;
         }
-        char[] sTab = s.toCharArray();
-        char[] tTab = t.toCharArray();
-        Arrays.sort(sTab);
-        Arrays.sort(tTab);
         
-        for (int i = 0; i < sTab.length; ++i) {
-            if (sTab[i] != tTab[i]) {
+        int[] tab = new int[26];
+        for (int i = 0; i < s.length(); ++i) {
+            ++tab[s.charAt(i) - 'a'];
+            --tab[t.charAt(i) - 'a'];
+        }
+        
+        for (int i = 0; i < 26; ++i) {
+            if (tab[i] != 0) {
                 return false;
             }
         }
