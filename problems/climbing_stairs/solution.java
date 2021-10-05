@@ -1,12 +1,17 @@
 class Solution {
     public int climbStairs(int n) {
-        int[] cache = new int[n + 1];
-        cache[1] = 1;
-        
-        for (int i = 2; i < cache.length; ++i) {
-            cache[i] = cache[i - 1] + cache[i - 2];
+        if (n == 1) {
+            return 1;
         }
         
-        return cache[n] + cache[n - 1];
+        int[] steps = new int[n + 1];
+        steps[0] = 1;
+        steps[1] = 1;
+        
+        for (int i = 2; i < steps.length; ++i) {
+            steps[i] = steps[i - 1] + steps[i - 2];
+        }
+        
+        return steps[n];
     }
 }
