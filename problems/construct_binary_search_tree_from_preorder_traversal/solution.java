@@ -1,27 +1,24 @@
 class Solution {
     public TreeNode bstFromPreorder(int[] preorder) {
-        TreeNode root = new TreeNode(preorder[0]);
-        
-        for (int i = 1; i < preorder.length; ++i) {
-            insert(root, new TreeNode(preorder[i]));
-        }
-        
-        return root;
+        return traverse(preorder, 0, preorder.length);
     }
     
-    private void insert(TreeNode root, TreeNode curr) {
-        if (curr.val < root.val) {
-            if (root.left == null) {
-                root.left = curr;
-            } else {
-                insert(root.left, curr);
-            }
-        } else {
-            if (root.right == null) {
-                root.right = curr;
-            } else {
-                insert(root.right, curr);
+    private TreeNode traverse(int[] nums, int left, int right) {
+        if (left >= right) {
+            return null;
+        }
+        
+        TreeNode node = new TreeNode(nums[left]);
+        int middle = right;
+        for (int i = left + 1; i < right; ++i) {
+            if (nums[i] > nums[left]) {
+                middle = i;
+                break;
             }
         }
+        
+        node.left = traverse(nums, left + 1, middle);
+        node.right = traverse(nums, middle, right);
+        return node;
     }
 }
