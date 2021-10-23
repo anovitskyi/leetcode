@@ -12,27 +12,24 @@ class Solution {
     public ListNode partition(ListNode head, int x) {
         ListNode left = new ListNode();
         ListNode right = new ListNode();
-    
-        ListNode fictiveLeft = left;
-        ListNode fictiveRight = right;
-    
+        
+        ListNode lTmp = left;
+        ListNode rTmp = right;
+        
         while (head != null) {
-            ListNode tmp = new ListNode(head.val);
-            head = head.next;
+            ListNode node = new ListNode(head.val);
             
-            if (tmp.val < x) {
-                left.next = tmp;
-                left = tmp;
+            if (node.val < x) {
+                lTmp.next = node;
+                lTmp = node;
             } else {
-                right.next = tmp;
-                right = tmp;
+                rTmp.next = node;
+                rTmp = node;
             }
+            head = head.next;
         }
-    
-        left.next = fictiveRight.next;
-        return fictiveLeft.next;
+        
+        lTmp.next = right.next;
+        return left.next;
     }
 }
-
-// [1,4,3,2,5,2]
-// 3
