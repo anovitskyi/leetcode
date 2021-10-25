@@ -1,18 +1,14 @@
 class Solution {
     public ListNode swapPairs(ListNode head) {
-        ListNode fictiveHead = new ListNode(0, head);
-        ListNode pointer = fictiveHead;
-        
-        while (pointer.next != null && pointer.next.next != null) {
-            ListNode first = pointer.next;
-            ListNode second = pointer.next.next;
-            first.next = second.next;
-            second.next = first;
-            pointer.next = second;
-            
-            pointer = first;
+        if (head == null || head.next == null) {
+            return head;
         }
         
-        return fictiveHead.next;
+        int tmp = head.val;
+        head.val = head.next.val;
+        head.next.val = tmp;
+        
+        swapPairs(head.next.next);
+        return head;
     }
 }
