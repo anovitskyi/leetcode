@@ -3,22 +3,23 @@ class Solution {
         if (head == null || head.next == null) {
             return head;
         }
-        int size = getListSize(head);
+        
+        int size = getSize(head);
         return sort(head, size);
     }
     
-    private ListNode sort(ListNode head, int size) {
-        if (size <= 1) {
-            return head;
+    private ListNode sort(ListNode node, int size) {
+        if (size == 1) {
+            return node;
         }
         
         int mid = size / 2;
-        ListNode left = sort(head, mid);
-        
-        ListNode right = head;
+        ListNode left = node;
+        ListNode right = node;
         for (int i = 0; i < mid; ++i) {
             right = right.next;
         }
+        left = sort(left, mid);
         right = sort(right, size - mid);
         
         return merge(left, mid, right, size - mid);
@@ -30,37 +31,32 @@ class Solution {
         
         while (leftSize > 0 && rightSize > 0) {
             if (left.val < right.val) {
-                node.next = new ListNode(left.val);
-                left = left.next;
+                node.next = left;
                 --leftSize;
+                left = left.next;
             } else {
-                node.next = new ListNode(right.val);
-                right = right.next;
+                node.next = right;
                 --rightSize;
+                right = right.next;
             }
             node = node.next;
-        } 
+        }
         
         while (leftSize-- > 0) {
-            node.next = new ListNode(left.val);
+            node.next = left;
             left = left.next;
             node = node.next;
         }
         
-        while (rightSize-- > 0) {
-            node.next = new ListNode(right.val);
-            right = right.next;
-            node = node.next;
-        }
-        
+        node.next = right;
         return result.next;
     }
     
-    private int getListSize(ListNode node) {
+    private int getSize(ListNode node) {
         int size = 0;
         while (node != null) {
-            ++size;
             node = node.next;
+            ++size;
         }
         return size;
     }
