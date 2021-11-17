@@ -3,44 +3,29 @@ class Solution {
         int left = 0;
         int right = s.length() - 1;
         
-        while (true) {
-            while (left < s.length() && !isAlphaNumeric(s.charAt(left))) {
+        while (left < right) {
+            while (!Character.isLetterOrDigit(s.charAt(left))) {
                 ++left;
+                if (left >= s.length()) {
+                    return true;
+                }
             }
             
-            while (right >= 0 && !isAlphaNumeric(s.charAt(right))) {
+            while (!Character.isLetterOrDigit(s.charAt(right))) {
                 --right;
+                if (right < 0) {
+                    return true;
+                }
             }
             
-            if (left >= right) {
-                return true;
-            } else if (!compareLowerCase(s.charAt(left++), s.charAt(right--))) {
+            if (Character.toLowerCase(s.charAt(left)) != Character.toLowerCase(s.charAt(right))) {
                 return false;
             }
-        }
-    }
-    
-    private boolean isAlphaNumeric(char ch) {
-        if (ch >= '0' && ch <= '9') {
-            return true;
+            
+            ++left;
+            --right;
         }
         
-        if (ch >= 'A' && ch <= 'Z') {
-            return true;
-        }
-        
-        return ch >= 'a' && ch <= 'z';
-    }
-    
-    private boolean compareLowerCase(char a, char b) {
-        if (a >= 'A' && a <= 'Z') {
-            a += 32;
-        }
-        
-        if (b >= 'A' && b <= 'Z') {
-            b += 32;
-        }
-        
-        return a == b;
+        return true;
     }
 }
