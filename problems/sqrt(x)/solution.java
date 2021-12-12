@@ -1,26 +1,49 @@
 class Solution {
     public int mySqrt(int x) {
-        if (x == 1) {
-            return 1;
+        if (x < 2) {
+            return x;
         }
         
-        int left = 0;
+        int left = 1;
         int right = x;
         
-        while (left < right - 1) {
+        while (left <= right) {
             int middle = ((right - left) / 2) + left;
+            int num = x / middle;
             
-            if (isPotentialSquareRoot(x, middle)) {
-                left = middle;
+            if (num == middle) {
+                return middle;
+            } else if (num < middle) {
+                right = middle - 1;
             } else {
-                right = middle;
+                left = middle + 1;
             }
         }
         
-        return left;
+        return right;
     }
     
-    private boolean isPotentialSquareRoot(int x, int num) {
-        return num <= (x / num);
-    }
+//     public int mySqrt(int x) {
+//         if (x < 2) {
+//             return x;
+//         }
+//         return sqrt(x, 1, x);
+//     }
+    
+//     private int sqrt(int x, int left, int right) {
+//         if (left > right) {
+//             return right;
+//         }
+        
+//         int middle = ((right - left) / 2) + left;
+//         int num = x / middle;
+        
+//         if (num == middle) {
+//             return middle;
+//         } else if (middle > num) {
+//             return sqrt(x, left, middle - 1);
+//         } else {
+//             return sqrt(x, middle + 1, right);
+//         }
+//     }
 }
