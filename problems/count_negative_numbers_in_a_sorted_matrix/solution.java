@@ -1,39 +1,22 @@
 class Solution {
     public int countNegatives(int[][] grid) {
-        int counter = 0;
-        
-        for (int i = 0; i < grid.length; ++i) {
-            counter += countNegatives(grid[i]);
+        int result = 0;
+        for (int[] level : grid) {
+            result += findNegatives(level, 0, level.length - 1);
         }
-        
-        return counter;
+        return result;
     }
     
-    // private int countNegatives(int[] grid) {
-    //     for (int i = 0; i < grid.length; ++i) {
-    //         if (grid[i] < 0) {
-    //             return grid.length - i; 
-    //         }
-    //     }
-    //     return 0;
-    // }
-    
-    private int countNegatives(int[] grid) {
-        int start = 0;
-        int end = grid.length;
-        int mid, index = grid.length;
+    private int findNegatives(int[] level, int left, int right) {
+        if (left > right) {
+            return level.length - left;
+        } 
         
-        while (start < end) {
-            mid = (start + end) / 2;
-            
-            if (grid[mid] < 0) {
-                index = mid;
-                end = mid;
-            } else {
-                start = mid + 1;
-            }
+        int middle = ((right - left) / 2) + left;
+        if (level[middle] < 0) {
+            return findNegatives(level, left, middle - 1);
+        } else {
+            return findNegatives(level, middle + 1, right);
         }
-        
-        return grid.length - index;
     }
 }
