@@ -10,25 +10,17 @@
  */
 class Solution {
     public ListNode insertionSortList(ListNode head) {
-        if (head == null || head.next == null) {
-            return head;
-        }
-        
-        ListNode start = new ListNode(Integer.MIN_VALUE);
-    
+        ListNode result = new ListNode();
         while (head != null) {
-            ListNode curr = start;
-            while (curr.next != null && curr.next.val < head.val) {
-                curr = curr.next;
+            ListNode tmp = result;
+            while (tmp.next != null && tmp.next.val < head.val) {
+                tmp = tmp.next;
             }
-            
-            ListNode headNext = head.next;
-            ListNode currNext = curr.next;
-            curr.next = head;
-            curr.next.next = currNext;
-            head = headNext;
+            ListNode curr = head;
+            head = head.next;
+            curr.next = tmp.next;
+            tmp.next = curr;
         }
-        
-        return start.next;
+        return result.next;
     }
 }
