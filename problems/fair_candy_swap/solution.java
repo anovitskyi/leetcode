@@ -1,25 +1,28 @@
 class Solution {
-    public int[] fairCandySwap(int[] A, int[] B) {
-        int aSum = 0;
-        int bSum = 0;
-        Set<Integer> bSet = new HashSet<>(B.length);
-
-        for (int i = 0; i < A.length; ++i) {
-            aSum += A[i];
+    public int[] fairCandySwap(int[] aliceSizes, int[] bobSizes) {
+        int aliceSum = 0;
+        for (int size : aliceSizes) {
+            aliceSum += size;
         }
-        for (int i = 0; i < B.length; i++) {
-            bSum += B[i];
-            bSet.add(B[i]);
+        
+        Set<Integer> bobBoxes = new HashSet<>();
+        int bobSum = 0;
+        for (int size : bobSizes) {
+            bobBoxes.add(size);
+            bobSum += size;
         }
-
-        int diff = (bSum - aSum) / 2;
-        for (int i = 0; i < A.length; i++) {
-            int desiredB = diff + A[i];
-            if (bSet.contains(desiredB)) {
-                return new int[] {A[i], desiredB};
+        
+        int middle = (bobSum + aliceSum) / 2;
+        
+        for (int ab : aliceSizes) {
+            int expected = middle - (aliceSum - ab);
+            if (bobBoxes.contains(expected)) {
+                return new int[] {
+                    ab, expected
+                };
             }
         }
-
-        return null;
+        
+        return new int[0];
     }
 }
