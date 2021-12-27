@@ -1,15 +1,10 @@
 class Solution {
     public int findComplement(int num) {
-        int counter = 0;
-        int copy = num;
-        while (copy > 0) {
-            ++counter;
-            copy /= 2;
+        int result = 0;
+        for (int i = 0; num > 0; ++i, num /= 2) {
+            int invertedLast = ((num % 2) + 1) % 2;
+            result |= (invertedLast << i);
         }
-        
-        int bottom = counter >= 31 ? Integer.MAX_VALUE : ((int) Math.pow(2, counter) - 1);
-        
-        return num ^ bottom;
-        
+        return result;
     }
 }
