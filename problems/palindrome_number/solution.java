@@ -4,13 +4,15 @@ class Solution {
             return false;
         }
         
-        int copy = x;
-        int tmp = 0;
-        while (copy > 0) {
-            tmp = tmp * 10 + copy % 10;
-            copy /= 10;
+        int origin = x;
+        int copy = 0;
+        
+        while (x != 0) {
+            copy *= 10;
+            copy += x % 10;
+            x /= 10;
         }
         
-        return x == tmp;
+        return origin == copy;
     }
 }
