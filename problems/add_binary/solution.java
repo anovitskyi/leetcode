@@ -1,32 +1,27 @@
 class Solution {
     public String addBinary(String a, String b) {
-         char[] longer, shorter;
-        if (a.length() >= b.length()) {
-            longer = a.toCharArray();
-            shorter = b.toCharArray();
-        } else {
-            longer = b.toCharArray();
-            shorter = a.toCharArray();
-        }
-
-        StringBuilder builder = new StringBuilder();
+        StringBuilder result = new StringBuilder();
         int carry = 0;
-        for (int i = shorter.length - 1, j = longer.length - 1; i >= 0; --i, --j) {
-            int sum = shorter[i] - '0' + longer[j] - '0' + carry;
-            builder.append(sum % 2);
-            carry = sum / 2;
+        for (int i = 0; i < a.length() || i < b.length(); ++i) {
+            int aNum = 0;
+            int bNum = 0;
+            
+            if (i < a.length()) {
+                aNum = a.charAt(a.length() - i - 1) - '0';
+            } 
+            
+            if (i < b.length()) {
+                bNum = b.charAt(b.length() - i - 1) - '0';
+            }
+            
+            int curr = aNum + bNum + carry;
+            result.append(curr % 2);
+            carry = curr / 2;
         }
-
-        for (int i = longer.length - shorter.length - 1; i >= 0; --i) {
-            int sum = longer[i] - '0' + carry;
-            builder.append(sum % 2);
-            carry = sum / 2;
-        }
-
+        
         if (carry == 1) {
-            builder.append(1);
+            result.append(carry);
         }
-
-        return builder.reverse().toString();
+        return result.reverse().toString();
     }
 }
