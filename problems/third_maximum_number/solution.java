@@ -1,31 +1,18 @@
 class Solution {
     public int thirdMax(int[] nums) {
-        long first = Long.MIN_VALUE;
-        long second = Long.MIN_VALUE;
-        long third = Long.MIN_VALUE;
-        int distinct = 0;
-        
+        Set<Integer> set = new TreeSet<>((a, b) -> Integer.compare(b, a));
         for (int num : nums) {
-            if (num != first && num != second && num != third) {
-                ++distinct;
+            set.add(num);
+        }
+        
+        Iterator<Integer> iterator = set.iterator();
+        if (set.size() < 3) {
+            return iterator.next();
+        } else {
+            iterator.next();
+            iterator.next();
             
-                if (num > first) {
-                    third = second;
-                    second = first;
-                    first = num;
-                } else if (num > second) {
-                    third = second;
-                    second = num;
-                } else if (num > third) {
-                    third = num;
-                }
-            }
+            return iterator.next();
         }
-        
-        if (distinct < 3) {
-            return (int) first;
-        }
-        
-        return (int) third;
     }
 }
