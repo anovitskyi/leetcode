@@ -4,26 +4,18 @@ class Solution {
         int right = s.length() - 1;
         
         while (left < right) {
-            while (!Character.isLetterOrDigit(s.charAt(left))) {
+            char l = s.charAt(left);
+            char r = s.charAt(right);
+            if (!Character.isLetterOrDigit(l)) {
                 ++left;
-                if (left >= s.length()) {
-                    return true;
-                }
-            }
-            
-            while (!Character.isLetterOrDigit(s.charAt(right))) {
+            } else if (!Character.isLetterOrDigit(r)) {
                 --right;
-                if (right < 0) {
-                    return true;
-                }
-            }
-            
-            if (Character.toLowerCase(s.charAt(left)) != Character.toLowerCase(s.charAt(right))) {
+            } else if (Character.toLowerCase(l) != Character.toLowerCase(r)) {
                 return false;
+            } else {
+                ++left;
+                --right;
             }
-            
-            ++left;
-            --right;
         }
         
         return true;
