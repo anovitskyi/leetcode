@@ -1,13 +1,15 @@
 class Solution {
+    private static final Set<Character> vowels = Set.of('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U');
+    
     public String reverseVowels(String s) {
         char[] tab = s.toCharArray();
         int left = 0;
         int right = tab.length - 1;
         
         while (left < right) {
-            if (!isVowel(tab[left])) {
+            if (!vowels.contains(tab[left])) {
                 ++left;
-            } else if (!isVowel(tab[right])) {
+            } else if (!vowels.contains(tab[right])) {
                 --right;
             } else {
                 char tmp = tab[left];
@@ -21,11 +23,4 @@ class Solution {
         return new String(tab);
     }
     
-    private boolean isVowel(char ch) {
-        return ch == 'a' || ch == 'A'
-            || ch == 'e' || ch == 'E'
-            || ch == 'i' || ch == 'I'
-            || ch == 'o' || ch == 'O'
-            || ch == 'u' || ch == 'U';
-    }
 }
