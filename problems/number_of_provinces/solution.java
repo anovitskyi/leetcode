@@ -1,40 +1,83 @@
 class Solution {
     public int findCircleNum(int[][] isConnected) {
-        Map<Integer, Set<Integer>> map = new HashMap<>();
+        QuickUnion qu = new QuickUnion(isConnected.length);
         for (int i = 0; i < isConnected.length; ++i) {
-            Set<Integer> cities = map.computeIfAbsent(i, city -> new HashSet<>());
-            for (int j = 0; j < isConnected[i].length; ++j) {
-                if (isConnected[i][j] == 1 && i != j) {
-                    cities.add(j);
+            for (int j = i; j < isConnected[i].length; ++j) {
+                if (isConnected[i][j] == 1) {
+                    qu.union(i, j);
+                }
+            }
+        }
+        return qu.findUniqueElements();
+    }
+    
+    static class QuickUnion {
+        
+        private final int[] elements;
+        
+        QuickUnion(int size) {
+            this.elements = new int[size];
+            for (int i = 0; i < size; ++i) {
+                elements[i] = i;
+            }
+        }
+        
+        void union(int source, int target) {
+            int sourceRoot = root(source);
+            int targetRoot = root(target);
+            elements[sourceRoot] = targetRoot;
+        }
+        
+        int root(int index) {
+            int result = index;
+            while (elements[result] != result) {
+                result = elements[result];
+            }
+            return result;
+        }
+        
+        int findUniqueElements() {
+            Set<Integer> set = new HashSet<>();
+            for (int elem : elements) {
+                set.add(root(elem));
+            }
+            return set.size();
+        }
+        
+    }
+    
+    static class QuickFind {
+        
+        private final int[] elements;
+        
+        QuickFind(int size) {
+            this.elements = new int[size];
+            for (int i = 0; i < size; ++i) {
+                elements[i] = i;
+            }
+        }
+        
+        void union(int source, int target) {
+            if (elements[source] == elements[target]) {
+                return;
+            }
+            
+            int prev = elements[source];
+            int next = elements[target];
+            for (int i = 0; i < elements.length; ++i) {
+                if (elements[i] == prev) {
+                    elements[i] = next;
                 }
             }
         }
         
-        boolean[] visited = new boolean[isConnected.length];
-        int result = 0;
-        Stack<Integer> stack = new Stack<>();
-        
-        for (int i = 0; i < visited.length; ++i) {
-            if (visited[i]) {
-                continue;
-            }        
-            
-            ++result;
-            
-            Queue<Integer> queue = new LinkedList<>();
-            queue.offer(i);
-            visited[i] = true;
-            
-            while (!queue.isEmpty()) {
-                for (int city : map.get(queue.poll())) {
-                    if (!visited[city]) {
-                        queue.offer(city);
-                        visited[city] = true;
-                    }
-                }
+        int findUniqueElements() {
+            Set<Integer> set = new HashSet<>();
+            for (int elem : elements) {
+                set.add(elem);
             }
+            return set.size();
         }
         
-        return result;
     }
 }
