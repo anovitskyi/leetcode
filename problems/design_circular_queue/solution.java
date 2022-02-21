@@ -1,11 +1,11 @@
 class MyCircularQueue {
     
+    private final int[] elements;
     private int head;
     private int tail;
-    private int[] arr;
 
     public MyCircularQueue(int k) {
-        arr = new int[k + 1];
+        elements = new int[k + 1];
         head = 0;
         tail = 0;
     }
@@ -15,11 +15,8 @@ class MyCircularQueue {
             return false;
         }
         
-        arr[tail++] = value;
-        if (tail >= arr.length) {
-            tail = 0;
-        }
-        
+        elements[tail] = value;
+        tail = getNextIndex(tail);
         return true;
     }
     
@@ -28,11 +25,7 @@ class MyCircularQueue {
             return false;
         }
         
-        ++head;
-        if (head >= arr.length) {
-            head = 0;
-        }
-        
+        head = getNextIndex(head);
         return true;
     }
     
@@ -41,7 +34,7 @@ class MyCircularQueue {
             return -1;
         }
         
-        return arr[head];
+        return elements[head];
     }
     
     public int Rear() {
@@ -49,12 +42,7 @@ class MyCircularQueue {
             return -1;
         }
         
-        int prev = tail - 1;
-        if (prev < 0) {
-            prev = arr.length - 1;
-        }
-        
-        return arr[prev];
+        return elements[getPrevIndex(tail)];
     }
     
     public boolean isEmpty() {
@@ -62,11 +50,25 @@ class MyCircularQueue {
     }
     
     public boolean isFull() {
-        int next = tail + 1;
-        if (next >= arr.length) {
-            next = 0;
-        }
-        
-        return next == head;
+        return head == getNextIndex(tail);
+    }
+    
+    private int getNextIndex(int index) {
+        return (index + 1) % elements.length;
+    }
+    
+    private int getPrevIndex(int index) {
+        return (((index - 1) % elements.length) + elements.length) % elements.length;
     }
 }
+
+/**
+ * Your MyCircularQueue object will be instantiated and called as such:
+ * MyCircularQueue obj = new MyCircularQueue(k);
+ * boolean param_1 = obj.enQueue(value);
+ * boolean param_2 = obj.deQueue();
+ * int param_3 = obj.Front();
+ * int param_4 = obj.Rear();
+ * boolean param_5 = obj.isEmpty();
+ * boolean param_6 = obj.isFull();
+ */
