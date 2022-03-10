@@ -1,17 +1,21 @@
 class Solution {
+    
+    private static final int[] cache = new int[46];
+    
     public int climbStairs(int n) {
-        if (n == 1) {
+        if (n <= 1) {
             return 1;
         }
         
-        int[] steps = new int[n + 1];
-        steps[0] = 1;
-        steps[1] = 1;
-        
-        for (int i = 2; i < steps.length; ++i) {
-            steps[i] = steps[i - 1] + steps[i - 2];
+        if (cache[n - 1] == 0) {
+            cache[n - 1] = climbStairs(n - 1);
         }
         
-        return steps[n];
+        if (cache[n - 2] == 0) {
+            cache[n - 2] = climbStairs(n - 2);
+        }
+        
+        cache[n] = cache[n - 1] + cache[n - 2];
+        return cache[n];
     }
 }
