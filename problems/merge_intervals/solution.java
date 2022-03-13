@@ -1,26 +1,27 @@
 class Solution {
     public int[][] merge(int[][] intervals) {
-        Arrays.sort(intervals, (a, b) -> {
-            int first = Integer.compare(a[0], b[0]);
-            
-            if (first == 0) {
-                return Integer.compare(a[1], b[1]);
-            }
-            
-            return first;
-        });
-        
-        List<int[]> result = new LinkedList<>();
-        int[] last = intervals[0];
-        result.add(intervals[0]);
-        for (int i = 1; i < intervals.length; ++i) {
-            if (intervals[i][0] > last[1]) {
-                result.add(intervals[i]);
-                last = intervals[i];
-            } else if (intervals[i][1] > last[1]) {
-                last[1] = intervals[i][1];
-            }
+        if (intervals.length < 2) {
+            return intervals;
         }
-        return result.toArray(new int[result.size()][2]);
+        
+        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+        List<int[]> resultList = new ArrayList<>();
+        resultList.add(intervals[0]);
+        for (int i = 1; i < intervals.length; ++i) {
+            int[] prevIntervals = resultList.get(resultList.size() - 1);
+            if (intervals[i][0] > prevIntervals[1]) {
+                resultList.add(intervals[i]);
+                continue;
+            }
+            
+            //prevIntervals[0] = Math.min(prevIntervals[0], intervals[i][0]);
+            prevIntervals[1] = Math.max(prevIntervals[1], intervals[i][1]);
+        }
+        
+        int[][] result = new int[resultList.size()][2];
+        for (int i = 0; i < resultList.size(); ++i) {
+            result[i] = resultList.get(i);
+        }
+        return result;
     }
 }
