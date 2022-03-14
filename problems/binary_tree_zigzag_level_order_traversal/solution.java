@@ -1,30 +1,50 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
 class Solution {
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
-        List<List<Integer>> result = new ArrayList<>();
-        dfs(root, 0, result);
+        List<List<Integer>> result = new LinkedList<>();
+        if (root == null) {
+            return result;
+        }
+        
+        Queue<TreeNode> queue = new LinkedList<>();
+        boolean isNaturalOrder = true;
+        queue.offer(root);
+        
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            LinkedList<Integer> elements = new LinkedList<>();
+            while (size-- > 0) {
+                TreeNode topNode = queue.poll();
+                if (topNode.left != null) {
+                    queue.offer(topNode.left);
+                }
+                if (topNode.right != null) {
+                    queue.offer(topNode.right);
+                }
+                if (isNaturalOrder) {
+                    elements.offerLast(topNode.val);
+                } else {
+                    elements.offerFirst(topNode.val);
+                }
+            }
+            isNaturalOrder = !isNaturalOrder;
+            result.add(elements);
+        }
+        
         return result;
-    }
-    
-    private void dfs(TreeNode node, int level, List<List<Integer>> result) {
-        if (node == null) {
-            return;   
-        }
-        
-        LinkedList<Integer> list = null;
-        if (level < result.size()) {
-            list = (LinkedList<Integer>) result.get(level);
-        } else {
-            list = new LinkedList<>();
-            result.add(list);
-        }
-        
-        if (level % 2 == 0) {
-            list.add(node.val);
-        } else {
-            list.offerFirst(node.val);
-        }
-        
-        dfs(node.left, level + 1, result);
-        dfs(node.right, level + 1, result);
     }
 }
