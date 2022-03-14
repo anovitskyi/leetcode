@@ -2,7 +2,7 @@ class Solution {
     public boolean exist(char[][] board, String word) {
         for (int i = 0; i < board.length; ++i) {
             for (int j = 0; j < board[i].length; ++j) {
-                if (containsWord(board, i, j, word, 0)) {
+                if (wordExist(board, i, j, word, 0)) {
                     return true;
                 }
             }
@@ -11,8 +11,8 @@ class Solution {
         return false;
     }
     
-    private boolean containsWord(char[][] board, int row, int column, String word, int position) {
-        if (position >= word.length()) {
+    private boolean wordExist(char[][] board, int row, int col, String word, int index) {
+        if (index >= word.length()) {
             return true;
         }
         
@@ -20,18 +20,20 @@ class Solution {
             return false;
         }
         
-        if (column < 0 || column >= board[0].length) {
+        if (col < 0 || col >= board[row].length) {
             return false;
         }
         
-        if (board[row][column] != word.charAt(position)) {
+        if (board[row][col] != word.charAt(index)) {
             return false;
         }
         
-        char tmp = board[row][column];
-        board[row][column] = ' ';
-        boolean result = containsWord(board, row - 1, column, word, position + 1) || containsWord(board, row + 1, column, word, position + 1) || containsWord(board, row, column - 1, word, position + 1) || containsWord(board, row, column + 1, word, position + 1);
-        board[row][column] = tmp;
-        return result;
+        board[row][col] = '1';
+        boolean nextCharactersExist = wordExist(board, row + 1, col, word, index + 1) ||
+            wordExist(board, row - 1, col, word, index + 1) ||
+            wordExist(board, row, col + 1, word, index + 1) ||
+            wordExist(board, row, col - 1, word, index + 1);
+        board[row][col] = word.charAt(index);
+        return nextCharactersExist;
     }
 }
