@@ -4,7 +4,7 @@ class Solution {
         int currSum = 0;
         int result = 0;
         
-        for (int i = 0; i < gas.length; ++i) {
+        for (int i = 0; i < gas.length; ++i) { // O(n) time and O(1) space
             int diff = gas[i] - cost[i];
             sum += diff;
             currSum += diff;
@@ -17,7 +17,6 @@ class Solution {
         if (sum < 0) {
             return -1;
         }
-        
         return result;
     }
 }
