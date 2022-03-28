@@ -20,10 +20,9 @@ class Solution {
         }
         
         int sum = targetSum - root.val;
-        
-        if (root.left == null && root.right == null && sum == 0) {
-            return true;
-        }
+        if (root.left == null && root.right == null) {
+            return sum == 0;
+        } 
         
         return hasPathSum(root.left, sum) || hasPathSum(root.right, sum);
     }
