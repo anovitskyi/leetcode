@@ -22,20 +22,18 @@ class Node {
 */
 
 class Solution {
-    
-    public Node connect(Node node) {
-        if (node == null || node.left == null) {
-            return node;
+    public Node connect(Node root) {
+        if (root == null || root.left == null) {
+            return root;
         }
         
-        node.left.next = node.right;
-        if (node.next != null) {
-            node.right.next = node.next.left;
+        root.left.next = root.right;
+        if (root.next != null) {
+            root.right.next = root.next.left;
         }
         
-        connect(node.left);
-        connect(node.right);
-        return node;
+        connect(root.left);
+        connect(root.right);
+        return root;
     }
-    
 }
