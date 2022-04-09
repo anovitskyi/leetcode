@@ -5,17 +5,14 @@ class Solution {
             map.put(num, map.getOrDefault(num, 0) + 1);
         }
         
-        Queue<Integer> queue = new PriorityQueue<>((a, b) -> map.get(a) - map.get(b));
-        for (Integer key : map.keySet()) {
-            queue.offer(key);
-            if (queue.size() > k) {
-                queue.poll();
-            }
+        Queue<Integer> queue = new PriorityQueue<>((a, b) -> map.get(b) - map.get(a));
+        for (int num : map.keySet()) {
+            queue.offer(num);
         }
         
         int[] result = new int[k];
-        while (--k >= 0) {
-            result[k] = queue.poll();
+        for (int i = 0; i < k; ++i) {
+            result[i] = queue.poll();
         }
         return result;
     }
