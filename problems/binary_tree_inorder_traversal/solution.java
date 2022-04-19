@@ -1,12 +1,12 @@
 class Solution {
     public List<Integer> inorderTraversal(TreeNode root) {
-        Stack<TreeNode> stack = new Stack<>();
-        stack.push(root);
-        
         List<Integer> result = new LinkedList<>();
         if (root == null) {
             return result;
         }
+        
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(root);
         
         while (!stack.isEmpty()) {
             while (stack.peek().left != null) {
@@ -15,11 +15,11 @@ class Solution {
                 peek.left = null;
             }
             
-            TreeNode top = stack.pop();
-            result.add(top.val);
+            TreeNode pop = stack.pop();
+            result.add(pop.val);
             
-            if (top.right != null) {
-                stack.push(top.right);
+            if (pop.right != null) {
+                stack.push(pop.right);
             }
         }
         
