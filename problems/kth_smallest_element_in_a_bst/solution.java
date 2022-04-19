@@ -15,25 +15,25 @@
  */
 class Solution {
     public int kthSmallest(TreeNode root, int k) {
-        return findKthSmallestElement(root, k, new LinkedList<>());
+        return findKthSmallest(root, k, new LinkedList<>());
     }
     
-    private int findKthSmallestElement(TreeNode node, int k, List<Integer> visitedElements) {
+    private int findKthSmallest(TreeNode node, int k, List<Integer> elements) {
         if (node == null) {
             return -1;
         }
         
-        int left = findKthSmallestElement(node.left, k, visitedElements);
+        int left = findKthSmallest(node.left, k, elements);
         if (left != -1) {
             return left;
         }
         
-        visitedElements.add(node.val);
-        if (visitedElements.size() == k) {
-            return visitedElements.get(k - 1);
+        elements.add(node.val);
+        if (elements.size() == k) {
+            return node.val;
         }
         
-        int right = findKthSmallestElement(node.right, k, visitedElements);
+        int right = findKthSmallest(node.right, k, elements);
         if (right != -1) {
             return right;
         }
