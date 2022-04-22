@@ -1,21 +1,30 @@
 class MyHashMap {
     
-    private final Integer[] buckets;
-
-    public MyHashMap() {
-        buckets = new Integer[1000001];
+    private final int[] map = new int[1_000_001];
+    
+    MyHashMap() {
+        for (int i = 0; i < map.length; ++i) {
+            map[i] = -1;
+        }
     }
     
     public void put(int key, int value) {
-        buckets[key] = value;
+        map[key] = value;
     }
     
     public int get(int key) {
-        return buckets[key] == null ? -1: buckets[key];
+        return map[key];
     }
     
     public void remove(int key) {
-        buckets[key] = null;
+        map[key] = -1;
     }
-    
 }
+
+/**
+ * Your MyHashMap object will be instantiated and called as such:
+ * MyHashMap obj = new MyHashMap();
+ * obj.put(key,value);
+ * int param_2 = obj.get(key);
+ * obj.remove(key);
+ */
