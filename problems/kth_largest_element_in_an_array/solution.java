@@ -1,92 +1,41 @@
 class Solution {
     public int findKthLargest(int[] nums, int k) {
-        // return findWithPriorityQueue(nums, k);
-        // return findWithQuickSort(nums, k);
-        return findWithQuickSelect(nums, k);
+        return quickSelect(nums, k - 1, 0, nums.length - 1);
     }
     
-    private int findWithPriorityQueue(int[] nums, int k) {
-        Queue<Integer> queue = new PriorityQueue<>((a, b) -> b - a);
-        for (int num : nums) {
-            queue.offer(num);
-        }
+    private int quickSelect(int[] nums, int k, int left, int right) {
+        int current = left;
+        int last = left;
+        int pivot = right;
         
-        for (int i = 1; i < k; ++i) {
-            queue.poll();
-        }
-        
-        return queue.poll();
-    }
-    
-    private int findWithQuickSort(int[] nums, int k) {
-        Arrays.sort(nums);
-        return nums[nums.length - k];
-    }
-    
-    private int findWithQuickSelect(int[] nums, int k) {
-        // quickSelectRecursively(nums, 0, nums.length - 1, k - 1);
-        quickSelectIteratively(nums, k - 1);
-        return nums[k - 1];
-    }
-    
-    private void quickSelectRecursively(int[] nums, int left, int right, int k) {
-        if (left >= right) {
-            return;
-        }
-        
-        int lastGreater = left;
-        for (int i = left; i < right; ++i) {
-            if (nums[i] > nums[right]) {
-                int tmp = nums[i];
-                nums[i] = nums[lastGreater];
-                nums[lastGreater] = tmp;
-                ++lastGreater;
+        while (current < pivot) {
+            if (nums[current] >= nums[pivot]) {
+                int tmp = nums[current];
+                nums[current] = nums[last];
+                nums[last] = tmp;
+                ++last;
             }
+            ++current;
         }
         
-        if (nums[right] > nums[lastGreater]) {
-            int tmp = nums[right];
-            nums[right] = nums[lastGreater];
-            nums[lastGreater] = tmp;
+        if (nums[last] < nums[pivot]) {
+            int tmp = nums[pivot];
+            nums[pivot] = nums[last];
+            nums[last] = tmp;   
         }
         
-        if (lastGreater == k) {
-            return;
-        } else if (lastGreater < k) {
-            quickSelectRecursively(nums, lastGreater + 1, right, k);
+        if (last == k) {
+            return nums[last];
+        } else if (last < k) {
+            return quickSelect(nums, k, last + 1, right);
         } else {
-            quickSelectRecursively(nums, left, lastGreater - 1, k);
-        }
-    }
-    
-    private void quickSelectIteratively(int[] nums, int k) {
-        int left = 0;
-        int right = nums.length - 1;
-        
-        while (left < right) {
-            int lastGreater = left;
-            for (int i = left; i < right; ++i) {
-                if (nums[i] > nums[right]) {
-                    int tmp = nums[i];
-                    nums[i] = nums[lastGreater];
-                    nums[lastGreater] = tmp;
-                    ++lastGreater;
-                }
-            }
-            
-            if (nums[right] > nums[lastGreater]) {
-                int tmp = nums[right];
-                nums[right] = nums[lastGreater];
-                nums[lastGreater] = tmp;
-            }
-            
-            if (lastGreater == k) {
-                return;
-            } else if (lastGreater < k) {
-                left = lastGreater + 1;
-            } else {
-                right = lastGreater - 1;
-            }
+            return quickSelect(nums, k, left, last - 1);
         }
     }
 }
+
+/*
+    [5,6,4,3,2,1]
+    
+
+*/
