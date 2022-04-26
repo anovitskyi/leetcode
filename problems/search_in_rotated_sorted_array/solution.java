@@ -1,46 +1,46 @@
 class Solution {
     public int search(int[] nums, int target) {
-        int pivot = findPivot(nums, 0, nums.length - 1);
         int left = 0;
         int right = nums.length - 1;
+        int peak = findPeakIndex(nums, left, right);
         
-        if (pivot != right) {
+        if (nums.length > 1 && nums[peak] > nums[peak + 1]) {
             if (target <= nums[right]) {
-                left = pivot + 1;
+                left = peak + 1;
             } else {
-                right = pivot;
+                right = peak;
             }
         }
         
-        return findNumber(nums, target, left, right);
+        return binarySearch(nums, target, left, right);
     }
     
-    private int findPivot(int[] nums, int left, int right) {
-        int result = right;
-        while (left <= right) {
-            int mid = ((right - left) / 2) + left;
+    private int findPeakIndex(int[] nums, int left, int right) {
+        while (left < right) {
+            int middle = left + (right - left) / 2;
             
-            if (mid < result && nums[mid] > nums[mid + 1]) {
-                return mid;
-            } else if (nums[mid] < nums[left]) {
-                right = mid - 1;
+            if (nums[middle] > nums[middle + 1]) {
+                return middle;
+            } else if (nums[middle] < nums[right]) {
+                right = middle;
             } else {
-                left = mid + 1;
+                left = middle + 1;
             }
         }
-        return result;
+        
+        return right;
     }
     
-    private int findNumber(int[] nums, int num, int left, int right) {
+    private int binarySearch(int[] nums, int target, int left, int right) {
         while (left <= right) {
-            int mid = ((right - left) / 2) + left;
+            int middle = left + (right - left) / 2;
             
-            if (nums[mid] == num) {
-                return mid;
-            } else if (nums[mid] > num) {
-                right = mid - 1;
+            if (nums[middle] == target) {
+                return middle;
+            } else if (nums[middle] > target) {
+                right = middle - 1;
             } else {
-                left = mid + 1;
+                left = middle + 1;
             }
         }
         
