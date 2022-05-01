@@ -1,39 +1,47 @@
 class Solution {
-    public boolean backspaceCompare(String S, String T) {
-        Stack<Character> sStack = convertToStack(S);
-        Stack<Character> tStack = convertToStack(T);
-        
-        if (sStack.size() != tStack.size()) {
-            return false;
-        }
-        
-        while (!sStack.isEmpty()) {
-            if (sStack.pop() != tStack.pop()) {
+    public boolean backspaceCompare(String s, String t) {
+        int sPointer = s.length() - 1;
+        int tPointer = t.length() - 1;
+        int skipS = 0;
+        int skipT = 0;
+
+        while (sPointer >= 0 || tPointer >= 0) {
+            while (sPointer >= 0) {
+                if (s.charAt(sPointer) == '#') {
+                    skipS++; 
+                    sPointer--;
+                } else if (skipS > 0) {
+                    skipS--; 
+                    sPointer--;
+                } else {
+                    break;
+                }
+            }
+            
+            while (tPointer >= 0) {
+                if (t.charAt(tPointer) == '#') {
+                    skipT++; 
+                    tPointer--;
+                } else if (skipT > 0) {
+                    skipT--; 
+                    tPointer--;
+                } else {
+                    break;
+                }
+            }
+            
+            if (sPointer >= 0 && tPointer >= 0 && s.charAt(sPointer) != t.charAt(tPointer)) {
                 return false;
             }
+            
+            if ((sPointer >= 0) != (tPointer >= 0)) {
+                return false;
+            }
+            
+            sPointer--;
+            tPointer--;
         }
         
         return true;
-    }
-    
-    private Stack<Character> convertToStack(String word) {
-        Stack<Character> stack = new Stack<>();
-        int index = 0;
-        
-        while (index < word.length()) {
-            
-            if (word.charAt(index) == '#') {
-                if (!stack.isEmpty()) {
-                    stack.pop();
-                }
-            } else {
-                stack.push(word.charAt(index));
-            }
-            ++index;
-            
-            
-        }
-        
-        return stack;
     }
 }
