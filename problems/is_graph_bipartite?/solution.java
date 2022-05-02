@@ -1,34 +1,25 @@
 class Solution {
     public boolean isBipartite(int[][] graph) {
-        Map<Integer, Integer> nodes = new HashMap<>();
-        
+        int[] sets = new int[graph.length];
         for (int i = 0; i < graph.length; ++i) {
-            if (nodes.containsKey(i)) {
-                continue;
-            }
-            
-            if (!dfs(i, 1, graph, nodes)) {
+            if (sets[i] == 0 && !dfs(graph, i, 1, sets)) {
                 return false;
             }
         }
-        
         return true;
     }
     
-    private boolean dfs(int node, int setNumber, int[][] graph, Map<Integer, Integer> nodes) {
-        if (nodes.containsKey(node)) {
-            return nodes.get(node) == setNumber;
+    private boolean dfs(int[][] graph, int node, int set, int[] sets) {
+        if (sets[node] != 0) {
+            return sets[node] == set;
         }
-        nodes.put(node, setNumber);
+        sets[node] = set;
         
-        int[] neighbours = graph[node];
-        int diffSetNumber = setNumber * - 1;
-        for (int neighbour : neighbours) {
-            if (!dfs(neighbour, diffSetNumber, graph, nodes)) {
+        for (int i = 0; i < graph[node].length; ++i) {
+            if (!dfs(graph, graph[node][i], -set, sets)) {
                 return false;
             }
         }
-        
         return true;
     }
 }
