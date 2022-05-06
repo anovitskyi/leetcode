@@ -1,40 +1,47 @@
 class Solution {
     public String removeDuplicates(String s, int k) {
         Stack<Pair> stack = new Stack<>();
-        int size = 0;
         
         for (int i = 0; i < s.length(); ++i) {
-            char ch = s.charAt(i);
+            char currentLetter = s.charAt(i);
             
-            if (stack.isEmpty() || stack.peek().character != ch) {
-                stack.push(new Pair(ch));
-                ++size;
-            } else if (stack.peek().counter < k - 1) {
-                ++stack.peek().counter;
-                ++size;
-            } else {
+            if (stack.isEmpty() || stack.peek().letter != currentLetter) {
+                stack.push(new Pair(currentLetter));
+            } else if (stack.peek().quantity < k - 1) {
+                ++stack.peek().quantity;
+            } else { 
                 stack.pop();
-                size -= k - 1;
             }
         }
         
-        char[] res = new char[size];
-        for (int i = size - 1; i >= 0;) {
+        StringBuilder builder = new StringBuilder();
+        while (!stack.isEmpty()) {
             Pair pair = stack.pop();
-            while (pair.counter-- > 0) {
-                res[i--] = pair.character;
+            for (int i = 0; i < pair.quantity; ++i) {
+                builder.append(pair.letter);
             }
         }
-        return new String(res, 0, size);
+        return builder.reverse().toString();
     }
     
-    private class Pair {
-        final char character;
-        int counter;
+    class Pair {
+        char letter;
+        int quantity;
         
-        Pair(char character) {
-            this.character = character;
-            this.counter = 1;
+        Pair(char letter) {
+            this.letter = letter;
+            this.quantity = 1;
         }
     }
 }
+
+
+/*
+
+                    |
+"pbbcggttciiippooaais" k = 2
+
+
+ [p:1,s:1]
+
+*/
