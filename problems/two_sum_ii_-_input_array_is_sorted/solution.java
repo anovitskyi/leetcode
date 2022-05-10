@@ -5,6 +5,7 @@ class Solution {
         
         while (left < right) {
             int sum = numbers[left] + numbers[right];
+            
             if (sum == target) {
                 return new int[] {
                     left + 1,
@@ -17,6 +18,6 @@ class Solution {
             }
         }
         
-        return null;
+        return new int[2];
     }
 }
