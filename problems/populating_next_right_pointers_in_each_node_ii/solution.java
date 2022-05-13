@@ -22,31 +22,38 @@ class Node {
 */
 
 class Solution {
-     public Node connect(Node root) {
-        if (root == null) {
-            return null;
-        }
-        
-        Queue<Node> queue = new LinkedList<>();
-        queue.add(root);
-        while (!queue.isEmpty()) {
-            int size = queue.size();
-            Node last = null;
-            while (--size >= 0) {
-                Node tmp = queue.poll();
-                if (tmp.right != null) {
-                    queue.add(tmp.right);
-                }
-                
-                if (tmp.left != null) {
-                    queue.add(tmp.left);
-                }
-                
-                tmp.next = last;
-                last = tmp;
-            }
-            
+    public Node connect(Node root) {
+        if (root != null) {
+            List<Node> list = new ArrayList<>();
+            list.add(root);
+            connect(list);
         }
         return root;
+    }
+    
+    private void connect(List<Node> list) {
+        if (list.isEmpty()) {
+            return;
+        }
+        
+        List<Node> nextList = new ArrayList<>();
+        
+        Node prev = new Node();
+        for (int i = 0; i < list.size(); ++i) {
+            Node curr = list.get(i);
+            
+            if (curr.left != null) {
+                nextList.add(curr.left);
+            }
+            
+            if (curr.right != null) {
+                nextList.add(curr.right);
+            }
+            
+            prev.next = curr;
+            prev = curr;
+        }
+        
+        connect(nextList);
     }
 }
