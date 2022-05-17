@@ -1,89 +1,72 @@
 class Solution {
     public int orangesRotting(int[][] grid) {
+        int freshOranges = 0;
         Queue<int[]> queue = new LinkedList<>();
-        int fresh = 0;
         for (int i = 0; i < grid.length; ++i) {
             for (int j = 0; j < grid[i].length; ++j) {
-                if (isRotten(grid, i, j)) {
+                if (grid[i][j] == 1) {
+                    ++freshOranges;
+                } else if (grid[i][j] == 2) {
                     queue.offer(new int[] {i, j});
-                } else if (isFresh(grid, i, j)) {
-                    ++fresh;
                 }
             }
         }
         
-        if (fresh == 0 && queue.size() == 0) {
+        if (freshOranges == 0) {
             return 0;
         }
         
-        int result = -1;
+        int minutes = 0;
         while (!queue.isEmpty()) {
             int size = queue.size();
-            while (--size >= 0) {
-                int[] point = queue.poll();
-                int i = point[0];
-                int j = point[1];
-                grid[i][j] = 2;
+            int before = freshOranges;
+            
+            while (size-- > 0) {
+                int[] position = queue.poll();
+                int x = position[0];
+                int y = position[1];
                 
-                if (isFresh(grid, i - 1, j)) {
-                    queue.offer(new int[] {i - 1, j});
-                    grid[i - 1][j] = 2;
-                    --fresh;
+                if (grid[x][y] == 1) {
+                    grid[x][y] = 2;
+                    --freshOranges;
                 }
                 
-                if (isFresh(grid, i + 1, j)) {
-                    queue.offer(new int[] {i + 1, j});
-                    grid[i + 1][j] = 2;
-                    --fresh;
+                if (x - 1 >= 0 && grid[x - 1][y] == 1) {
+                    queue.offer(new int[] {x - 1, y});
                 }
                 
-                if (isFresh(grid, i, j - 1)) {
-                    queue.offer(new int[] {i, j - 1});
-                    grid[i][j - 1] = 2;
-                    --fresh;
+                if (x + 1 < grid.length && grid[x + 1][y] == 1) {
+                    queue.offer(new int[] {x + 1, y});
                 }
                 
-                if (isFresh(grid, i, j + 1)) {
-                    queue.offer(new int[] {i, j + 1});
-                    grid[i][j + 1] = 2;
-                    --fresh;
+                if (y - 1 >= 0 && grid[x][y - 1] == 1) {
+                    queue.offer(new int[] {x, y - 1});
                 }
+                
+                if (y + 1 < grid[x].length && grid[x][y + 1] == 1) {
+                    queue.offer(new int[] {x, y + 1});
+                }   
             }
-            ++result;
+            
+            if (freshOranges != before) {
+                ++minutes;  
+            } 
         }
         
-        if (fresh != 0) {
+        if (freshOranges > 0) {
             return -1;
         }
         
-        return result;
+        return minutes;
     }
-    
-    private boolean isRotten(int[][] grid, int i, int j) {
-        return grid[i][j] == 2;
-    }
-    
-    private boolean isFresh(int[][] grid, int i, int j) {
-        if (i < 0 || i >= grid.length) {
-            return false;
-        }
-        
-        if (j < 0 || j >= grid[i].length) {
-            return false;
-        }
-        
-        return grid[i][j] == 1;
-    }
-    
-    private boolean isEmpty(int[][] grid, int i, int j) {
-        if (i < 0 || i >= grid.length) {
-            return false;
-        }
-        
-        if (j < 0 || j >= grid[i].length) {
-            return false;
-        }
-        
-        return grid[i][j] == 0;
-    }
- }
+}
+
+/*
+
+    [[2,2],
+     [1,1],
+     [0,0],
+     [2,0]]
+
+
+*/
