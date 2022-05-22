@@ -1,30 +1,48 @@
 class Solution {
+    
     public int minimumTotal(List<List<Integer>> triangle) {
-        int minSum = triangle.get(0).get(0);
+        int result = triangle.get(0).get(0);
         
         for (int i = 1; i < triangle.size(); ++i) {
-            List<Integer> currList = triangle.get(i);
-            List<Integer> prevList = triangle.get(i - 1);
-            minSum = Integer.MAX_VALUE;
-            for (int j = 0; j < currList.size(); ++j) {
-                int currMinVal = currList.get(j) + getMinVal(prevList, j);
-                minSum = Math.min(currMinVal, minSum);
-                currList.set(j, currMinVal);
+            result = Integer.MAX_VALUE;
+            
+            List<Integer> prev = triangle.get(i - 1);
+            List<Integer> curr = triangle.get(i);
+            
+            for (int j = 0; j < curr.size(); ++j) {
+                int prevLeft = Integer.MAX_VALUE;
+                if (j - 1 >= 0) {
+                    prevLeft = prev.get(j - 1);
+                }
+                
+                int prevRight = Integer.MAX_VALUE;
+                if (j < prev.size()) {
+                    prevRight = prev.get(j);
+                } 
+                int min = Math.min(prevLeft, prevRight) + curr.get(j);
+                
+                curr.set(j, min);
+                result = Math.min(result, min);
             }
         }
         
-        return minSum;
-    }
-    
-    private int getMinVal(List<Integer> prev, int index) {
-        if (index - 1 < 0) {
-            return prev.get(index);
-        }
-        
-        if (index >= prev.size()) {
-            return prev.get(index - 1);
-        }
-        
-        return Math.min(prev.get(index), prev.get(index - 1));
+        return result;
     }
 }
+
+
+/*
+
+2
+3 4
+6 5 7
+4 1 8 3
+
+
+2
+5  6
+11 10 13
+15 11 18 16
+
+
+*/
