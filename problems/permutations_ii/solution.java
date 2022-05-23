@@ -4,13 +4,14 @@ class Solution {
         for (int num : nums) {
             map.put(num, map.getOrDefault(num, 0) + 1);
         }
+        
         List<List<Integer>> result = new ArrayList<>();
         backtrack(result, new ArrayList<>(), map, nums.length);
         return result;
     }
     
-    private void backtrack(List<List<Integer>> result, List<Integer> curr, Map<Integer, Integer> map, int numsSize) {
-        if (curr.size() == numsSize) {
+    private void backtrack(List<List<Integer>> result, List<Integer> curr, Map<Integer, Integer> map, int reqSize) {
+        if (curr.size() == reqSize) {
             result.add(curr);
             return;
         }
@@ -19,14 +20,14 @@ class Solution {
             int key = entry.getKey();
             int val = entry.getValue();
             
-            if (val == 0) {
+            if (val < 1) {
                 continue;
             }
-        
+            
             map.put(key, val - 1);
             List<Integer> copy = new ArrayList<>(curr);
             copy.add(key);
-            backtrack(result, copy, map, numsSize);
+            backtrack(result, copy, map, reqSize);
             map.put(key, val);
         }
     }
