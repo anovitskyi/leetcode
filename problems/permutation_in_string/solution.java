@@ -2,52 +2,59 @@ class Solution {
     public boolean checkInclusion(String s1, String s2) {
         if (s1.length() > s2.length()) {
             return false;
-        }   
+        }
         
         Map<Character, Integer> map = new HashMap<>();
         for (int i = 0; i < s1.length(); ++i) {
-            char ch = s1.charAt(i);
-            map.put(ch, map.getOrDefault(ch, 0) + 1);
+            char s1Char = s1.charAt(i);
+            
+            map.put(s1Char, map.getOrDefault(s1Char, 0) + 1);
         }
         
         int left = 0;
         int right = 0;
-        int foundLetters = 0;
+        int matchedLetters = 0;
         
         while (right < s1.length()) {
             char rightChar = s2.charAt(right);
             
             if (map.containsKey(rightChar)) {
-                int counter = map.get(rightChar) - 1;
-                if (counter == 0) {
-                    ++foundLetters;
+                int counter = map.get(rightChar);
+                
+                if (counter == 1) {
+                    ++matchedLetters;
                 }
-                map.put(rightChar, counter);
+                
+                map.put(rightChar, counter - 1);
             }
             
             ++right;
         }
         
         while (right < s2.length()) {
-            if (foundLetters == map.size()) {
+            if (matchedLetters == map.size()) {
                 return true;
             }
             
             char rightChar = s2.charAt(right);
             if (map.containsKey(rightChar)) {
-                int counter = map.get(rightChar) - 1;
-                if (counter == 0) {
-                    ++foundLetters;
+                int counter = map.get(rightChar);
+                
+                if (counter == 1) {
+                    ++matchedLetters;
                 }
-                map.put(rightChar, counter);
+                
+                map.put(rightChar, counter - 1);
             }
             
             char leftChar = s2.charAt(left);
             if (map.containsKey(leftChar)) {
                 int counter = map.get(leftChar);
+                
                 if (counter == 0) {
-                    --foundLetters;
+                    --matchedLetters;
                 }
+                
                 map.put(leftChar, counter + 1);
             }
             
@@ -55,23 +62,19 @@ class Solution {
             ++left;
         }
         
-        return foundLetters == map.size();
+        return matchedLetters == map.size();
     }
 }
 
+
 /*
-
-
-
-"ab"
+    hello
+    matched = 0
+    
+    
     |
-"eidboaoo"
-      |
- 
- a: 0
- b: 1
- foundLetters: 1
-
+    ooolleoooleh
+    |
 
 
 
