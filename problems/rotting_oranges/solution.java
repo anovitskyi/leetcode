@@ -1,7 +1,8 @@
 class Solution {
     public int orangesRotting(int[][] grid) {
-        int freshOranges = 0;
         Queue<int[]> queue = new LinkedList<>();
+        int freshOranges = 0;
+        
         for (int i = 0; i < grid.length; ++i) {
             for (int j = 0; j < grid[i].length; ++j) {
                 if (grid[i][j] == 1) {
@@ -12,19 +13,16 @@ class Solution {
             }
         }
         
-        if (freshOranges == 0) {
-            return 0;
-        }
+        int result = 0;
         
-        int minutes = 0;
         while (!queue.isEmpty()) {
             int size = queue.size();
-            int before = freshOranges;
+            int beforeTraversal = freshOranges;
             
             while (size-- > 0) {
-                int[] position = queue.poll();
-                int x = position[0];
-                int y = position[1];
+                int[] pos = queue.poll();
+                int x = pos[0];
+                int y = pos[1];
                 
                 if (grid[x][y] == 1) {
                     grid[x][y] = 2;
@@ -45,28 +43,15 @@ class Solution {
                 
                 if (y + 1 < grid[x].length && grid[x][y + 1] == 1) {
                     queue.offer(new int[] {x, y + 1});
-                }   
+                }
             }
             
-            if (freshOranges != before) {
-                ++minutes;  
-            } 
+            if (freshOranges != beforeTraversal) {
+                ++result;
+            }
         }
         
-        if (freshOranges > 0) {
-            return -1;
-        }
-        
-        return minutes;
+        return freshOranges != 0 ? -1 : result;
     }
+    
 }
-
-/*
-
-    [[2,2],
-     [1,1],
-     [0,0],
-     [2,0]]
-
-
-*/
