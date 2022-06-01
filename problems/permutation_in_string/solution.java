@@ -6,76 +6,56 @@ class Solution {
         
         Map<Character, Integer> map = new HashMap<>();
         for (int i = 0; i < s1.length(); ++i) {
-            char s1Char = s1.charAt(i);
-            
-            map.put(s1Char, map.getOrDefault(s1Char, 0) + 1);
+            char ch = s1.charAt(i);
+            map.put(ch, map.getOrDefault(ch, 0) + 1);
         }
         
         int left = 0;
         int right = 0;
-        int matchedLetters = 0;
+        int foundLetters = 0;
         
         while (right < s1.length()) {
-            char rightChar = s2.charAt(right);
-            
-            if (map.containsKey(rightChar)) {
-                int counter = map.get(rightChar);
+            char rightCh = s2.charAt(right);
+            if (map.containsKey(rightCh)) {
+                int rightQuantity = map.get(rightCh);
+                --rightQuantity;
+                map.put(rightCh, rightQuantity);
                 
-                if (counter == 1) {
-                    ++matchedLetters;
+                if (rightQuantity == 0) {
+                    ++foundLetters;
                 }
-                
-                map.put(rightChar, counter - 1);
             }
             
             ++right;
         }
         
-        while (right < s2.length()) {
-            if (matchedLetters == map.size()) {
-                return true;
+        while (foundLetters != map.size() && right < s2.length()) {
+            char rightCh = s2.charAt(right);
+            if (map.containsKey(rightCh)) {
+                int rightQuantity = map.get(rightCh);
+                --rightQuantity;
+                map.put(rightCh, rightQuantity);
+                
+                if (rightQuantity == 0) {
+                    ++foundLetters;
+                }
             }
             
-            char rightChar = s2.charAt(right);
-            if (map.containsKey(rightChar)) {
-                int counter = map.get(rightChar);
+            char leftCh = s2.charAt(left);
+            if (map.containsKey(leftCh)) {
+                int leftQuantity = map.get(leftCh);
+                ++leftQuantity;
+                map.put(leftCh, leftQuantity);
                 
-                if (counter == 1) {
-                    ++matchedLetters;
+                if (leftQuantity == 1) {
+                    --foundLetters;
                 }
-                
-                map.put(rightChar, counter - 1);
-            }
-            
-            char leftChar = s2.charAt(left);
-            if (map.containsKey(leftChar)) {
-                int counter = map.get(leftChar);
-                
-                if (counter == 0) {
-                    --matchedLetters;
-                }
-                
-                map.put(leftChar, counter + 1);
             }
             
             ++right;
             ++left;
         }
         
-        return matchedLetters == map.size();
+        return foundLetters == map.size();  
     }
 }
-
-
-/*
-    hello
-    matched = 0
-    
-    
-    |
-    ooolleoooleh
-    |
-
-
-
-*/
