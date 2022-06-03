@@ -1,31 +1,39 @@
 class NumMatrix {
-    
-    private final int[][] matrix;
 
+    private final int[][] matrix;
+    
     public NumMatrix(int[][] matrix) {
-        this.matrix = matrix;
-        for (int i = 0; i < matrix.length; ++i) {
-            for (int j = 1; j < matrix[i].length; ++j) {
-                matrix[i][j] += matrix[i][j - 1];
+        for (int[] row : matrix) {
+            for (int col = 1; col < row.length; ++col) {
+                row[col] += row[col - 1];
             }
         }
+        
+        this.matrix = matrix;
     }
     
     public int sumRegion(int row1, int col1, int row2, int col2) {
-        int result = 0;
-        
-        for (int i = row1; i <= row2; ++i) {
-            result += getSum(i, col1, col2);
+        int sum = 0;
+        for (int row = row1; row <= row2; ++row) {
+            sum += getSumForRange(row, col1, col2);
         }
-        
-        return result;
+        return sum;
     }
     
-    private int getSum(int row, int col1, int col2) {
-        if (col1 == 0) {
-            return matrix[row][col2];
+    private int getSumForRange(int row, int start, int end) {
+        int left = 0;
+        if (start - 1 >= 0) {
+            left = matrix[row][start - 1];
         }
         
-        return matrix[row][col2] - matrix[row][col1 - 1];
+        int right = matrix[row][end];
+        
+        return right - left;
     }
 }
+
+/**
+ * Your NumMatrix object will be instantiated and called as such:
+ * NumMatrix obj = new NumMatrix(matrix);
+ * int param_1 = obj.sumRegion(row1,col1,row2,col2);
+ */
