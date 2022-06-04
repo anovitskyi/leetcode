@@ -1,31 +1,30 @@
 class Solution {
-    public int findMin(int[] array) {
-        if (array.length == 1) {
-           return array[0];
-       }
-
-       int left = 0, right = array.length - 1, mid;
-
-       if (array[left] < array[right]) {
-           return array[left];
-       }
-
-       while (left <= right) {
-           mid = (left + right) / 2;
-
-           if (array[mid] > array[mid + 1]) {
-               return array[mid + 1];
-           } else if (array[mid] < array[mid - 1]) {
-               return array[mid];
-           }
-
-           if (array[mid] <= array[right]) {
-               right = mid - 1;
-           } else {
-               left = mid + 1;
-           }
-       }
-
-       return -1;
+    public int findMin(int[] nums) {
+        int peakIndex = findPeakIndex(nums);
+        
+        if (peakIndex == -1) {
+            return nums[0];
+        }
+        
+        return nums[peakIndex + 1];
+    }
+    
+    private int findPeakIndex(int[] nums) {
+        int left = 0;
+        int right = nums.length - 1;
+        int result = -1;
+        
+        while (left <= right) {
+            int middle = left + (right - left) / 2;
+            
+            if (nums[middle] > nums[nums.length - 1]) {
+                result = middle;
+                left = middle + 1;
+            } else {
+                right = middle - 1;
+            }
+        }
+        
+        return result;
     }
 }
