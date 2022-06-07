@@ -1,41 +1,29 @@
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode() {}
- *     TreeNode(int val) { this.val = val; }
- *     TreeNode(int val, TreeNode left, TreeNode right) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
- * }
- */
 class Solution {
     public List<Double> averageOfLevels(TreeNode root) {
-        List<Double> result = new LinkedList<>();
-        Queue<TreeNode> queue = new LinkedList<>();
-        queue.add(root);
+        List<long[]> levels = new ArrayList<>();
+        traverseTree(root, levels, 0);
         
-        while (!queue.isEmpty()) {
-            int size = queue.size();
-            long sum = 0;
-            for (int i = 0; i < size; ++i) {
-                TreeNode tmp = queue.poll();
-                sum += tmp.val;
-                if (tmp.left != null) {
-                    queue.add(tmp.left);
-                }
-                
-                if (tmp.right != null) {
-                    queue.add(tmp.right);
-                }
-            }
-            result.add((sum * 1D) / size);
-        } 
-        
+        List<Double> result = new ArrayList<>(levels.size());
+        for (long[] levelData : levels) {
+            result.add(levelData[1] * 1.0d / levelData[0]);
+        }
         return result;
+    }
+    
+    private void traverseTree(TreeNode node, List<long[]> levels, int level) {
+        if (node == null) {
+            return;
+        }
+        
+        if (levels.size() <= level) {
+            levels.add(new long[] {1, node.val});
+        } else {
+            long[] levelData = levels.get(level);
+            ++levelData[0];
+            levelData[1] += node.val;
+        }
+        
+        traverseTree(node.left, levels, level + 1);
+        traverseTree(node.right, levels, level + 1);
     }
 }
