@@ -1,38 +1,67 @@
 class Solution {
     public int numIslands(char[][] grid) {
-        int count = 0;
+        int result = 0;
         
         for (int i = 0; i < grid.length; ++i) {
             for (int j = 0; j < grid[i].length; ++j) {
                 if (grid[i][j] == '1') {
-                    dfs(grid, i, j);
-                    count++;
+                    ++result;
+                    visitIslandBfs(grid, i, j);
                 }
             }
         }
-            
         
-        return count;
+        return result;
     }
     
-    private void dfs(char[][] grid, int i, int j) {
-        if (i < 0 || i >= grid.length) {
+    private void visitIslandDfs(char[][] grid, int x, int y) {
+        if (x < 0 || x >= grid.length) {
             return;
         }
         
-        if (j < 0 || j >= grid[i].length) {
+        if (y < 0 || y >= grid[x].length) {
             return;
         }
         
-        if (grid[i][j] == '0') {
+        if (grid[x][y] == '0') {
             return;
         }
         
-        grid[i][j] = '0';
+        grid[x][y] = '0';
         
-        dfs(grid, i - 1, j);
-        dfs(grid, i + 1, j);
-        dfs(grid, i, j - 1);
-        dfs(grid, i, j + 1);
+        visitIslandDfs(grid, x - 1, y);
+        visitIslandDfs(grid, x + 1, y);
+        visitIslandDfs(grid, x, y - 1);
+        visitIslandDfs(grid, x, y + 1);
+    }
+    
+    private void visitIslandBfs(char[][] grid, int i, int j) {
+        Queue<int[]> queue = new LinkedList<>();
+        queue.offer(new int[] {i, j});
+        
+        while (!queue.isEmpty()) {
+            int[] pos = queue.poll();
+            int x = pos[0];
+            int y = pos[1];
+            
+            if (x < 0 || x >= grid.length) {
+                continue;
+            }
+            
+            if (y < 0 || y >= grid[x].length) {
+                continue;
+            }
+            
+            if (grid[x][y] == '0') {
+                continue;
+            }
+            
+            grid[x][y] = '0';
+            
+            queue.offer(new int[] {x - 1, y});
+            queue.offer(new int[] {x + 1, y});
+            queue.offer(new int[] {x, y - 1});
+            queue.offer(new int[] {x, y + 1});
+        }
     }
 }
