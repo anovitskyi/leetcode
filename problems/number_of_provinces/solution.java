@@ -1,83 +1,53 @@
 class Solution {
     public int findCircleNum(int[][] isConnected) {
-        QuickUnion qu = new QuickUnion(isConnected.length);
+        Map<Integer, List<Integer>> graph = convertToGraph(isConnected);
+        Set<Integer> visited = new HashSet<>();
+        int result = 0;
+        
         for (int i = 0; i < isConnected.length; ++i) {
-            for (int j = i; j < isConnected[i].length; ++j) {
-                if (isConnected[i][j] == 1) {
-                    qu.union(i, j);
-                }
-            }
-        }
-        return qu.findUniqueElements();
-    }
-    
-    static class QuickUnion {
-        
-        private final int[] elements;
-        
-        QuickUnion(int size) {
-            this.elements = new int[size];
-            for (int i = 0; i < size; ++i) {
-                elements[i] = i;
-            }
-        }
-        
-        void union(int source, int target) {
-            int sourceRoot = root(source);
-            int targetRoot = root(target);
-            elements[sourceRoot] = targetRoot;
-        }
-        
-        int root(int index) {
-            int result = index;
-            while (elements[result] != result) {
-                result = elements[result];
-            }
-            return result;
-        }
-        
-        int findUniqueElements() {
-            Set<Integer> set = new HashSet<>();
-            for (int elem : elements) {
-                set.add(root(elem));
-            }
-            return set.size();
-        }
-        
-    }
-    
-    static class QuickFind {
-        
-        private final int[] elements;
-        
-        QuickFind(int size) {
-            this.elements = new int[size];
-            for (int i = 0; i < size; ++i) {
-                elements[i] = i;
-            }
-        }
-        
-        void union(int source, int target) {
-            if (elements[source] == elements[target]) {
-                return;
+            if (visited.contains(i)) {
+                continue;
             }
             
-            int prev = elements[source];
-            int next = elements[target];
-            for (int i = 0; i < elements.length; ++i) {
-                if (elements[i] == prev) {
-                    elements[i] = next;
+            visitCity(graph, i, visited);
+            ++result;
+        }
+        
+        return result;
+    }
+    
+    private void visitCity(Map<Integer, List<Integer>> graph, int city, Set<Integer> visited) {
+        if (visited.contains(city)) {
+            return;
+        }
+        
+        visited.add(city);
+        
+        for (int neighbour : graph.get(city)) {
+            visitCity(graph, neighbour, visited);
+        }
+    }
+    
+    private Map<Integer, List<Integer>> convertToGraph(int[][] isConnected) {
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        
+        for (int i = 0; i < isConnected.length; ++i) {
+            List<Integer> neighbours = new ArrayList<>();
+            map.put(i, neighbours);
+            
+            for (int j = 0; j < isConnected[i].length; ++j) {
+                if (i == j) {
+                    continue;
                 }
+                
+                if (isConnected[i][j] == 0) {
+                    continue;
+                }
+                
+                neighbours.add(j);
             }
         }
         
-        int findUniqueElements() {
-            Set<Integer> set = new HashSet<>();
-            for (int elem : elements) {
-                set.add(elem);
-            }
-            return set.size();
-        }
-        
+        return map;
     }
 }
