@@ -1,22 +1,22 @@
 class Solution {
     public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
-        List<List<Integer>> result = new LinkedList<>();
-        List<Integer> curr = new LinkedList<>();
+        List<List<Integer>> result = new ArrayList<>();
+        List<Integer> curr = new ArrayList<>();
         curr.add(0);
-        backtrack(graph, 0, result, curr);
+        dfs(graph, 0, result, curr);
         return result;
     }
     
-    private void backtrack(int[][] graph, int index, List<List<Integer>> result, List<Integer> curr) {
-        if (index == graph.length - 1) {
-            result.add(curr);
+    private void dfs(int[][] graph, int node, List<List<Integer>> result, List<Integer> curr) {
+        if (node == graph.length - 1) {
+            result.add(new ArrayList<>(curr));
             return;
         }
         
-        for (int i = 0; i < graph[index].length; ++i) {
-            List<Integer> copy = new LinkedList<>(curr);
-            copy.add(graph[index][i]);
-            backtrack(graph, graph[index][i], result, copy);
+        for (int neighbour : graph[node]) {
+            curr.add(neighbour);
+            dfs(graph, neighbour, result, curr);
+            curr.remove(curr.size() - 1);
         }
     }
 }
