@@ -6,12 +6,12 @@ class Solution {
         }
         
         List<List<Integer>> result = new ArrayList<>();
-        backtrack(result, new ArrayList<>(), map, nums.length);
+        backtrack(map, result, new ArrayList<>(), nums.length);
         return result;
     }
     
-    private void backtrack(List<List<Integer>> result, List<Integer> curr, Map<Integer, Integer> map, int reqSize) {
-        if (curr.size() == reqSize) {
+    private void backtrack(Map<Integer, Integer> map, List<List<Integer>> result, List<Integer> curr, int targetLength) {
+        if (curr.size() == targetLength) {
             result.add(curr);
             return;
         }
@@ -20,14 +20,14 @@ class Solution {
             int key = entry.getKey();
             int val = entry.getValue();
             
-            if (val < 1) {
+            if (val == 0) {
                 continue;
             }
             
             map.put(key, val - 1);
             List<Integer> copy = new ArrayList<>(curr);
             copy.add(key);
-            backtrack(result, copy, map, reqSize);
+            backtrack(map, result, copy, targetLength);
             map.put(key, val);
         }
     }
