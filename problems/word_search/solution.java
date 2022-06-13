@@ -11,29 +11,29 @@ class Solution {
         return false;
     }
     
-    private boolean wordExist(char[][] board, int row, int col, String word, int index) {
+    private boolean wordExist(char[][] board, int x, int y, String word, int index) {
         if (index >= word.length()) {
             return true;
         }
         
-        if (row < 0 || row >= board.length) {
+        if (x < 0 || x >= board.length) {
             return false;
         }
         
-        if (col < 0 || col >= board[row].length) {
+        if (y < 0 || y >= board[x].length) {
+            return false;
+        } 
+        
+        if (board[x][y] != word.charAt(index)) {
             return false;
         }
         
-        if (board[row][col] != word.charAt(index)) {
-            return false;
-        }
+        char copy = board[x][y];
+        board[x][y] = '0';
         
-        board[row][col] = '1';
-        boolean nextCharactersExist = wordExist(board, row + 1, col, word, index + 1) ||
-            wordExist(board, row - 1, col, word, index + 1) ||
-            wordExist(board, row, col + 1, word, index + 1) ||
-            wordExist(board, row, col - 1, word, index + 1);
-        board[row][col] = word.charAt(index);
-        return nextCharactersExist;
+        boolean result = wordExist(board, x - 1, y, word, index + 1) || wordExist(board, x + 1, y, word, index + 1) || wordExist(board, x, y - 1, word, index + 1) || wordExist(board, x, y + 1, word, index + 1);
+        
+        board[x][y] = copy;
+        return result;
     }
 }
