@@ -1,30 +1,27 @@
 class Solution {
     public List<String> generateParenthesis(int n) {
-        List<String> result = new LinkedList<>();
-        generate(result, "", n, n);
+        List<String> result = new ArrayList<>();
+        backtrack(result, "", n, n);
         return result;
     }
     
-    private void generate(List<String> result, String curr, int open, int close) {
-        if (open > close) {
-            return;
-        }
-        
-        if (open == 0 && close == 0) {
+    private void backtrack(List<String> result, String curr, int left, int right) {
+        if (left == 0 && right == 0) {
             result.add(curr);
             return;
         }
         
-        if (open > 0) {
-            generate(result, curr + "(", open - 1, close);
-        }
+        if (left > 0) {
+            backtrack(result, curr + "(", left - 1, right);
+        } 
         
-        if (close > 0) {
-            generate(result, curr + ")", open, close - 1);
+        if (right > left) {
+            backtrack(result, curr + ")", left, right - 1);
         }
     }
 }
-// result = ["()"]
 
-// "()",
-// "", 1, 1 - close
+/*
+    result = ["(())", "()()"]
+
+*/
