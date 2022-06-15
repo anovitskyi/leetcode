@@ -1,25 +1,21 @@
 class Solution {
     public int jump(int[] nums) {
-        nums[nums.length - 1] = 0;
-        
-        for (int i = nums.length - 2; i >= 0; --i) {
-            if (nums[i] == 0) {
-                continue;
-            } else if (nums[i] + i >= nums.length - 1) {
-                nums[i] = 1;
-            } else {
-                int min = Integer.MAX_VALUE;
-                
-                for (int j = i + 1; j <= i + nums[i]; ++j) {
-                    if (nums[j] > 0 && nums[j] < min) {
-                        min = nums[j];
-                    }
-                }
-                
-                nums[i] = min == Integer.MAX_VALUE ? 0 : min + 1;
-            }
+        return stepsToReachLastElement(nums, new int[nums.length], 0);
+    }
+    
+    private int stepsToReachLastElement(int[] nums, int[] cache, int index) {
+        if (index >= nums.length - 1) {
+            return 0;
         }
         
-        return nums[0];
+        if (cache[index] == 0) {
+            int min = Integer.MAX_VALUE - 1;
+            for (int i = nums[index]; i >= 1; --i) {
+                min = Math.min(min, stepsToReachLastElement(nums, cache, index + i));
+            }
+            cache[index] = min + 1;
+        }
+        
+        return cache[index];
     }
 }
