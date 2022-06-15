@@ -1,5 +1,4 @@
 class Solution {
-    
     public int maxSubArray(int[] nums) {
         int result = nums[0];
         int sum = nums[0];
@@ -10,7 +9,7 @@ class Solution {
             }
             
             sum += nums[i];
-            result = Math.max(sum, result);
+            result = Math.max(result, sum);
         }
         
         return result;
