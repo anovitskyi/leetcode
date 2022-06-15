@@ -1,19 +1,28 @@
 class Solution {
     public int uniquePaths(int m, int n) {
-        int[][] matrix = new int[m][n];
-        matrix[0][0] = 1;
-        return findPaths(matrix, m - 1, n - 1);
+        int[][] grid = new int[m][n];
+        grid[0][0] = 1;
+        dp(grid, m - 1, n - 1);
+        return grid[m - 1][n - 1];
     }
     
-    private int findPaths(int[][] matrix, int row, int column) {
-        if (row < 0 || column < 0) {
-            return 0;
+    private void dp(int[][] grid, int x, int y) {
+        if (x < 0 || y < 0 || grid[x][y] != 0) {
+            return;
         }
         
-        if (matrix[row][column] == 0) {
-            matrix[row][column] = findPaths(matrix, row - 1, column) + findPaths(matrix, row, column - 1);
+        int top = 0;
+        if (x - 1 >= 0) {
+            dp(grid, x - 1, y);
+            top = grid[x - 1][y];
         }
         
-        return matrix[row][column];
+        int left = 0;
+        if (y - 1 >= 0) {
+            dp(grid, x, y - 1);
+            left = grid[x][y - 1];
+        }
+        
+        grid[x][y] = top + left;
     }
 }
