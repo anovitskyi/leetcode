@@ -10,52 +10,74 @@ class Solution {
             map.put(ch, map.getOrDefault(ch, 0) + 1);
         }
         
-        int left = 0;
-        int right = 0;
         int foundLetters = 0;
-        
-        while (right < s1.length()) {
-            char rightCh = s2.charAt(right);
-            if (map.containsKey(rightCh)) {
-                int rightQuantity = map.get(rightCh);
-                --rightQuantity;
-                map.put(rightCh, rightQuantity);
-                
-                if (rightQuantity == 0) {
-                    ++foundLetters;
-                }
+        for (int i = 0; i < s1.length(); ++i) {
+            char ch = s2.charAt(i);
+            if (!map.containsKey(ch)) {
+                continue;
             }
             
-            ++right;
+            int counter = map.get(ch);
+            map.put(ch, counter - 1);
+            
+            if (counter == 1) {
+                ++foundLetters;   
+            }
         }
         
-        while (foundLetters != map.size() && right < s2.length()) {
-            char rightCh = s2.charAt(right);
+        for (int i = s1.length(); i < s2.length(); ++i) {
+            if (foundLetters == map.size()) {
+                return true;
+            }
+            
+            char rightCh = s2.charAt(i);
             if (map.containsKey(rightCh)) {
-                int rightQuantity = map.get(rightCh);
-                --rightQuantity;
-                map.put(rightCh, rightQuantity);
+                int rightCounter = map.get(rightCh);
+                map.put(rightCh, rightCounter - 1);
                 
-                if (rightQuantity == 0) {
+                if (rightCounter == 1) {
                     ++foundLetters;
                 }
             }
             
-            char leftCh = s2.charAt(left);
+            char leftCh = s2.charAt(i - s1.length());
             if (map.containsKey(leftCh)) {
-                int leftQuantity = map.get(leftCh);
-                ++leftQuantity;
-                map.put(leftCh, leftQuantity);
+                int leftCounter = map.get(leftCh);
+                map.put(leftCh, leftCounter + 1);
                 
-                if (leftQuantity == 1) {
-                    --foundLetters;
+                if (leftCounter == 0) {
+                    --foundLetters;   
                 }
             }
-            
-            ++right;
-            ++left;
         }
         
-        return foundLetters == map.size();  
+        return foundLetters == map.size();
     }
 }
+
+/*
+
+{
+    a: 0
+    d: 0
+    c: 0
+}
+
+foundLetters = 3
+
+  |
+"dcda"
+     |
+*/
+
+
+
+
+
+
+
+
+
+
+
+
