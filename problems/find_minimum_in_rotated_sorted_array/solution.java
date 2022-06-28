@@ -1,6 +1,6 @@
 class Solution {
     public int findMin(int[] nums) {
-        int peakIndex = findPeakIndex(nums);
+        int peakIndex = findPeak(nums);
         
         if (peakIndex == -1) {
             return nums[0];
@@ -9,7 +9,7 @@ class Solution {
         return nums[peakIndex + 1];
     }
     
-    private int findPeakIndex(int[] nums) {
+    private int findPeak(int[] nums) {
         int left = 0;
         int right = nums.length - 1;
         int result = -1;
