@@ -1,30 +1,37 @@
 class Solution {
-    public List<List<Integer>> combinationSum2(int[] nums, int target) {
-        Arrays.sort(nums);
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        Arrays.sort(candidates);
         
         List<List<Integer>> result = new ArrayList<>();
-        backtrack(result, new ArrayList<>(), nums, 0, target);
+        backtrack(candidates, 0, target, result, new ArrayList<>());
         return result;
     }
     
-    private void backtrack(List<List<Integer>> result, List<Integer> curr, int[] nums, int index, int target) {
+    private void backtrack(int[] candidates, int index, int target, List<List<Integer>> result, List<Integer> curr) {
         if (target == 0) {
-            result.add(new ArrayList<>(curr));
+            result.add(curr);
             return;
         }
         
-        for (int i = index; i < nums.length; ++i) {
-            if (i > index && nums[i] == nums[i - 1]) {
+        for (int i = index; i < candidates.length; ++i) {
+            if (i > index && candidates[i] == candidates[i - 1]) {
                 continue;
             }
             
-            if (nums[i] > target) {
+            if (target - candidates[i] < 0) {
                 continue;
             }
             
-            curr.add(nums[i]);
-            backtrack(result, curr, nums, i + 1, target - nums[i]);
-            curr.remove(curr.size() - 1);
+            List<Integer> copy = new ArrayList<>(curr);
+            copy.add(candidates[i]);
+            backtrack(candidates, i + 1, target - candidates[i], result, copy);
         }
     }
 }
+
+/*
+
+[10,1,2,7,6,1,5]
+[1,1,2,5,6,7,10]
+
+*/
