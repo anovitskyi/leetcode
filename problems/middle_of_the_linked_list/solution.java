@@ -10,12 +10,10 @@
  */
 class Solution {
     public ListNode middleNode(ListNode head) {
-        int size = getListSize(head);
-        int middle = size / 2;
-        
+        int middle = getListSize(head) / 2;
         while (middle > 0) {
-            --middle;
             head = head.next;
+            --middle;
         }
         
         return head;
@@ -24,8 +22,8 @@ class Solution {
     private int getListSize(ListNode head) {
         int size = 0;
         while (head != null) {
-            ++size;
             head = head.next;
+            ++size;
         }
         return size;
     }
