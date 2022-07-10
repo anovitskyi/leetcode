@@ -1,14 +1,16 @@
 public class Solution {
     public ListNode detectCycle(ListNode head) {
         ListNode cycle = findCycle(head);
-        if (cycle != null) {
-            while (head != cycle) {
-                head = head.next;
-                cycle = cycle.next;
-            }
+        if (cycle == null) {
+            return null;
         }
         
-        return cycle;
+        while (head != cycle) {
+            head = head.next;
+            cycle = cycle.next;
+        }
+        
+        return head;
     }
     
     private ListNode findCycle(ListNode head) {
