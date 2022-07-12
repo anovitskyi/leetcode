@@ -19,38 +19,29 @@ class Node {
 
 class Solution {
     public List<Integer> preorder(Node root) {
-        return traverseIteratively(root, new LinkedList<>());
-    }
-    
-    private List<Integer> traverseIteratively(Node node, List<Integer> result) {
-        Stack<Node> stack = new Stack<>();
-        if (node != null) {
-            stack.push(node);
+        List<Integer> result = new ArrayList<>();
+        if (root == null) {
+            return result;
         }
+        
+        Stack<Iterator<Node>> stack = new Stack<>();
+        stack.push(List.of(root).iterator());
         
         while (!stack.isEmpty()) {
-            Node top = stack.pop();
-            result.add(top.val);
+            Iterator<Node> currIter = stack.peek();
+            if (!currIter.hasNext()) {
+                stack.pop();
+                continue;
+            }
             
-            List<Node> children = top.children;
-            for (int i = children.size() - 1; i >= 0; --i) {
-                Node child = children.get(i);
-                if (child != null) {
-                    stack.push(child);   
-                }
+            Node currNode = currIter.next();
+            result.add(currNode.val);
+            
+            if (currNode.children != null) {
+                stack.push(currNode.children.iterator());
             }
         }
         
-        return result;
-    }
-    
-    private List<Integer> traverseRecursively(Node node, List<Integer> result) {
-        if (node != null) {
-            result.add(node.val);
-            for (Node child : node.children) {
-                traverseRecursively(child, result);
-            }
-        }
         return result;
     }
 }
