@@ -16,33 +16,26 @@
 class Solution {
     public List<List<Integer>> levelOrder(TreeNode root) {
         List<List<Integer>> result = new ArrayList<>();
-        if (root == null) {
-            return result;
-        }
-        
-        Queue<TreeNode> queue = new LinkedList<>();
-        queue.offer(root);
-        
-        while (!queue.isEmpty()) {
-            int size = queue.size();
-            List<Integer> level = new ArrayList<>();
-            
-            while (size-- > 0) {
-                TreeNode curr = queue.poll();
-                level.add(curr.val);
-                
-                if (curr.left != null) {
-                    queue.offer(curr.left);
-                }
-                
-                if (curr.right != null) {
-                    queue.offer(curr.right);
-                }
-            }
-            
-            result.add(level);
-        }
-        
+        preOrderTraversal(root, 0, result);
         return result;
+    }
+    
+    private void preOrderTraversal(TreeNode node, int level, List<List<Integer>> result) {
+        if (node == null) {
+            return;
+        }
+        
+        List<Integer> values = null;
+        if (level >= result.size()) {
+            values = new ArrayList<>();
+            result.add(values);
+        } else {
+            values = result.get(level);
+        }
+        
+        values.add(node.val);
+        
+        preOrderTraversal(node.left, level + 1, result);
+        preOrderTraversal(node.right, level + 1, result);
     }
 }
