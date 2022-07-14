@@ -1,17 +1,17 @@
 class Solution {
     public boolean isValidBST(TreeNode root) {
-        return checkSubTree(root, Long.MIN_VALUE, Long.MAX_VALUE);
+        return isValid(root, Long.MIN_VALUE, Long.MAX_VALUE);
     }
     
-    private boolean checkSubTree(TreeNode node, long min, long max) {
+    private boolean isValid(TreeNode node, long left, long right) {
         if (node == null) {
             return true;
         }
         
-        if (node.val <= min || node.val >= max) {
+        if (node.val <= left || node.val >= right) {
             return false;
         }
         
-        return checkSubTree(node.left, min, node.val) && checkSubTree(node.right, node.val, max);
+        return isValid(node.left, left, node.val) && isValid(node.right, node.val, right);
     }
 }
