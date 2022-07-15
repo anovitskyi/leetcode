@@ -1,31 +1,29 @@
 class Solution {
-    public int[][] floodFill(int[][] image, int sr, int sc, int newColor) {
-        if (image[sr][sc] == newColor) {
-            return image;
+    public int[][] floodFill(int[][] image, int sr, int sc, int color) {
+        if (image[sr][sc] != color) {
+            fill(image, sr, sc, image[sr][sc], color);
         }
-        
-        dfs(image, sr, sc, newColor, image[sr][sc]);
         
         return image;
     }
     
-    private void dfs(int[][] image, int x, int y, int newColor, int prevColor) {
-        if (x < 0 || x >= image.length) {
+     private void fill(int[][] image, int sr, int sc, int originalColor, int newColor) {
+        if (sr < 0 || sr >= image.length) {
             return;
         }
         
-        if (y < 0 || y >= image[x].length) {
+        if (sc < 0 || sc >= image[sr].length) {
             return;
         }
-        
-        if (image[x][y] != prevColor) {
-            return;
+         
+        if (image[sr][sc] != originalColor) {
+             return;
         }
         
-        image[x][y] = newColor;
-        dfs(image, x - 1, y, newColor, prevColor);
-        dfs(image, x + 1, y, newColor, prevColor);
-        dfs(image, x, y - 1, newColor, prevColor);
-        dfs(image, x, y + 1, newColor, prevColor);
+        image[sr][sc] = newColor;
+        fill(image, sr - 1, sc, originalColor, newColor);
+        fill(image, sr + 1, sc, originalColor, newColor);
+        fill(image, sr, sc - 1, originalColor, newColor);
+        fill(image, sr, sc + 1, originalColor, newColor);
     }
 }
