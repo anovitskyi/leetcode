@@ -1,10 +1,10 @@
 class Solution {
     public int climbStairs(int n) {
-        int prev = 1;
         int prevprev = 0;
+        int prev = 1;
         
-        for (int i = 1; i <= n; ++i) {
-            int sum = prev + prevprev;
+        while (n-- > 0) {
+            int sum = prevprev + prev;
             prevprev = prev;
             prev = sum;
         }
@@ -12,5 +12,3 @@ class Solution {
         return prev;
     }
 }
-
-// 5
