@@ -1,28 +1,29 @@
 class Solution {
     public int uniquePaths(int m, int n) {
-        int[][] grid = new int[m][n];
-        grid[0][0] = 1;
-        dp(grid, m - 1, n - 1);
-        return grid[m - 1][n - 1];
+        int[][] dp = new int[m][n];
+        dp[0][0] = 1;
+        traverse(dp, m - 1, n - 1);
+        return dp[m - 1][n - 1];
     }
     
-    private void dp(int[][] grid, int x, int y) {
-        if (x < 0 || y < 0 || grid[x][y] != 0) {
+    private void traverse(int[][] dp, int x, int y) {
+        if (x < 0 || y < 0 || dp[x][y] != 0) {
             return;
         }
         
-        int top = 0;
+        traverse(dp, x - 1, y);
+        traverse(dp, x, y - 1);
+        
+        int up = 0;
         if (x - 1 >= 0) {
-            dp(grid, x - 1, y);
-            top = grid[x - 1][y];
+            up = dp[x - 1][y];
         }
         
         int left = 0;
         if (y - 1 >= 0) {
-            dp(grid, x, y - 1);
-            left = grid[x][y - 1];
+            left = dp[x][y - 1];
         }
         
-        grid[x][y] = top + left;
+        dp[x][y] = left + up;
     }
 }
