@@ -1,28 +1,43 @@
 class Solution {
     public int characterReplacement(String s, int k) {
-        int start = 0;
-        int end = 0;
-        int[] counters = new int[26];
-        int maxCounter = 0;
+        int[] chars = new int[26];
+        int left = 0;
+        int right = 0;
         int result = 0;
         
-        while (end < s.length()) {
-            int letterIndex = s.charAt(end) - 'A';
-            ++counters[letterIndex];
-            int currentWindowLength = end - start + 1;
-            maxCounter = Math.max(maxCounter, counters[letterIndex]);
-            int numberOfDifferentLetters = currentWindowLength - maxCounter;
+        while (right < s.length()) {   
+            ++chars[s.charAt(right) - 'A'];
+            ++right;
             
-            if (numberOfDifferentLetters > k) {
-                --counters[s.charAt(start) - 'A'];
-                ++start;
-            } else {
-                result = Math.max(result, currentWindowLength);   
+            int max = 0;
+            for (int i = 0; i < chars.length; ++i) {
+                if (chars[i] > max) {
+                    max = chars[i];
+                }
             }
             
-            ++end;
+            if (max + k < right - left) {
+                --chars[s.charAt(left) - 'A'];
+                ++left;
+            }
+            
+            result = Math.max(result, right - left);
         }
         
         return result;
     }
 }
+
+
+/* 
+a: 2
+b: 3
+
+k = 1
+
+left     |
+      "AABABBA"
+right         |
+
+
+*/
