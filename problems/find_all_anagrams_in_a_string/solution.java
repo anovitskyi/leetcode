@@ -1,57 +1,54 @@
 class Solution {
     public List<Integer> findAnagrams(String s, String p) {
         List<Integer> result = new ArrayList<>();
-        if (p.length() > s.length()) {
+        if (s.length() < p.length()) {
             return result;
         }
         
         Map<Character, Integer> map = new HashMap<>();
         for (int i = 0; i < p.length(); ++i) {
-            char pCh = p.charAt(i);
-            map.put(pCh, map.getOrDefault(pCh, 0) + 1);
+            char ch = p.charAt(i);
+            map.put(ch, map.getOrDefault(ch, 0) + 1);
         }
         
-        int counter = map.size();
+        int foundLetters = 0;
         for (int i = 0; i < p.length(); ++i) {
-            char sCh = s.charAt(i);
-            if (!map.containsKey(sCh)) {
-                continue;
-            }
+            char ch = s.charAt(i);
             
-            int quantity = map.get(sCh);
-            if (quantity == 1) {
-                --counter;
+            if (map.containsKey(ch)) {
+                int counter = map.get(ch);
+                if (counter == 1) {
+                    ++foundLetters;
+                }
+                map.put(ch, counter - 1);
             }
-            map.put(sCh, quantity - 1);
-            
         }
         
         for (int i = p.length(); i < s.length(); ++i) {
-            if (counter == 0) {
+            if (foundLetters == map.size()) {
                 result.add(i - p.length());
             }
             
-            char rightCh = s.charAt(i);
-            if (map.containsKey(rightCh)) {
-                int rightQuantity = map.get(rightCh);
-                if (rightQuantity == 1) {
-                    --counter;
+            char leftChar = s.charAt(i - p.length());
+            if (map.containsKey(leftChar)) {
+                int leftCounter = map.get(leftChar);
+                if (leftCounter == 0) {
+                    --foundLetters;
                 }
-                map.put(rightCh, rightQuantity - 1);
+                map.put(leftChar, leftCounter + 1);
             }
             
-            char leftCh = s.charAt(i - p.length());
-            if (map.containsKey(leftCh)) {
-                int leftQuantity = map.get(leftCh);
-                if (leftQuantity == 0) {
-                    ++counter;
+            char rightChar = s.charAt(i);
+            if (map.containsKey(rightChar)) {
+                int rightCounter = map.get(rightChar);
+                if (rightCounter == 1) {
+                    ++foundLetters;
                 }
-                map.put(leftCh, leftQuantity + 1);
+                map.put(rightChar, rightCounter - 1);
             }
-           
         }
         
-        if (counter == 0) {
+        if (foundLetters == map.size()) {
             result.add(s.length() - p.length());
         }
         
