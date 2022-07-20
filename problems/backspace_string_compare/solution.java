@@ -20,14 +20,10 @@ class Solution {
         Stack<Character> stack = new Stack<>();
         
         for (int i = 0; i < word.length(); ++i) {
-            char ch = word.charAt(i);
-            
-            if (ch == '#') {
-                if (!stack.isEmpty()) {
-                    stack.pop();
-                }
-            } else {
-                stack.push(ch);
+            if (word.charAt(i) != '#') {
+                stack.push(word.charAt(i));
+            } else if (!stack.isEmpty()) {
+                stack.pop();
             }
         }
         
