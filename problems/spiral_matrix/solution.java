@@ -1,49 +1,65 @@
 class Solution {
-    
     public List<Integer> spiralOrder(int[][] matrix) {
-       int size = matrix.length * matrix[0].length;
-        List<Integer> result = new ArrayList<>(size);
+        int expectedSize = matrix.length * matrix[0].length;
+        List<Integer> result = new ArrayList<>(expectedSize);
         
-        int rowStart = 0;
-        int rowEnd = matrix.length;
-        int columnStart = 0;
-        int columnEnd = matrix[0].length;
+        int startRow = 0;
+        int endRow = matrix.length - 1;
+        int currRow = 0;
         
-        while (result.size() < size) {
-            for (int i = columnStart; i < columnEnd; ++i) {
-                result.add(matrix[rowStart][i]);
+        int startCol = 0;
+        int endCol = matrix[0].length - 1;
+        int currCol = 0;
+        
+        while (result.size() < expectedSize) {
+            currRow = startRow;
+            currCol = startCol;
+            
+            while (currCol <= endCol) {
+                result.add(matrix[currRow][currCol]);
+                ++currCol;
             }
-            ++rowStart;
-            if (result.size() >= size) {
+            --currCol;
+            ++currRow;
+            
+            if (result.size() >= expectedSize) {
                 break;
             }
             
-            for (int i = rowStart; i < rowEnd; ++i) {
-                result.add(matrix[i][columnEnd - 1]);
+            while (currRow <= endRow) {
+                result.add(matrix[currRow][currCol]);
+                ++currRow;
             }
-            --columnEnd;
-            if (result.size() >= size) {
+            --currCol;
+            --currRow;
+            
+            if (result.size() >= expectedSize) {
                 break;
             }
             
-            for (int i = columnEnd - 1; i >= columnStart; --i) {
-                result.add(matrix[rowEnd - 1][i]);
+            while (currCol >= startCol) {
+                result.add(matrix[currRow][currCol]);
+                --currCol;
             }
-            --rowEnd;
-            if (result.size() >= size) {
+            ++currCol;
+            --currRow;
+            
+            if (result.size() >= expectedSize) {
                 break;
             }
             
-            for (int i = rowEnd - 1; i >= rowStart; --i) {
-                result.add(matrix[i][columnStart]);
+            while (currRow > startRow) {
+                result.add(matrix[currRow][currCol]);
+                --currRow;
             }
-            ++columnStart;
-            if (result.size() >= size) {
-                break;
-            }
+            
+            ++startRow;
+            ++startCol;
+            
+            --endRow;
+            --endCol;
         }
         
         return result;
     }
-    
 }
