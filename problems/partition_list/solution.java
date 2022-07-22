@@ -10,26 +10,25 @@
  */
 class Solution {
     public ListNode partition(ListNode head, int x) {
-        ListNode left = new ListNode();
-        ListNode right = new ListNode();
-        
-        ListNode lTmp = left;
-        ListNode rTmp = right;
+        ListNode result = new ListNode();
+        ListNode smaller = result;
+        ListNode greaterHead = new ListNode();
+        ListNode greater = greaterHead;
         
         while (head != null) {
-            ListNode node = new ListNode(head.val);
-            
-            if (node.val < x) {
-                lTmp.next = node;
-                lTmp = node;
+            if (head.val < x) {
+                smaller.next = head;
+                smaller = smaller.next;
             } else {
-                rTmp.next = node;
-                rTmp = node;
+                greater.next = head;
+                greater = greater.next;
             }
+            
             head = head.next;
         }
         
-        lTmp.next = right.next;
-        return left.next;
+        greater.next = null;
+        smaller.next = greaterHead.next;
+        return result.next;
     }
 }
