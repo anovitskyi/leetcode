@@ -13,11 +13,12 @@ class Solution {
         head = new ListNode(0, head);
         ListNode slow = head;
         ListNode fast = head;
+        
         while (n-- > 0) {
             fast = fast.next;
         }
         
-        while (fast != null && fast.next != null) {
+        while (fast.next != null) {
             fast = fast.next;
             slow = slow.next;
         }
