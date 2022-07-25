@@ -4,58 +4,59 @@ class Solution {
             return head;
         }
         
-        int size = getSize(head);
+        int size = getListSize(head);
         return sort(head, size);
     }
     
-    private ListNode sort(ListNode node, int size) {
+    private ListNode sort(ListNode head, int size) {
         if (size == 1) {
-            return node;
+            return head;
         }
         
         int mid = size / 2;
-        ListNode left = node;
-        ListNode right = node;
+        ListNode left = head;
+        ListNode right = head;
         for (int i = 0; i < mid; ++i) {
             right = right.next;
         }
+        
         left = sort(left, mid);
         right = sort(right, size - mid);
-        
         return merge(left, mid, right, size - mid);
     }
     
     private ListNode merge(ListNode left, int leftSize, ListNode right, int rightSize) {
         ListNode result = new ListNode();
-        ListNode node = result;
+        ListNode curr = result;
         
         while (leftSize > 0 && rightSize > 0) {
             if (left.val < right.val) {
-                node.next = left;
+                curr.next = left;
                 --leftSize;
                 left = left.next;
             } else {
-                node.next = right;
+                curr.next = right;
                 --rightSize;
                 right = right.next;
             }
-            node = node.next;
+            
+            curr = curr.next;
         }
         
         while (leftSize-- > 0) {
-            node.next = left;
+            curr.next = left;
             left = left.next;
-            node = node.next;
+            curr = curr.next;
         }
         
-        node.next = right;
+        curr.next = right;
         return result.next;
     }
     
-    private int getSize(ListNode node) {
+    private int getListSize(ListNode head) {
         int size = 0;
-        while (node != null) {
-            node = node.next;
+        while (head != null) {
+            head = head.next;
             ++size;
         }
         return size;
