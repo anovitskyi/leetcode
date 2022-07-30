@@ -15,29 +15,23 @@
  */
 class Solution {
     public int kthSmallest(TreeNode root, int k) {
-        return findKthSmallest(root, k, new LinkedList<>());
+        List<Integer> list = new ArrayList<>(k);
+        traverse(root, k, list);
+        return list.get(k - 1);
     }
     
-    private int findKthSmallest(TreeNode node, int k, List<Integer> elements) {
-        if (node == null) {
-            return -1;
+    private void traverse(TreeNode root, int k, List<Integer> list) {
+        if (root == null) {
+            return;
         }
         
-        int left = findKthSmallest(node.left, k, elements);
-        if (left != -1) {
-            return left;
-        }
+        traverse(root.left, k, list);
         
-        elements.add(node.val);
-        if (elements.size() == k) {
-            return node.val;
+        if (list.size() >= k) {
+            return;
         }
+        list.add(root.val); 
         
-        int right = findKthSmallest(node.right, k, elements);
-        if (right != -1) {
-            return right;
-        }
-        
-        return -1;
+        traverse(root.right, k, list);
     }
 }
