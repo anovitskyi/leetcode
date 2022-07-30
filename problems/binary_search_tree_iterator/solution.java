@@ -15,29 +15,30 @@
  */
 class BSTIterator {
     
-    private final Stack<TreeNode> stack = new Stack<>();
+    private Stack<TreeNode> currStack;
 
     public BSTIterator(TreeNode root) {
-        stack.push(root);
+        currStack = new Stack<>();
+        currStack.push(root);
     }
     
     public int next() {
-        while (stack.peek().left != null) {
-            TreeNode peek = stack.peek();
-            stack.push(peek.left);
+        while (currStack.peek().left != null) {
+            TreeNode peek = currStack.peek();
+            currStack.push(peek.left);
             peek.left = null;
         }
         
-        TreeNode pop = stack.pop();
+        TreeNode pop = currStack.pop();
         if (pop.right != null) {
-            stack.push(pop.right);
+            currStack.push(pop.right);
         }
         
         return pop.val;
     }
     
     public boolean hasNext() {
-        return !stack.isEmpty();
+        return !currStack.isEmpty();
     }
 }
 
