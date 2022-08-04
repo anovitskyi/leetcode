@@ -1,56 +1,106 @@
-public class Solution {
-    
-    int[][]dir = new int[][]{{1,0},{-1,0},{0,1},{0,-1}};
-    
-    public List<List<Integer>> pacificAtlantic(int[][] matrix) {
-        List<List<Integer>> res = new LinkedList<>();
-        if(matrix == null || matrix.length == 0 || matrix[0].length == 0){
-            return res;
-        }
-        int n = matrix.length, m = matrix[0].length;
-        //One visited map for each ocean
-        boolean[][] pacific = new boolean[n][m];
-        boolean[][] atlantic = new boolean[n][m];
-        Queue<int[]> pQueue = new LinkedList<>();
-        Queue<int[]> aQueue = new LinkedList<>();
-        for(int i=0; i<n; i++){ //Vertical border
-            pQueue.offer(new int[]{i, 0});
-            aQueue.offer(new int[]{i, m-1});
-            pacific[i][0] = true;
-            atlantic[i][m-1] = true;
-        }
-        for(int i=0; i<m; i++){ //Horizontal border
-            pQueue.offer(new int[]{0, i});
-            aQueue.offer(new int[]{n-1, i});
-            pacific[0][i] = true;
-            atlantic[n-1][i] = true;
-        }
-        bfs(matrix, pQueue, pacific);
-        bfs(matrix, aQueue, atlantic);
-        for(int i=0; i<n; i++){
-            for(int j=0; j<m; j++){
-                if(pacific[i][j] && atlantic[i][j])
-                    res.add(List.of(i,j));
+class Solution {
+    public List<List<Integer>> pacificAtlantic(int[][] heights) {
+        boolean[][] pacificCells = getCellsThatCanReachPacificOcean(heights);
+        boolean[][] atlanticCells = getCellsThatCanReachAtlanticOcean(heights);
+        
+        List<List<Integer>> result = new ArrayList<>();
+        for (int i = 0; i < heights.length; ++i) {
+            for (int j = 0; j < heights[i].length; ++j) {
+                if (pacificCells[i][j] && atlanticCells[i][j]) {
+                    result.add(List.of(i, j));
+                }
             }
         }
-        return res;
+        return result;
     }
     
-    public void bfs(int[][]matrix, Queue<int[]> queue, boolean[][]visited){
-        int n = matrix.length, m = matrix[0].length;
-        while(!queue.isEmpty()){
-            int[] cur = queue.poll();
-            for(int[] d:dir){
-                int x = cur[0]+d[0];
-                int y = cur[1]+d[1];
-                if(x<0 || x>=n || y<0 || y>=m || visited[x][y] || matrix[x][y] < matrix[cur[0]][cur[1]]){
-                    continue;
-                }
-                visited[x][y] = true;
-                queue.offer(new int[]{x, y});
-            } 
+    private boolean[][] getCellsThatCanReachPacificOcean(int[][] grid) {
+        boolean[][] result = new boolean[grid.length][grid[0].length];
+        Queue<int[]> queue = new LinkedList<>();
+        
+        queue.offer(new int[] {0, 0});
+        
+        for (int i = 1; i < grid.length; ++i) {
+            queue.offer(new int[] {i, 0});
         }
+        
+        for (int j = 1; j < grid[0].length; ++j) {
+            queue.offer(new int[] {0, j});
+        }
+        
+        while (!queue.isEmpty()) {
+            int[] pos = queue.poll();
+            int x = pos[0];
+            int y = pos[1];
+            
+            if (result[x][y]) {
+                continue;
+            }
+            
+            result[x][y] = true;
+            
+            if (x - 1 >= 0 && grid[x - 1][y] >= grid[x][y]) {
+                queue.offer(new int[] {x - 1, y});
+            }
+            
+            if (y - 1 >= 0 && grid[x][y - 1] >= grid[x][y]) {
+                queue.offer(new int[] {x, y - 1});
+            }
+            
+            if (x + 1 < grid.length && grid[x + 1][y] >= grid[x][y]) {
+                queue.offer(new int[] {x + 1, y});
+            }
+            
+            if (y + 1 < grid[x].length && grid[x][y + 1] >= grid[x][y]) {
+                queue.offer(new int[] {x, y + 1});
+            }
+        }
+        
+        return result;
     }
     
-    
+    private boolean[][] getCellsThatCanReachAtlanticOcean(int[][] grid) {
+        boolean[][] result = new boolean[grid.length][grid[0].length];
+        Queue<int[]> queue = new LinkedList<>();
+        
+        queue.offer(new int[] {grid.length - 1, grid[0].length - 1});
+        
+        for (int i = 0; i < grid.length - 1; ++i) {
+            queue.offer(new int[] {i, grid[i].length - 1});
+        }
+        
+        for (int j = 0; j < grid[0].length - 1; ++j) {
+            queue.offer(new int[] {grid.length - 1, j});
+        }
+        
+        while (!queue.isEmpty()) {
+            int[] pos = queue.poll();
+            int x = pos[0];
+            int y = pos[1];
+            
+            if (result[x][y]) {
+                continue;
+            }
+            
+            result[x][y] = true;
+            
+            if (x - 1 >= 0 && grid[x - 1][y] >= grid[x][y]) {
+                queue.offer(new int[] {x - 1, y});
+            }
+            
+            if (y - 1 >= 0 && grid[x][y - 1] >= grid[x][y]) {
+                queue.offer(new int[] {x, y - 1});
+            }
+            
+            if (x + 1 < grid.length && grid[x + 1][y] >= grid[x][y]) {
+                queue.offer(new int[] {x + 1, y});
+            }
+            
+            if (y + 1 < grid[x].length && grid[x][y + 1] >= grid[x][y]) {
+                queue.offer(new int[] {x, y + 1});
+            }
+        }
+        
+        return result;
+    }
 }
