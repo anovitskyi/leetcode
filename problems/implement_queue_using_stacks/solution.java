@@ -1,5 +1,5 @@
 class MyQueue {
-
+    
     private final Stack<Integer> read = new Stack<>();
     private final Stack<Integer> write = new Stack<>();
     
@@ -8,26 +8,22 @@ class MyQueue {
     }
     
     public int pop() {
-        transferWriteToRead();
-        return read.pop();
+        int peek = peek();
+        read.pop();
+        return peek;
     }
     
     public int peek() {
-        transferWriteToRead();
+        if (read.isEmpty()) {
+            while (!write.isEmpty()) {
+                read.push(write.pop());
+            }
+        }
+        
         return read.peek();
     }
     
     public boolean empty() {
         return read.isEmpty() && write.isEmpty();
-    }
-    
-    private void transferWriteToRead() {
-        if (!read.isEmpty()) {
-            return;    
-        }
-        
-        while (!write.isEmpty()) {
-            read.push(write.pop());
-        }
     }
 }
