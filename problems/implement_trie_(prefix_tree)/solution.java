@@ -1,46 +1,44 @@
 class Trie {
-    
+
     private final TrieNode root = new TrieNode();
     
     public void insert(String word) {
-        TrieNode tmp = root;
-        for (char letter : word.toCharArray()) {
-            tmp = tmp.children.computeIfAbsent(letter, l -> new TrieNode());
+        TrieNode last = root;
+        
+        for (int i = 0; i < word.length(); ++i) {
+            last = last.nodes.computeIfAbsent(word.charAt(i), x -> new TrieNode());
         }
-        tmp.isEndOfWord = true;
+        
+        last.isEndOfWord = true;
     }
     
     public boolean search(String word) {
-        TrieNode lastTrieNode = getLastTrieNode(word);
-        return lastTrieNode != null && lastTrieNode.isEndOfWord;
+        TrieNode last = getLastNode(word);
+        return last != null && last.isEndOfWord;
     }
     
     public boolean startsWith(String prefix) {
-        return getLastTrieNode(prefix) != null;
+        return getLastNode(prefix) != null;
     }
     
-    private TrieNode getLastTrieNode(String word) {
-        TrieNode tmp = root;
-        for (char letter : word.toCharArray()) {
-            if (!tmp.children.containsKey(letter)) {
+    private TrieNode getLastNode(String word) {
+        TrieNode last = root;
+        
+        for (int i = 0; i < word.length(); ++i) {
+            char ch = word.charAt(i);
+            
+            if (!last.nodes.containsKey(ch)) {
                 return null;
             }
             
-            tmp = tmp.children.get(letter);
+            last = last.nodes.get(ch);
         }
-        return tmp;
+        
+        return last;
     }
     
     private class TrieNode {
         boolean isEndOfWord = false;
-        Map<Character, TrieNode> children = new HashMap<>();
+        final Map<Character, TrieNode> nodes = new HashMap<>();
     }
 }
-
-/**
- * Your Trie object will be instantiated and called as such:
- * Trie obj = new Trie();
- * obj.insert(word);
- * boolean param_2 = obj.search(word);
- * boolean param_3 = obj.startsWith(prefix);
- */
