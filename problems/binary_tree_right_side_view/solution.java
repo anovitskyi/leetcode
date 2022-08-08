@@ -15,23 +15,21 @@
  */
 class Solution {
     public List<Integer> rightSideView(TreeNode root) {
-        List<Integer> levels = new ArrayList<>();
-        dfsLevels(root, 0, levels);
-        return levels;
+        List<Integer> result = new ArrayList<>();
+        traverse(root, result, 0);
+        return result;
     }
     
-    private void dfsLevels(TreeNode root, int currLevel, List<Integer> levels) {
+    private void traverse(TreeNode root, List<Integer> list, int level) {
         if (root == null) {
             return;
         }
         
-        if (currLevel >= levels.size()) {
-            levels.add(root.val);
+        if (list.size() <= level) {
+            list.add(root.val);
         }
         
-        dfsLevels(root.right, currLevel + 1, levels);
-        dfsLevels(root.left, currLevel + 1, levels);
+        traverse(root.right, list, level + 1);
+        traverse(root.left, list, level + 1);
     }
-    
-   
 }
