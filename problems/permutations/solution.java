@@ -7,7 +7,7 @@ class Solution {
     
     private void backtrack(List<List<Integer>> result, List<Integer> curr, int[] nums, boolean[] visited) {
         if (curr.size() == nums.length) {
-            result.add(curr);
+            result.add(new ArrayList<>(curr));
             return;
         }
         
@@ -17,9 +17,9 @@ class Solution {
             }
             
             visited[i] = true;
-            List<Integer> copy = new ArrayList<>(curr);
-            copy.add(nums[i]);
-            backtrack(result, copy, nums, visited);
+            curr.add(nums[i]);
+            backtrack(result, curr, nums, visited);
+            curr.remove(curr.size() - 1);
             visited[i] = false;
         }
     }
