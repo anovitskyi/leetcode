@@ -13,15 +13,13 @@ class Solution {
         int foundLetters = 0;
         for (int i = 0; i < s1.length(); ++i) {
             char ch = s2.charAt(i);
-            if (!map.containsKey(ch)) {
-                continue;
-            }
             
-            int counter = map.get(ch);
-            map.put(ch, counter - 1);
-            
-            if (counter == 1) {
-                ++foundLetters;   
+            if (map.containsKey(ch)) {
+                int val = map.get(ch);
+                map.put(ch, val - 1);
+                if (val == 1) {
+                    ++foundLetters;
+                }
             }
         }
         
@@ -32,21 +30,19 @@ class Solution {
             
             char rightCh = s2.charAt(i);
             if (map.containsKey(rightCh)) {
-                int rightCounter = map.get(rightCh);
-                map.put(rightCh, rightCounter - 1);
-                
-                if (rightCounter == 1) {
+                int val = map.get(rightCh);
+                map.put(rightCh, val - 1);
+                if (val == 1) {
                     ++foundLetters;
                 }
             }
             
             char leftCh = s2.charAt(i - s1.length());
             if (map.containsKey(leftCh)) {
-                int leftCounter = map.get(leftCh);
-                map.put(leftCh, leftCounter + 1);
-                
-                if (leftCounter == 0) {
-                    --foundLetters;   
+                int val = map.get(leftCh);
+                map.put(leftCh, val + 1);
+                if (val == 0) {
+                    --foundLetters;
                 }
             }
         }
@@ -54,30 +50,3 @@ class Solution {
         return foundLetters == map.size();
     }
 }
-
-/*
-
-{
-    a: 0
-    d: 0
-    c: 0
-}
-
-foundLetters = 3
-
-  |
-"dcda"
-     |
-*/
-
-
-
-
-
-
-
-
-
-
-
-
