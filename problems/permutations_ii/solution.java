@@ -6,11 +6,11 @@ class Solution {
         }
         
         List<List<Integer>> result = new ArrayList<>();
-        backtrack(map, nums.length, result, new ArrayList<>());
+        backtrack(result, new ArrayList<>(), map, nums.length);
         return result;
     }
     
-    private void backtrack(Map<Integer, Integer> map, int desiredSize, List<List<Integer>> result, List<Integer> curr) {
+    private void backtrack(List<List<Integer>> result, List<Integer> curr, Map<Integer, Integer> map, int desiredSize) {
         if (curr.size() == desiredSize) {
             result.add(new ArrayList<>(curr));
             return;
@@ -22,11 +22,11 @@ class Solution {
             
             if (val == 0) {
                 continue;
-            }
+            } 
             
-            curr.add(key);
             map.put(key, val - 1);
-            backtrack(map, desiredSize, result, curr);
+            curr.add(key);
+            backtrack(result, curr, map, desiredSize);
             curr.remove(curr.size() - 1);
             map.put(key, val);
         }
