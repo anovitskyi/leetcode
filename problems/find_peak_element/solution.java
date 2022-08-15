@@ -9,7 +9,7 @@ class Solution {
             long prev = middle - 1 >= 0 ? nums[middle - 1] : Long.MIN_VALUE;
             long next = middle + 1 < nums.length ? nums[middle + 1] : Long.MIN_VALUE;
             
-            if (prev < curr && next < curr) {
+            if (prev < curr && curr > next) {
                 return middle;
             } else if (prev > curr) {
                 right = middle - 1;
