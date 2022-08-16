@@ -1,38 +1,43 @@
 class Solution {
     public int findCircleNum(int[][] isConnected) {
-        Set<Integer> visited = new HashSet<>();
+        Map<Integer, Set<Integer>> graph = new HashMap<>();
+        for (int i = 0; i < isConnected.length; ++i) {
+            int[] cities = isConnected[i];
+            Set<Integer> set = new HashSet<>();
+            graph.put(i, set);
+            
+            for (int j = 0; j < cities.length; ++j) {
+                if (cities[j] == 1 && j != i) {
+                    set.add(j);
+                }
+            }
+        }
+        
+        boolean[] visited = new boolean[graph.size()];
         int result = 0;
         
-        for (int i = 0; i < isConnected.length; ++i) {
-            if (visited.contains(i)) {
+        for (int city = 0; city < graph.size(); ++city) {
+            if (visited[city]) {
                 continue;
             }
             
-            dfs(i, isConnected, visited);
-            ++result;
+            visitCities(city, graph, visited);
+            
+            ++result; 
         }
-        
+         
         return result;
     }
     
-    private void dfs(int start, int[][] isConnected, Set<Integer> visited) {
-        int[] neighbors = isConnected[start];
+    private void visitCities(int city, Map<Integer, Set<Integer>> graph, boolean[] visited) {
+        if (visited[city]) {
+            return;
+        }
         
-        for (int i = 0; i < neighbors.length; ++i) {
-            if (i == start) {
-                continue;
-            }
-            
-            if (neighbors[i] == 0) {
-                continue;
-            }
-            
-            if (visited.contains(i)) {
-                continue;
-            }
-            
-            visited.add(i);
-            dfs(i, isConnected, visited);
+        visited[city] = true;
+        
+        for (int neighbour : graph.get(city)) {
+            visitCities(neighbour, graph, visited);
         }
     }
 }
