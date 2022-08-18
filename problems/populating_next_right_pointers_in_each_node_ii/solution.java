@@ -27,21 +27,30 @@ class Solution {
             return root;
         }
         
-        if (root.left != null && root.right != null) {
+        if (root.left != null) {
             root.left.next = root.right;
         }
         
         if (root.next != null && (root.left != null || root.right != null)) {
+            Node source = root.right != null ? root.right : root.left;
+            Node target = null;
+            
             Node tmp = root.next;
-            while (tmp != null && tmp.left == null && tmp.right == null) {
+            while (tmp != null) {
+                if (tmp.left != null) {
+                    target = tmp.left;
+                    break;
+                }
+                
+                if (tmp.right != null) {
+                    target = tmp.right;
+                    break;
+                }
+                
                 tmp = tmp.next;
             }
             
-            if (tmp != null) {
-                Node source = root.right != null ? root.right : root.left;
-                Node target = tmp.left != null ? tmp.left : tmp.right;
-                source.next = target; 
-            }
+            source.next = target;
         }
         
         connect(root.right);
