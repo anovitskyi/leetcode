@@ -3,15 +3,13 @@ class Solution {
         int left = 0;
         int right = nums.length - 1;
         
-        if (nums[left] > nums[right]) {
-            while (left < right) {
-                int mid = left + (right - left) / 2;
+        while (left <= right) {
+            int middle = left + (right - left) / 2;
             
-                if (nums[mid] > nums[nums.length - 1]) {
-                    left = mid + 1;
-                } else {
-                    right = mid;
-                }
+            if (nums[middle] > nums[nums.length - 1]) {
+                left = middle + 1;
+            } else {
+                right = middle - 1;
             }
         }
         
