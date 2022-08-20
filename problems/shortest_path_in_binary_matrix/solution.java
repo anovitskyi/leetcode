@@ -1,77 +1,57 @@
 class Solution {
+    private static final int[][] directions;
+    
+    static {
+        int[][] copy = {
+            {1, 1},
+            {0, 1},
+            {1, 0},
+            {-1, 1},
+            {1, -1},
+            {-1, 0},
+            {0, -1},
+            {-1, -1}
+        };
+        
+        directions = copy;
+    }
+    
     public int shortestPathBinaryMatrix(int[][] grid) {
-        int length = grid.length;
-        if (grid[0][0] == 1 || grid[length - 1][length - 1] == 1) {
-            return -1;
-        }
-        
-        for (int i = 0; i < length; ++i) {
-            for (int j = 0; j < length; ++j) {
-                if (grid[i][j] == 0) {
-                    grid[i][j] = Integer.MAX_VALUE;
-                } else {
-                    grid[i][j] = -1;
-                }
-            }
-        }
-        grid[0][0] = 0;
-        
+        int destX = grid.length - 1;
+        int destY = grid[0].length - 1;
         Queue<int[]> queue = new LinkedList<>();
         queue.offer(new int[] {0, 0});
-        while(!queue.isEmpty()) {
-            int[] pos = queue.poll();
-            int x = pos[0];
-            int y = pos[1];
+        
+        int result = 1;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            while (size-- > 0) {
+                int[] pos = queue.poll();
+                int x = pos[0];
+                int y = pos[1];
             
-            if (grid[x][y] == -1) {
-                continue;
+                if (x < 0 || x >= grid.length) {
+                    continue;
+                }
+                if (y < 0 || y >= grid[x].length) {
+                    continue;
+                }
+                if (grid[x][y] == 1) {
+                    continue;
+                }
+                if (x == destX && y == destY) {
+                    return result;
+                }
+                grid[x][y] = 1;
+                
+                for (int[] dir : directions) {
+                    queue.offer(new int[] {x + dir[0], y + dir[1]});
+                }
             }
-            
-            if (x + 1 < length && y + 1 < length && grid[x][y] + 1 < grid[x + 1][y + 1]) {
-                grid[x + 1][y + 1] = grid[x][y] + 1;
-                queue.offer(new int[] {x + 1, y + 1});
-            }
-         
-            if (x + 1 < length && grid[x][y] + 1 < grid[x + 1][y]) {
-                grid[x + 1][y] = grid[x][y] + 1;
-                queue.offer(new int[] {x + 1, y});
-            }
-        
-            if (y + 1 < length && grid[x][y] + 1 < grid[x][y + 1]) {
-                grid[x][y + 1] = grid[x][y] + 1;
-                queue.offer(new int[] {x, y + 1});
-            }
-        
-            if (x + 1 < length && y - 1 >= 0 && grid[x][y] + 1 < grid[x + 1][y - 1]) {
-                grid[x + 1][y - 1] = grid[x][y] + 1;
-                queue.offer(new int[] {x + 1, y - 1});
-            }
-        
-            if (x - 1 >= 0 && y + 1 < length && grid[x][y] + 1 < grid[x - 1][y + 1]) {
-                grid[x - 1][y + 1] = grid[x][y] + 1;
-                queue.offer(new int[] {x - 1, y + 1});
+            ++result;
         }
         
-            if (y - 1 >= 0 && grid[x][y] + 1 < grid[x][y - 1]) {
-                grid[x][y - 1] = grid[x][y] + 1;
-                queue.offer(new int[] {x, y - 1});
-            }
-        
-            if (x - 1 >= 0 && grid[x][y] + 1 < grid[x - 1][y]) {
-                grid[x - 1][y] = grid[x][y] + 1;
-                queue.offer(new int[] {x - 1, y});
-            }
-        
-            if (x - 1 >= 0 && y - 1 >= 0 && grid[x][y] + 1 < grid[x - 1][y - 1]) {
-                grid[x - 1][y - 1] = grid[x][y] + 1;
-                queue.offer(new int[] {x - 1, y - 1});
-            }
-        }
-        
-        if (grid[length - 1][length - 1] == Integer.MAX_VALUE) {
-            return -1;
-        }
-        
-        return grid[length - 1][length - 1] + 1;
+        return -1;
     }
+    
 }
