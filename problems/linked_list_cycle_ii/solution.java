@@ -1,19 +1,16 @@
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
 public class Solution {
     public ListNode detectCycle(ListNode head) {
-        ListNode cycle = findCycle(head);
-        if (cycle == null) {
-            return null;
-        }
-        
-        while (head != cycle) {
-            head = head.next;
-            cycle = cycle.next;
-        }
-        
-        return head;
-    }
-    
-    private ListNode findCycle(ListNode head) {
         ListNode fast = head;
         ListNode slow = head;
         
@@ -22,10 +19,19 @@ public class Solution {
             slow = slow.next;
             
             if (fast == slow) {
-                return fast;
+                break;
             }
         }
         
-        return null;
+        if (fast == null || fast.next == null) {
+            return null;
+        }
+        
+        fast = head;
+        while (fast != slow) {
+            fast = fast.next;
+            slow = slow.next;
+        }
+        return slow;
     }
 }
