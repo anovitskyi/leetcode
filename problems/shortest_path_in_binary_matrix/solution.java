@@ -1,24 +1,26 @@
 class Solution {
+    
     private static final int[][] directions;
     
     static {
-        int[][] copy = {
+        int[][] tmp = {
             {1, 1},
-            {0, 1},
             {1, 0},
-            {-1, 1},
+            {0, 1},
             {1, -1},
+            {-1, 1},
             {-1, 0},
             {0, -1},
             {-1, -1}
         };
-        
-        directions = copy;
+        directions = tmp;
     }
     
     public int shortestPathBinaryMatrix(int[][] grid) {
-        int destX = grid.length - 1;
-        int destY = grid[0].length - 1;
+        if (grid[0][0] == 1) {
+            return -1;
+        }
+        
         Queue<int[]> queue = new LinkedList<>();
         queue.offer(new int[] {0, 0});
         
@@ -29,20 +31,23 @@ class Solution {
                 int[] pos = queue.poll();
                 int x = pos[0];
                 int y = pos[1];
-            
+                
                 if (x < 0 || x >= grid.length) {
                     continue;
                 }
+                
                 if (y < 0 || y >= grid[x].length) {
                     continue;
                 }
+                
                 if (grid[x][y] == 1) {
                     continue;
                 }
-                if (x == destX && y == destY) {
+                grid[x][y] = 1;
+                
+                if (x == grid.length - 1 && y == grid[x].length - 1) {
                     return result;
                 }
-                grid[x][y] = 1;
                 
                 for (int[] dir : directions) {
                     queue.offer(new int[] {x + dir[0], y + dir[1]});
@@ -50,8 +55,6 @@ class Solution {
             }
             ++result;
         }
-        
         return -1;
     }
-    
 }
