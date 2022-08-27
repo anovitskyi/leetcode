@@ -3,10 +3,10 @@ class Solution {
         int prevprev = 0;
         int prev = 1;
         
-        while (n-- > 0) {
-            int sum = prevprev + prev;
-            prevprev = prev;
-            prev = sum;
+        for (int i = 1; i <= n; ++i) {
+            int tmp = prev;
+            prev = prev + prevprev;
+            prevprev = tmp;
         }
         
         return prev;
