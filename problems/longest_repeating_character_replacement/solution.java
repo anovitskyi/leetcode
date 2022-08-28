@@ -1,23 +1,23 @@
 class Solution {
     public int characterReplacement(String s, int k) {
-        int[] chars = new int[26];
+        int[] tab = new int[26];
+        int result = 0;
         int left = 0;
         int right = 0;
-        int result = 0;
         
-        while (right < s.length()) {   
-            ++chars[s.charAt(right) - 'A'];
+        while (right < s.length()) {
+            ++tab[s.charAt(right) - 'A'];
             ++right;
             
             int max = 0;
-            for (int i = 0; i < chars.length; ++i) {
-                if (chars[i] > max) {
-                    max = chars[i];
+            for (int counter : tab) {
+                if (counter > max) {
+                    max = counter;
                 }
             }
             
-            if (max + k < right - left) {
-                --chars[s.charAt(left) - 'A'];
+            if (right - left - max > k) {
+                --tab[s.charAt(left) - 'A'];
                 ++left;
             }
             
@@ -27,17 +27,3 @@ class Solution {
         return result;
     }
 }
-
-
-/* 
-a: 2
-b: 3
-
-k = 1
-
-left     |
-      "AABABBA"
-right         |
-
-
-*/
