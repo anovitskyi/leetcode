@@ -10,15 +10,10 @@
  */
 class Solution {
     public boolean isPalindrome(ListNode head) {
-        if (head.next == null) {
-            return true;
-        }
-        
         int size = getSize(head);
-        int mid = size / 2;
         
         ListNode prev = null;
-        while (mid-- > 0) {
+        for (int i = 0; i < size / 2; ++i) {
             ListNode tmp = head.next;
             head.next = prev;
             prev = head;
