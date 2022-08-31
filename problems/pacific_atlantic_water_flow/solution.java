@@ -1,12 +1,12 @@
 class Solution {
     public List<List<Integer>> pacificAtlantic(int[][] heights) {
-        boolean[][] pacificCells = getCellsThatCanReachPacificOcean(heights);
-        boolean[][] atlanticCells = getCellsThatCanReachAtlanticOcean(heights);
+        boolean[][] pacific = findPacificMountains(heights);
+        boolean[][] atlantic = findAtlanticMountains(heights);
         
         List<List<Integer>> result = new ArrayList<>();
         for (int i = 0; i < heights.length; ++i) {
             for (int j = 0; j < heights[i].length; ++j) {
-                if (pacificCells[i][j] && atlanticCells[i][j]) {
+                if (pacific[i][j] && atlantic[i][j]) {
                     result.add(List.of(i, j));
                 }
             }
@@ -14,65 +14,30 @@ class Solution {
         return result;
     }
     
-    private boolean[][] getCellsThatCanReachPacificOcean(int[][] grid) {
-        boolean[][] result = new boolean[grid.length][grid[0].length];
+    private boolean[][] findPacificMountains(int[][] heights) {
         Queue<int[]> queue = new LinkedList<>();
-        
-        queue.offer(new int[] {0, 0});
-        
-        for (int i = 1; i < grid.length; ++i) {
+        for (int i = 0; i < heights[0].length; ++i) {
+            queue.offer(new int[] {0, i});
+        }
+        for (int i = 1; i < heights.length; ++i) {
             queue.offer(new int[] {i, 0});
         }
-        
-        for (int j = 1; j < grid[0].length; ++j) {
-            queue.offer(new int[] {0, j});
-        }
-        
-        while (!queue.isEmpty()) {
-            int[] pos = queue.poll();
-            int x = pos[0];
-            int y = pos[1];
-            
-            if (result[x][y]) {
-                continue;
-            }
-            
-            result[x][y] = true;
-            
-            if (x - 1 >= 0 && grid[x - 1][y] >= grid[x][y]) {
-                queue.offer(new int[] {x - 1, y});
-            }
-            
-            if (y - 1 >= 0 && grid[x][y - 1] >= grid[x][y]) {
-                queue.offer(new int[] {x, y - 1});
-            }
-            
-            if (x + 1 < grid.length && grid[x + 1][y] >= grid[x][y]) {
-                queue.offer(new int[] {x + 1, y});
-            }
-            
-            if (y + 1 < grid[x].length && grid[x][y + 1] >= grid[x][y]) {
-                queue.offer(new int[] {x, y + 1});
-            }
-        }
-        
-        return result;
+        return populateTab(heights, queue);
     }
     
-    private boolean[][] getCellsThatCanReachAtlanticOcean(int[][] grid) {
-        boolean[][] result = new boolean[grid.length][grid[0].length];
+    private boolean[][] findAtlanticMountains(int[][] heights) {
         Queue<int[]> queue = new LinkedList<>();
-        
-        queue.offer(new int[] {grid.length - 1, grid[0].length - 1});
-        
-        for (int i = 0; i < grid.length - 1; ++i) {
-            queue.offer(new int[] {i, grid[i].length - 1});
+        for (int i = 0; i < heights[heights.length - 1].length; ++i) {
+            queue.offer(new int[] {heights.length - 1, i});
         }
-        
-        for (int j = 0; j < grid[0].length - 1; ++j) {
-            queue.offer(new int[] {grid.length - 1, j});
+        for (int i = 0; i < heights.length - 1; ++i) {
+            queue.offer(new int[] {i, heights[i].length - 1});
         }
-        
+        return populateTab(heights, queue);
+    }
+    
+    private boolean[][] populateTab(int[][] heights, Queue<int[]> queue) {
+        boolean[][] result = new boolean[heights.length][heights[0].length];
         while (!queue.isEmpty()) {
             int[] pos = queue.poll();
             int x = pos[0];
@@ -81,26 +46,28 @@ class Solution {
             if (result[x][y]) {
                 continue;
             }
-            
             result[x][y] = true;
             
-            if (x - 1 >= 0 && grid[x - 1][y] >= grid[x][y]) {
+            if (x - 1 >= 0 && heights[x - 1][y] >= heights[x][y]) {
+                result[x][y] = true;
                 queue.offer(new int[] {x - 1, y});
             }
             
-            if (y - 1 >= 0 && grid[x][y - 1] >= grid[x][y]) {
+            if (x + 1 < heights.length && heights[x + 1][y] >= heights[x][y]) {
+                result[x][y] = true;
+                queue.offer(new int[] {x + 1, y}); 
+            }
+            
+            if (y - 1 >= 0 && heights[x][y - 1] >= heights[x][y]) {
+                result[x][y] = true;
                 queue.offer(new int[] {x, y - 1});
             }
             
-            if (x + 1 < grid.length && grid[x + 1][y] >= grid[x][y]) {
-                queue.offer(new int[] {x + 1, y});
-            }
-            
-            if (y + 1 < grid[x].length && grid[x][y + 1] >= grid[x][y]) {
+            if (y + 1 < heights[x].length && heights[x][y + 1] >= heights[x][y]) {
+                result[x][y] = true;
                 queue.offer(new int[] {x, y + 1});
             }
         }
-        
         return result;
     }
 }
