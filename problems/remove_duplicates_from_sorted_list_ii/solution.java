@@ -17,8 +17,6 @@ class Solution {
             if (head.next == null || head.val != head.next.val) {
                 curr.next = head;
                 curr = curr.next;
-                head = head.next;
-                continue;
             }
             
             while (head.next != null && head.val == head.next.val) {
@@ -26,8 +24,8 @@ class Solution {
             }
             head = head.next;
         }
-        
         curr.next = null;
+        
         return result.next;
     }
 }
