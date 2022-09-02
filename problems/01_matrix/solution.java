@@ -9,7 +9,7 @@ class Solution {
                     mat[i][j] = Integer.MAX_VALUE;
                 }
             }
-        }
+        } 
         
         while (!queue.isEmpty()) {
             int[] pos = queue.poll();
@@ -36,7 +36,6 @@ class Solution {
                 queue.offer(new int[] {x, y + 1});
             }
         }
-        
         return mat;
     }
 }
