@@ -34,20 +34,19 @@ class Solution {
         if (root.next != null && (root.left != null || root.right != null)) {
             Node source = root.right != null ? root.right : root.left;
             Node target = null;
-            
-            Node tmp = root.next;
-            while (tmp != null) {
-                if (tmp.left != null) {
-                    target = tmp.left;
+            Node next = root.next;
+            while (next != null) {
+                if (next.left != null) {
+                    target = next.left;
                     break;
                 }
                 
-                if (tmp.right != null) {
-                    target = tmp.right;
+                if (next.right != null) {
+                    target = next.right;
                     break;
                 }
                 
-                tmp = tmp.next;
+                next = next.next;
             }
             
             source.next = target;
@@ -55,7 +54,6 @@ class Solution {
         
         connect(root.right);
         connect(root.left);
-        
         return root;
     }
 }
