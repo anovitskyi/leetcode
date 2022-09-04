@@ -32,7 +32,6 @@ class Solution {
             head = head.next;
             prev = prev.next;
         }
-        
         return true;
     }
     
