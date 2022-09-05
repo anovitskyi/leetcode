@@ -18,20 +18,20 @@ class Solution {
             return head;
         }
         
-        int mid = size / 2;
+        int leftSize = size / 2;
         ListNode left = head;
+        int rightSize = size - leftSize;
         ListNode right = head;
-        for (int i = 0; i < mid; ++i) {
+        for (int i = 0; i < leftSize; ++i) {
             right = right.next;
         }
         
-        left = mergeSort(left, mid);
-        right = mergeSort(right, size - mid);
+        left = mergeSort(left, leftSize);
+        right = mergeSort(right, rightSize);
         
         ListNode result = new ListNode();
         ListNode curr = result;
-        int leftSize = mid;
-        int rightSize = size - mid;
+        
         while (leftSize > 0 && rightSize > 0) {
             if (left.val < right.val) {
                 curr.next = left;
@@ -52,16 +52,17 @@ class Solution {
             --leftSize;
             curr = curr.next;
         }
-
+        
         curr.next = right;
+        
         return result.next;
     }
     
     private int getSize(ListNode head) {
         int size = 0;
         while (head != null) {
-            ++size;
             head = head.next;
+            ++size;
         }
         return size;
     }
