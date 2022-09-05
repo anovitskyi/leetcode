@@ -4,9 +4,9 @@ class Solution {
         Queue<Integer> queue = new PriorityQueue<>();
         
         for (char task : tasks) {
-            int newTime = map.getOrDefault(task, 0 - n  - 1) + n + 1;
-            map.put(task, newTime);
-            queue.offer(newTime);
+            int next = map.getOrDefault(task, 0 - n - 1) + n + 1;
+            queue.offer(next);
+            map.put(task, next);
         }
         
         int result = 0;
@@ -18,5 +18,19 @@ class Solution {
             ++result;
         }
         return result;
-    }   
+    }
 }
+
+/*
+
+    ["A","A","A","B","B","B"]
+    
+    8                         |
+    queue = [0, 0, 3, 3, 6, 6]
+    map = {
+        'A': 6,
+        'B': 6
+    }
+
+
+*/
