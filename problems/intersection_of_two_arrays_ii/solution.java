@@ -1,20 +1,23 @@
 class Solution {
     public int[] intersect(int[] nums1, int[] nums2) {
-        Arrays.sort(nums1);
-        Arrays.sort(nums2);
-        List<Integer> result = new LinkedList<>();
+        List<Integer> result = new ArrayList<>();
+        int[] tab = new int[1001];
+        int f = 0;
+        int s = 0;
         
-        int i1 = 0;
-        int i2 = 0;
-        while (i1 < nums1.length && i2 < nums2.length) {
-            if (nums1[i1] == nums2[i2]) {
-                result.add(nums1[i1]);
-                ++i1;
-                ++i2;
-            } else if (nums1[i1] < nums2[i2]) {
-                ++i1;
-            } else if (nums2[i2] < nums1[i1]) {
-                ++i2;
+        while (f < nums1.length || s < nums2.length) {
+            if (f < nums1.length) {
+                if (tab[nums1[f]]++ < 0) {
+                    result.add(nums1[f]);
+                }
+                ++f;
+            }
+            
+            if (s < nums2.length) {
+                if (tab[nums2[s]]-- > 0) {
+                    result.add(nums2[s]);
+                }
+                ++s;   
             }
         }
         
