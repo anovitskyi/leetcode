@@ -1,25 +1,22 @@
 class Solution {
-    public int[][] matrixReshape(int[][] nums, int r, int c) {
-        int newSize = r * c;
-        int oldSize = nums.length * nums[0].length;
-        if (newSize != oldSize) {
-            return nums;
+    public int[][] matrixReshape(int[][] mat, int r, int c) {
+        if (r * c != mat.length * mat[0].length) {
+            return mat;
         }
         
-        int[][] arr = new int[r][c];
+        int[][] result = new int[r][c];
+        int index = 0;
         
-        int column = 0;
-        int row = 0;
-        for (int i = 0; i < r; ++i) {
-            for (int j = 0; j < c; ++j) {
-                arr[i][j] = nums[row][column];
-                if (++column >= nums[0].length) {
-                    column = 0;
-                    ++row;
-                }
+        for (int i = 0; i < mat.length; ++i) {
+            for (int j = 0; j < mat[i].length; ++j) {
+                int x = index / c;
+                int y = index % c;
+                
+                result[x][y] = mat[i][j];
+                ++index;
             }
         }
         
-        return arr;
+        return result;
     }
 }
