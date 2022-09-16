@@ -4,18 +4,17 @@ class Solution {
             return false;
         }
         
-        int[] letters = new int[26];
+        int[] tab = new int[26];
         for (int i = 0; i < s.length(); ++i) {
-            ++letters[s.charAt(i) - 'a'];
-            --letters[t.charAt(i) - 'a'];
-        } 
+            --tab[s.charAt(i) - 'a'];
+            ++tab[t.charAt(i) - 'a'];
+        }
         
-        for (int i = 0; i < letters.length; ++i) {
-            if (letters[i] != 0) {
+        for (int i = 0; i < 26; ++i) {
+            if (tab[i] != 0) {
                 return false;
             }
         }
-        
         return true;
     }
 }
