@@ -1,29 +1,38 @@
 class MyQueue {
     
-    private final Stack<Integer> read = new Stack<>();
-    private final Stack<Integer> write = new Stack<>();
+    private final Stack<Integer> queue = new Stack<>();
+    private final Stack<Integer> stack = new Stack<>();
     
     public void push(int x) {
-        write.push(x);
+        stack.push(x);
     }
     
     public int pop() {
         int peek = peek();
-        read.pop();
+        queue.pop();
         return peek;
     }
     
     public int peek() {
-        if (read.isEmpty()) {
-            while (!write.isEmpty()) {
-                read.push(write.pop());
+        if (queue.isEmpty()) {
+            while (!stack.isEmpty()) {
+                queue.push(stack.pop());
             }
         }
         
-        return read.peek();
+        return queue.peek();
     }
     
     public boolean empty() {
-        return read.isEmpty() && write.isEmpty();
+        return queue.isEmpty() && stack.isEmpty();
     }
 }
+
+/**
+ * Your MyQueue object will be instantiated and called as such:
+ * MyQueue obj = new MyQueue();
+ * obj.push(x);
+ * int param_2 = obj.pop();
+ * int param_3 = obj.peek();
+ * boolean param_4 = obj.empty();
+ */
