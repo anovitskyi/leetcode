@@ -1,29 +1,31 @@
 class Solution {
-    public int[] sumEvenAfterQueries(int[] A, int[][] queries) { // O(n + m)
-        int even = 0;
-        for (int i = 0; i < A.length; ++i) { // O(n)
-            if (A[i] % 2 == 0) {
-                even += A[i];
+    public int[] sumEvenAfterQueries(int[] nums, int[][] queries) {
+        int[] result = new int[queries.length];
+        
+        int sum = 0;
+        for (int num : nums) {
+            if (num % 2 == 0) {
+                sum += num;
             }
         }
         
-        int[] res = new int[queries.length];
-        for (int i = 0; i < queries.length; ++i) { // O(m)
+        for (int i = 0; i < result.length; ++i) {
+            int value = queries[i][0];
             int index = queries[i][1];
-            int val = queries[i][0];
             
-            if (A[index] % 2 == 0) {
-                even -= A[index];
+            int prev = nums[index];
+            if (prev % 2 == 0) {
+                sum -= prev;
             }
             
-            A[index] += val;
-            
-            if (A[index] % 2 == 0) {
-                even += A[index];
+            int next = prev + value;
+            if (next % 2 == 0) {
+                sum += next;
             }
             
-            res[i] = even;
+            nums[index] = next;
+            result[i] = sum;
         }
-        return res;
+        return result;
     }
 }
