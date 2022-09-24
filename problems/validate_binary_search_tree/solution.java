@@ -1,6 +1,9 @@
 class Solution {
     public boolean isValidBST(TreeNode root) {
-        return isValid(root, Long.MIN_VALUE, Long.MAX_VALUE);
+        long left = Long.MIN_VALUE;
+        long right = Long.MAX_VALUE;
+        
+        return isValid(root, left, right);
     }
     
     private boolean isValid(TreeNode node, long left, long right) {
@@ -8,7 +11,7 @@ class Solution {
             return true;
         }
         
-        if (node.val <= left || node.val >= right) {
+        if (left >= node.val || node.val >= right) {
             return false;
         }
         
