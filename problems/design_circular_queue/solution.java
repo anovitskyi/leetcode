@@ -1,13 +1,13 @@
 class MyCircularQueue {
     
-    private final int[] elements;
-    private int head;
-    private int tail;
+    private int front;
+    private int end;
+    private final int[] queue;
 
     public MyCircularQueue(int k) {
-        elements = new int[k + 1];
-        head = 0;
-        tail = 0;
+        front = 0;
+        end = 0;
+        queue = new int[k + 1];
     }
     
     public boolean enQueue(int value) {
@@ -15,8 +15,12 @@ class MyCircularQueue {
             return false;
         }
         
-        elements[tail] = value;
-        tail = getNextIndex(tail);
+        queue[end] = value;
+        ++end;
+        if (end >= queue.length) {
+            end = 0;
+        }
+        
         return true;
     }
     
@@ -25,7 +29,11 @@ class MyCircularQueue {
             return false;
         }
         
-        head = getNextIndex(head);
+        ++front;
+        if (front >= queue.length) {
+            front = 0;
+        }
+        
         return true;
     }
     
@@ -34,7 +42,7 @@ class MyCircularQueue {
             return -1;
         }
         
-        return elements[head];
+        return queue[front];
     }
     
     public int Rear() {
@@ -42,33 +50,25 @@ class MyCircularQueue {
             return -1;
         }
         
-        return elements[getPrevIndex(tail)];
+        int prev = end - 1;
+        if (prev < 0) {
+            prev = queue.length - 1;
+        }
+        
+        return queue[prev];
     }
     
     public boolean isEmpty() {
-        return head == tail;
+        return front == end;
     }
     
     public boolean isFull() {
-        return head == getNextIndex(tail);
-    }
-    
-    private int getNextIndex(int index) {
-        return (index + 1) % elements.length;
-    }
-    
-    private int getPrevIndex(int index) {
-        return (((index - 1) % elements.length) + elements.length) % elements.length;
+        int next = end + 1;
+        
+        if (next >= queue.length) {
+            next = 0;
+        }
+        
+        return next == front;
     }
 }
-
-/**
- * Your MyCircularQueue object will be instantiated and called as such:
- * MyCircularQueue obj = new MyCircularQueue(k);
- * boolean param_1 = obj.enQueue(value);
- * boolean param_2 = obj.deQueue();
- * int param_3 = obj.Front();
- * int param_4 = obj.Rear();
- * boolean param_5 = obj.isEmpty();
- * boolean param_6 = obj.isFull();
- */
