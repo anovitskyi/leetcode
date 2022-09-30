@@ -4,7 +4,6 @@ class Solution {
         
         for (String equation : equations) {
             char[] tab = equation.toCharArray();
-            
             if (tab[1] == '!') {
                 continue;
             }
@@ -14,7 +13,6 @@ class Solution {
         
         for (String equation : equations) {
             char[] tab = equation.toCharArray();
-            
             if (tab[1] == '=') {
                 continue;
             }
@@ -28,7 +26,6 @@ class Solution {
     }
     
     private class UnionFind {
-        
         private final int[] data;
         
         UnionFind(int size) {
@@ -38,16 +35,13 @@ class Solution {
             }
         }
         
-        void union(int target, int source) {
-            if (target == source) {
-                return;
-            }
+        void union(int source, int target) {
+            int sourceRoot = find(source);
+            int targetRoot = find(target);
             
-            int t = find(target);
-            int s = find(source);
             for (int i = 0; i < data.length; ++i) {
-                if (data[i] == t) {
-                    data[i] = s;
+                if (data[i] == sourceRoot) {
+                    data[i] = targetRoot;
                 }
             }
         }
@@ -56,9 +50,7 @@ class Solution {
             while (data[target] != target) {
                 target = data[target];
             }
-            
             return target;
         }
-    
     }
 }
