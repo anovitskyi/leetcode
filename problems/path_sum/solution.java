@@ -4,11 +4,11 @@ class Solution {
             return false;
         }
         
-        int newSum = targetSum - root.val;
-        if (root.left == null && root.right == null && newSum == 0) {
-            return true;
+        int sum = targetSum - root.val;
+        if (root.left == null && root.right == null) {
+            return sum == 0;
         }
         
-        return hasPathSum(root.left, newSum) || hasPathSum(root.right, newSum);
+        return hasPathSum(root.left, sum) || hasPathSum(root.right, sum);
     }
 }
