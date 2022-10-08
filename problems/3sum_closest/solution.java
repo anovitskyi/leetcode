@@ -2,34 +2,40 @@ class Solution {
     public int threeSumClosest(int[] nums, int target) {
         Arrays.sort(nums);
         
-        int min = Integer.MAX_VALUE - Math.abs(target);
+        int result = Integer.MAX_VALUE - Math.abs(target);
         for (int i = 0; i < nums.length - 2; ++i) {
-            int currSum = findSum(nums, i + 1, nums.length - 1, target - nums[i]) + nums[i];
+            int sum = findTarget(nums, i + 1, nums.length - 1, target - nums[i]) + nums[i];
             
-            if (Math.abs(target - currSum) < Math.abs(target - min)) {
-                min = currSum;
+            if (sum == target) {
+                return target;
+            }
+            
+            if (Math.abs(sum - target) < Math.abs(result - target)) {
+                result = sum;
             }
         }
         
-        return min;
+        return result;
     }
     
-    private int findSum(int[] nums, int left, int right, int target) {
-        int result = Integer.MAX_VALUE - Math.abs(target);
+    private int findTarget(int[] nums, int left, int right, int target) {
+        int result = nums[left] + nums[right];
         
         while (left < right) {
             int sum = nums[left] + nums[right];
             
-            if (Math.abs(target - sum) < Math.abs(target - result)) {
+            if (sum == target) {
+                return sum;
+            }
+            
+            if (Math.abs(sum - target) < Math.abs(result - target)) {
                 result = sum;
             }
             
-            if (sum == target) {
-                break;
-            } else if (sum > target) {
-                --right;
-            } else {
+            if (sum < target) {
                 ++left;
+            } else {
+                --right;
             }
         }
         
