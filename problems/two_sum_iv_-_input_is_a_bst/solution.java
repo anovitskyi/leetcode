@@ -1,34 +1,30 @@
 class Solution {
     public boolean findTarget(TreeNode root, int k) {
-        return traverse(root, root, k);
+        return findTarget(root, root, k);
     }
     
-    private boolean traverse(TreeNode curr, TreeNode root, int target) {
-        if (curr == null) {
+    private boolean findTarget(TreeNode root, TreeNode node, int target) {
+        if (node == null) {
             return false;
         }
         
-        TreeNode elem = findElement(root, target - curr.val);
-        if (elem != null && elem != curr) {
+        TreeNode second = findNode(root, target - node.val);
+        if (second != null && second != node) {
             return true;
         }
         
-        return traverse(curr.left, root, target) || traverse(curr.right, root, target);
+        return findTarget(root, node.left, target) || findTarget(root, node.right, target);
     }
     
-    private TreeNode findElement(TreeNode root, int target) {
-        if (root == null) {
-            return root;
-        }
-    
-        if (root.val == target) {
-            return root;
+    private TreeNode findNode(TreeNode node, int target) {
+        if (node == null || node.val == target) {
+            return node;
         }
         
-        if (target > root.val) {
-            return findElement(root.right, target);
+        if (node.val < target) {
+            return findNode(node.right, target);
         } else {
-            return findElement(root.left, target);
+            return findNode(node.left, target);
         }
     }
 }
