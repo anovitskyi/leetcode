@@ -1,4 +1,3 @@
-# Write your MySQL query statement below
-SELECT name AS Employee
-FROM Employee e
-WHERE managerId IS NOT NULL AND salary > (SELECT salary FROM Employee WHERE id = e.managerId);
+select e.name as Employee
+from Employee e
+where e.salary > (select salary from Employee where id = e.managerId)
