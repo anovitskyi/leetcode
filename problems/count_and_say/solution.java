@@ -4,19 +4,18 @@ class Solution {
             return "1";
         }
         
-        String prev = countAndSay(n - 1);
         StringBuilder b = new StringBuilder();
+        String prev = countAndSay(n - 1);
         
-        int index = 0;
-        while (index < prev.length()) {
-            int start = index;
-            int curr = index + 1;
-            while (curr < prev.length() && prev.charAt(start) == prev.charAt(curr)) {
-                ++curr;
+        for (int i = 0; i < prev.length(); ) {
+            int index = i + 1;
+            
+            while (index < prev.length() && prev.charAt(index) == prev.charAt(i)) {
+                ++index;
             }
             
-            b.append(curr - start).append(prev.charAt(start));
-            index = curr;
+            b.append(index - i).append(prev.charAt(i));
+            i = index;
         }
         
         return b.toString();
