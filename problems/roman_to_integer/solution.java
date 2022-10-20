@@ -12,26 +12,37 @@ class Solution {
         map.put('M', 1000);
     }
     
-    /**
-        49 -> ILIX
-    
-    **/
-    
     public int romanToInt(String s) {
         int result = map.get(s.charAt(0));
         
         for (int i = 1; i < s.length(); ++i) {
-            int prev = map.get(s.charAt(i - 1));
-            int curr = map.get(s.charAt(i));
+            result += map.get(s.charAt(i));
             
-            if (curr <= prev) {
-                result += curr;
-            } else {
-                result += (curr - prev - prev);
+            if (map.get(s.charAt(i)) > map.get(s.charAt(i - 1))) {
+                result -= map.get(s.charAt(i - 1)) * 2;
             }
         }
         
         return result;
     }
-    
 }
+
+/*
+
+    XII
+    XIII
+    XIV
+    XV
+    XVI
+    XVII
+    XVIII
+    XIX
+    XX
+    XXI
+    XXII
+    XXIII
+    XXIV
+    XXV
+    XXV
+
+*/
