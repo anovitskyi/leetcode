@@ -1,6 +1,6 @@
 class Solution {
     public String minWindow(String s, String t) {
-        if (s.length() < t.length()) {
+        if (t.length() > s.length()) {
             return "";
         }
         
@@ -13,49 +13,50 @@ class Solution {
         int foundLetters = 0;
         int left = 0;
         int right = 0;
-        int leftResult = 0;
-        int rightResult = s.length() + 1;
+        int leftResult = -1;
+        int rightResult = s.length();
         
         while (right < s.length()) {
             char rightCh = s.charAt(right);
             if (map.containsKey(rightCh)) {
-                map.put(rightCh, map.get(rightCh) - 1);
-                if (map.get(rightCh) == 0) {
+                int prev = map.get(rightCh);
+                map.put(rightCh, prev - 1);
+                
+                if (prev == 1) {
                     ++foundLetters;
                 }
             }
             ++right;
             
             if (foundLetters == map.size()) {
-                while (map.getOrDefault(s.charAt(left), -1) < 0) {
-                    char leftCh = s.charAt(left);
-                    if (map.containsKey(leftCh)) {
-                        map.put(leftCh, map.get(leftCh) + 1);
+                while (!map.containsKey(s.charAt(left)) || map.get(s.charAt(left)) < 0) {
+                    if (map.containsKey(s.charAt(left))) {
+                        map.put(s.charAt(left), map.get(s.charAt(left)) + 1);
                     }
                     ++left;
                 }
                 
-                if ((right - left) < (rightResult - leftResult)) {
+                if (right - left < rightResult - leftResult) {
                     leftResult = left;
-                    rightResult = right;   
+                    rightResult = right; 
                 }
                 
-                while (foundLetters == map.size()) {
-                    char leftCh = s.charAt(left);
-                    if (map.containsKey(leftCh)) {
-                        map.put(leftCh, map.get(leftCh) + 1);
-                        if (map.get(leftCh) == 1) {
-                            --foundLetters;
-                        }
-                    }
-                    ++left;
-                }
+                map.put(s.charAt(left), map.get(s.charAt(left)) + 1);
+                --foundLetters;
+                ++left;
             }
         }
         
-        if (rightResult == s.length() + 1) {
+        if (leftResult == -1) {
             return "";
         }
+        
         return s.substring(leftResult, rightResult);
     }
 }
+
+/*
+                |
+    ADOBECODEBANC
+             |
+*/
