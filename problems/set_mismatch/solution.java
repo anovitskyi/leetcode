@@ -1,21 +1,19 @@
 class Solution {
     public int[] findErrorNums(int[] nums) {
-        int missing = (nums.length * (nums.length + 1)) / 2;
+        int sum = (nums.length + nums.length * nums.length) / 2;
         int duplicate = -1;
         
         for (int i = 0; i < nums.length; ++i) {
-            int num = Math.abs(nums[i]);
+            int absNum = Math.abs(nums[i]);
             
-            if (nums[num - 1] < 0) {
-                duplicate = num;
+            if (nums[absNum - 1] < 0) {
+                duplicate = absNum;
             } else {
-                missing -= num;
-                nums[num - 1] = 0 - nums[num - 1];
+                nums[absNum - 1] *= -1;
+                sum -= absNum;
             }
         }
         
-        return new int[] {
-            duplicate, missing
-        };
+        return new int[] {duplicate, sum};
     }
 }
