@@ -1,30 +1,39 @@
 class Solution {
     public boolean arrayStringsAreEqual(String[] word1, String[] word2) {
-        int i = 0;
-        int ich = 0;
-        int j = 0;
-        int jch = 0;
+        int left = 0;
+        int leftP = 0;
+        int right = 0;
+        int rightP = 0;
         
-        while (i < word1.length && j < word2.length) {
-            if (word1[i].charAt(ich) != word2[j].charAt(jch)) {
+        while (left < word1.length && right < word2.length) {
+            if (leftP >= word1[left].length()) {
+                ++left;
+                leftP = 0;
+                continue;
+            }
+            
+            if (rightP >= word2[right].length()) {
+                ++right;
+                rightP = 0;
+                continue;
+            }
+            
+            if (word1[left].charAt(leftP) != word2[right].charAt(rightP)) {
                 return false;
             }
             
-            if (ich + 1 >= word1[i].length()) {
-                ++i;
-                ich = 0;
-            } else {
-                ++ich;
-            }
-            
-            if (jch + 1 >= word2[j].length()) {
-                ++j;
-                jch = 0;
-            } else {
-                ++jch;
-            }
+            ++leftP;
+            ++rightP;
         }
         
-        return i == word1.length && j == word2.length;
+        if (left < word1.length && leftP >= word1[left].length()) {
+            ++left;
+        }
+        
+        if (right < word2.length && rightP >= word2[right].length()) {
+            ++right;
+        }
+        
+        return left == word1.length && right == word2.length;
     }
 }
