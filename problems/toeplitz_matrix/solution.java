@@ -1,8 +1,8 @@
 class Solution {
     public boolean isToeplitzMatrix(int[][] matrix) {
-        for (int row = 1; row < matrix.length; ++row) {
-            for (int col = 1; col < matrix[row].length; ++col) {
-                if (matrix[row][col] != matrix[row - 1][col - 1]) {
+        for (int i = 1; i < matrix.length; ++i) {
+            for (int j = 1; j < matrix[i].length; ++j) {
+                if (matrix[i][j] != matrix[i - 1][j - 1]) {
                     return false;
                 }
             }
