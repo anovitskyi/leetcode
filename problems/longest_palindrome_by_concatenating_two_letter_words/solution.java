@@ -1,41 +1,37 @@
 class Solution {
-     public int longestPalindrome(String[] words) {
+    public int longestPalindrome(String[] words) {
         Map<String, Integer> map = new HashMap<>();
-        boolean flag = false;
-        int count = 0;
-        for(String word : words){
-            if(!map.containsKey(word)){
-                map.put(word, 1);
-            }
-            else{
-                map.put(word, map.get(word)+1);
-            }
+        for (String word : words) {
+            map.put(word, map.getOrDefault(word, 0) + 1);
         }
-        List<String> l = new ArrayList<>();
-        for(Map.Entry<String, Integer> entry : map.entrySet()){
-            l.add(entry.getKey());
-        }
-        for(String s : l){
-            StringBuilder sb = new StringBuilder();
-            sb.append(s);
-            String t = sb.reverse().toString();
-            if(s.equals(t)){
-                count += map.get(s)/2;
-                if(map.get(s)%2 == 1){
-                    flag = true;
-                }
+        
+        int result = 0;
+        int sameLetters = 0;
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            String word = entry.getKey();
+            int occurrence = entry.getValue();
+            
+            if (word.charAt(0) == word.charAt(1)) {
+                int mod = occurrence % 2;
+                result += (occurrence - mod) * 2;
+                sameLetters += mod;
+                continue;
             }
-            else{
-                if(map.get(t) != null){
-                    count += Math.min(map.get(s), map.get(t));
-                    map.remove(s);
-                }
+            
+            String reverse = "" + word.charAt(1) + word.charAt(0);
+            int reverseOccurrence = map.getOrDefault(reverse, -1);
+            if (reverseOccurrence > 0) {
+                int min = Math.min(occurrence, reverseOccurrence);
+                result += min * 2 * 2;
+                map.put(word, occurrence - min);
+                map.put(reverse, reverseOccurrence - min);
             }
         }
-        count = count * 4;
-        if(flag){
-            count += 2;
+        
+        if (sameLetters > 0) {
+            result += 2;
         }
-        return count;
+        
+        return result;
     }
 }
