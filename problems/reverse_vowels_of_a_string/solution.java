@@ -1,26 +1,31 @@
 class Solution {
-    private static final Set<Character> vowels = Set.of('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U');
-    
+
+    private static final Set<Character> VOWELS = Set.of('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U');
+
     public String reverseVowels(String s) {
-        char[] tab = s.toCharArray();
         int left = 0;
-        int right = tab.length - 1;
-        
+        int right = s.length() - 1;
+        char[] tab = s.toCharArray();
+
         while (left < right) {
-            if (!vowels.contains(tab[left])) {
+            if (!VOWELS.contains(tab[left])) {
                 ++left;
-            } else if (!vowels.contains(tab[right])) {
-                --right;
-            } else {
-                char tmp = tab[left];
-                tab[left] = tab[right];
-                tab[right] = tmp;
-                ++left;
-                --right;
+                continue;
             }
+
+            if (!VOWELS.contains(tab[right])) {
+                --right;
+                continue;
+            }
+
+            char tmp = tab[left];
+            tab[left] = tab[right];
+            tab[right] = tmp;
+            ++left;
+            --right;
         }
-        
+
         return new String(tab);
     }
-    
+
 }
