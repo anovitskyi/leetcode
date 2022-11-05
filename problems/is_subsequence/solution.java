@@ -3,14 +3,15 @@ class Solution {
         if (s.length() > t.length()) {
             return false;
         }
-        
-        int sPointer = 0;
-        for (int tPointer = 0; sPointer < s.length() && tPointer < t.length(); ++tPointer) {
-            if (t.charAt(tPointer) == s.charAt(sPointer)) {
-                ++sPointer;
+
+        int pointer = 0;
+
+        for (int i = 0; i < t.length() && pointer < s.length(); ++i) {
+            if (t.charAt(i) == s.charAt(pointer)) {
+                ++pointer;
             }
         }
-        
-        return sPointer == s.length();
+
+        return pointer == s.length();
     }
 }
