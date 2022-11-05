@@ -1,23 +1,27 @@
 class Solution {
     public List<Integer> getRow(int rowIndex) {
-        List<Integer> result = new LinkedList<>();
-        result.add(1);
-        
-        for (int row = 1; row <= rowIndex; ++row) {
-            int size = row + 1;
-            List<Integer> newList = new LinkedList<>();
-            
-            for (int i = 0; i < size; ++i) {
-                int prev = i == 0 ? 0 : result.get(i - 1);
-                int curr = i == row ? 0 : result.get(i);
+        List<Integer> result = List.of(1);
+
+        while (rowIndex-- > 0) {
+            List<Integer> copy = new ArrayList<>(result.size() + 1);
+
+            for (int i = 0; i < result.size() + 1; ++i) {
+                int prev = 0;
+                if (i - 1 >= 0) {
+                    prev = result.get(i - 1);
+                }
+
+                int curr = 0;
+                if (i < result.size()) {
+                    curr = result.get(i);
+                }
                 
-                newList.add(prev + curr);
+                copy.add(prev + curr);
             }
-            
-            result = newList;
-        }
-        
-        
+
+            result = copy;
+        }    
+
         return result;
     }
 }
