@@ -1,35 +1,22 @@
 class Solution {
     public int maximum69Number (int num) {
-        int newNum = 0;
-        int copy = num;
-        int size = 0;
-        
-        while (copy > 0) {
-            ++size;
-            copy /= 10;
+        Stack<Integer> stack = new Stack<>();
+        while (num > 0) {
+            stack.push(num % 10);
+            num /= 10;
         }
-        
-        int[] nums = new int[size];
-        int lastSixIndex = -1;
-        copy = num;
-        while (copy > 0) {
-            if (copy % 10 == 6) {
-                lastSixIndex = size - 1;
+
+        int result = 0;
+        boolean replaced = false;
+        while (!stack.isEmpty()) {
+            result *= 10;
+            int last = stack.pop();
+            if (last == 6 && !replaced) {
+                last = 9;
+                replaced = true;
             }
-            
-            nums[--size] = copy % 10;
-            copy /= 10;
+            result += last;
         }
-        
-        if (lastSixIndex != -1) {
-            nums[lastSixIndex] = 9;   
-        }
-        
-        
-        for (int i = 0; i < nums.length; ++i) {
-            newNum = newNum * 10 + nums[i];
-        }
-        
-        return newNum;
+        return result;
     }
 }
