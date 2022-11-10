@@ -1,14 +1,19 @@
 class Solution {
     public String removeDuplicates(String s) {
-        char[] tab = s.toCharArray();
-        int write = 0;
-        for (int read = 1; read < tab.length; ++read) {
-            if (write >= 0 && tab[read] == tab[write]) {
-                --write;
+        Stack<Character> stack = new Stack<>();
+        
+        for (int i = 0; i < s.length(); ++i) {
+            if (stack.isEmpty() || stack.peek() != s.charAt(i)) {
+                stack.push(s.charAt(i));
             } else {
-                tab[++write] = tab[read];
+                stack.pop();
             }
         }
-        return new String(tab, 0, write + 1);
+
+        char[] result = new char[stack.size()];
+        for (int i = stack.size() - 1; i >= 0; --i) {
+            result[i] = stack.pop();
+        }
+        return new String(result);
     }
 }
