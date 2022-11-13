@@ -1,24 +1,71 @@
 class Solution {
     public String reverseWords(String s) {
-        StringBuilder builder = new StringBuilder();
-        
-        s = s.trim();
-        for (int i = 0; i < s.length();) {
-            if (s.charAt(i) == ' ') {
-                while (i < s.length() && s.charAt(i) == ' ') {
-                    ++i;
+        char[] tab = s.toCharArray();
+        int read = 0;
+        int write = 0;
+
+        while (read < tab.length) {
+            if (tab[read] != ' ') {
+                tab[write] = tab[read];
+                ++write;
+
+                if (read + 1 < tab.length && tab[read + 1] == ' ') {
+                    tab[write] = ' ';
+                    ++write;
                 }
-                builder.insert(0, " ");
+            }
+
+            ++read;
+        }
+
+        if (tab[write - 1] == ' ') {
+            --write;
+        }
+
+        int left = 0;
+        int right = 0;
+        for (int i = 1; i < write; ++i) {
+            if (tab[i] == ' ') {
+                while (left < right) {
+                    char tmp = tab[left];
+                    tab[left] = tab[right];
+                    tab[right] = tmp;
+                    ++left;
+                    --right;
+                }
+
+                left = i + 1;
+                right = i + 1;
+                ++i;
             } else {
-                StringBuilder b = new StringBuilder();
-                while (i < s.length() && s.charAt(i) != ' ') {
-                    b.append(s.charAt(i));
-                    ++i;
-                }
-                builder.insert(0, b.toString());
+                ++right;
             }
         }
-        
-        return builder.toString();
+        while (left < right) {
+            char tmp = tab[left];
+            tab[left] = tab[right];
+            tab[right] = tmp;
+            ++left;
+            --right;
+        }
+
+        left = 0;
+        right = write - 1;
+        while (left < right) {
+            char tmp = tab[left];
+            tab[left] = tab[right];
+            tab[right] = tmp;
+            ++left;
+            --right;
+        }
+
+        return new String(tab, 0, write);
     }
 }
+
+/*.           |
+    "a good   example"
+                     |
+    "a doog   elpmaxe"
+    "example good a"
+ */
