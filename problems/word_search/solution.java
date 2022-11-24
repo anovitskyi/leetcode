@@ -7,33 +7,33 @@ class Solution {
                 }
             }
         }
-        
+
         return false;
     }
-    
-    private boolean wordExist(char[][] board, int x, int y, String word, int index) {
+
+    private boolean wordExist(char[][] board, int row, int col, String word, int index) {
         if (index >= word.length()) {
             return true;
         }
         
-        if (x < 0 || x >= board.length) {
+        if (row < 0 || row >= board.length) {
             return false;
         }
-        
-        if (y < 0 || y >= board[x].length) {
-            return false;
-        } 
-        
-        if (board[x][y] != word.charAt(index)) {
+
+        if (col < 0 || col >= board[row].length) {
             return false;
         }
-        
-        char copy = board[x][y];
-        board[x][y] = '0';
-        
-        boolean result = wordExist(board, x - 1, y, word, index + 1) || wordExist(board, x + 1, y, word, index + 1) || wordExist(board, x, y - 1, word, index + 1) || wordExist(board, x, y + 1, word, index + 1);
-        
-        board[x][y] = copy;
+
+        if (board[row][col] != word.charAt(index)) {
+            return false;
+        }
+        char tmp = board[row][col];
+        board[row][col] = '.';
+
+        boolean result = wordExist(board, row - 1, col, word, index + 1) || wordExist(board, row + 1, col, word, index + 1) || wordExist(board, row, col - 1, word, index + 1) || wordExist(board, row, col + 1, word, index + 1);
+
+        board[row][col] = tmp;
+
         return result;
     }
 }
