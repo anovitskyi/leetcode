@@ -1,36 +1,24 @@
 class Solution {
+
+    private static final Set<Character> vowels = Set.of(
+        'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'
+    );
+
     public boolean halvesAreAlike(String s) {
-        int vowels = 0;
-        
-        for (int aPointer = 0, bPointer = s.length() / 2; 
-             bPointer < s.length(); 
-             ++aPointer, ++bPointer) {
-            if (isVowel(s.charAt(aPointer))) {
-                ++vowels;
+        int half = s.length() / 2;
+        int a = 0;
+        int b = 0;
+
+        for (int i = 0; i < half; ++i) {
+            if (vowels.contains(s.charAt(i))) {
+                ++a;
             }
-            
-            if (isVowel(s.charAt(bPointer))) {
-                --vowels;
+
+            if (vowels.contains(s.charAt(i + half))) {
+                ++b;
             }
         }
-        
-        return vowels == 0;
-    }
-    
-    private boolean isVowel(char ch) {
-        if (ch >= 97) {
-            ch -= 32;
-        }
-        
-        switch (ch) {
-            case 'A':
-            case 'O':
-            case 'U':
-            case 'I':
-            case 'E':
-                return true;
-            default: 
-                return false;
-        }
+
+        return a == b;
     }
 }
