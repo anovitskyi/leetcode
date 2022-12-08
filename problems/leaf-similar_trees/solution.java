@@ -1,40 +1,32 @@
 class Solution {
     public boolean leafSimilar(TreeNode root1, TreeNode root2) {
-        Stack<TreeNode> f = new Stack<>();
-        f.push(root1);
-        Stack<TreeNode> s = new Stack<>();
-        s.push(root2);
-        
-        while (true) {
-            int fVal = getNextVal(f);
-            int sVal = getNextVal(s);
-            
-            if (fVal == -1 && sVal == -1) {
-                return true;
-            }
-            
-            if (fVal == -1 || sVal == -1 || fVal != sVal) {
+        List<Integer> list1 = getAllLeafs(root1, new ArrayList<>());
+        List<Integer> list2 = getAllLeafs(root2, new ArrayList<>());
+    
+        if (list1.size() != list2.size()) {
+            return false;
+        }
+
+        for (int i = 0; i < list1.size(); ++i) {
+            if (list1.get(i) != list2.get(i)) {
                 return false;
             }
         }
+        return true;
     }
-    
-    private int getNextVal(Stack<TreeNode> stack) {
-        while (!stack.isEmpty()) {
-            TreeNode node = stack.pop();
-            if (node.left == null && node.right == null) {
-                return node.val;
-            }
-            
-            if (node.right != null) {
-                stack.push(node.right);
-            }
-            
-            if (node.left != null) {
-                stack.push(node.left);
-            }
+
+    private List<Integer> getAllLeafs(TreeNode node, List<Integer> list) {
+        if (node == null) {
+            return list;
         }
-        
-        return -1;
+
+        if (node.left == null && node.right == null) {
+            list.add(node.val);
+        } else {
+            getAllLeafs(node.left, list);
+            getAllLeafs(node.right, list);
+        }
+
+        return list;
     }
 }
