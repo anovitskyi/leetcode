@@ -4,13 +4,17 @@ class Solution {
             return 1;
         }
 
-        int prevprev = 1;
-        int prev = 1;
+        if (n == 2) {
+            return 2;
+        }
 
-        for (int i = 2; i <= n; ++i) {
-            int sum = prev + prevprev;
+        int prevprev = 1;
+        int prev = 2;
+
+        for (int i = 3; i <= n; ++i) {
+            int tmp = prevprev + prev;
             prevprev = prev;
-            prev = sum;
+            prev = tmp;
         }
 
         return prev;
