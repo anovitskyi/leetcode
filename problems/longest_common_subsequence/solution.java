@@ -21,3 +21,12 @@ class Solution {
         return result;
     }
 }
+
+/**
+
+     a b c d e
+   a 1 0 0 0 0
+   c 0 0 1 0 0
+   e 0 0 0 0 1
+
+ */
