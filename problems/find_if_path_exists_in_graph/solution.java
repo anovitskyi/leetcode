@@ -1,35 +1,39 @@
 class Solution {
-    public boolean validPath(int n, int[][] edges, int start, int end) {
-        if (start == end) {
+    public boolean validPath(int n, int[][] edges, int source, int destination) {
+        if (source == destination) {
             return true;
         }
         
-        boolean[] visited = new boolean[n];
-        Map<Integer, Set<Integer>> map = new HashMap<>();
-        for (int[] edge : edges) {
-            map.computeIfAbsent(edge[0], $ -> new HashSet<>()).add(edge[1]);
-            map.computeIfAbsent(edge[1], $ -> new HashSet<>()).add(edge[0]);
+        Map<Integer, Set<Integer>> graph = new HashMap<>();
+        for (int[] pair : edges) {
+            graph.computeIfAbsent(pair[0], x -> new HashSet<>()).add(pair[1]);
+            graph.computeIfAbsent(pair[1], x -> new HashSet<>()).add(pair[0]);
         }
-        
-        return dfs(visited, map, start, end);
+
+        return hasPath(graph, source, destination, new HashSet<>());
     }
-    
-    private boolean dfs(boolean[] visited, Map<Integer, Set<Integer>> map, int start, int end) {
-        visited[start] = true;
-        if (map.get(start) == null) {
+
+    private boolean hasPath(Map<Integer, Set<Integer>> graph, int source, int destination, Set<Integer> visited) {
+        if (!graph.containsKey(source)) {
             return false;
         }
-        
-        if (map.get(start).contains(end)) {
+
+        if (visited.contains(source)) {
+            return false;
+        }
+
+        visited.add(source);
+
+        if (source == destination) {
             return true;
         }
-        
-        for (int edge : map.get(start)) {
-            if (!visited[edge] && dfs(visited, map, edge, end)) {
+
+        for (int neighbour : graph.get(source)) {
+            if (hasPath(graph, neighbour, destination, visited)) {
                 return true;
             }
         }
-        
+
         return false;
     }
 }
