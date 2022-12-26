@@ -1,34 +1,19 @@
 class Solution {
     public boolean canJump(int[] nums) {
-        int[] visited = new int[nums.length];
-        return canReachLastElement(0, nums, visited);
-    }
-    
-    private boolean canReachLastElement(int index, int[] nums, int[] visited) {
-        if (index >= nums.length - 1 || visited[index] == 1) {
-            return true;
-        }
-        
-        if (visited[index] == -1) {
-            return false;
-        }
-        
-        for (int i = nums[index]; i >= 1; --i) {
-            if (canReachLastElement(index + i, nums, visited)) {
-                visited[index] = 1;
-                return true;
+        Queue<Integer> queue = new PriorityQueue<>((a, b) -> b - a);
+
+        for (int i = 0; i < nums.length - 1; ++i) {
+            queue.offer(i + nums[i]);
+
+            while (!queue.isEmpty() && queue.peek() <= i) {
+                queue.poll();
+            }
+
+            if (queue.isEmpty()) {
+                return false;
             }
         }
-        
-        visited[index] = -1;
-        return false;
+
+        return true;
     }
 }
-
-/*
-
-    
-    [2,3,1,1,4]
-    [0,0,0,0,0]
-
-*/
