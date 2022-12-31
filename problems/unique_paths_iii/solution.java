@@ -1,58 +1,43 @@
 class Solution {
     public int uniquePathsIII(int[][] grid) {
-        int[] start = new int[2];
-        int[] end = new int[2];
-        int squares = 0;
-        boolean[][] visited = new boolean[grid.length][grid[0].length];
-        
+        int emptyCount = 0;
+        int[] startPosition = null;
+
         for (int i = 0; i < grid.length; ++i) {
             for (int j = 0; j < grid[i].length; ++j) {
                 if (grid[i][j] == 0) {
-                    ++squares;
+                    ++emptyCount;
                 } else if (grid[i][j] == 1) {
-                    start[0] = i;
-                    start[1] = j;
-                    visited[i][j] = true;
-                } else if (grid[i][j] == 2) {
-                    end[0] = i;
-                    end[1] = j;
-                } else if (grid[i][j] == -1) {
-                    visited[i][j] = true;
+                    startPosition = new int[] {i, j};
+                    grid[i][j] = 0;
+                    ++emptyCount;
                 }
             }
         }
-        
-        return dfs(grid, new int[] {start[0] - 1, start[1]}, end, visited, squares) 
-            + dfs(grid, new int[] {start[0] + 1, start[1]}, end, visited, squares)
-            + dfs(grid, new int[] {start[0], start[1] - 1}, end, visited, squares)
-            + dfs(grid, new int[] {start[0], start[1] + 1}, end, visited, squares);
+
+        return dfs(grid, startPosition, emptyCount);
     }
-    
-    private int dfs(int[][] grid, int[] curr, int[] end, boolean[][] visited, int squares) {
-        int x = curr[0];
+
+    private int dfs(int[][] grid, int[] currPosition, int emptyCount) {
+        int x = currPosition[0];
+        int y = currPosition[1];
         if (x < 0 || x >= grid.length) {
             return 0;
         }
-        
-        int y = curr[1];
+
         if (y < 0 || y >= grid[x].length) {
             return 0;
         }
-        
-        if (x == end[0] && y == end[1]) {
-            return squares == 0 ? 1 : 0;
-        }
-        
-        if (visited[x][y]) {
+
+        if (grid[x][y] == -1) {
             return 0;
+        } else if (grid[x][y] == 2) {
+            return emptyCount == 0 ? 1 : 0;
         }
-        
-        visited[x][y] = true;
-        int result = dfs(grid, new int[] {x - 1, y}, end, visited, squares - 1) 
-            + dfs(grid, new int[] {x + 1, y}, end, visited, squares - 1)
-            + dfs(grid, new int[] {x, y - 1}, end, visited, squares - 1)
-            + dfs(grid, new int[] {x, y + 1}, end, visited, squares - 1);
-        visited[x][y] = false;
-        return result;
+
+        grid[x][y] = -1;
+        int sum = dfs(grid, new int[] {x - 1, y}, emptyCount - 1) + dfs(grid, new int[] {x + 1, y}, emptyCount - 1) + dfs(grid, new int[] {x, y - 1}, emptyCount - 1) + dfs(grid, new int[] {x, y + 1}, emptyCount - 1);
+        grid[x][y] = 0;
+        return sum;
     }
 }
