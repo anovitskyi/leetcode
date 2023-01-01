@@ -1,28 +1,29 @@
 class Solution {
     public boolean wordPattern(String pattern, String s) {
-        Map<Character, String> map = new HashMap<>();
         String[] words = s.split(" ");
-        
-        if (pattern.length() != words.length) {
+        if (words.length != pattern.length()) {
             return false;
         }
-        
-        Set<String> visitedWords = new HashSet<>();
-        for (int i = 0; i < pattern.length(); ++i) {
+
+        Map<Character, String> map = new HashMap<>(pattern.length());
+        Set<String> visited = new HashSet<>();
+        for (int i = 0; i < words.length; ++i) {
             char key = pattern.charAt(i);
+            String word = words[i];
             
-            if (!map.containsKey(key)) {
-                if (visitedWords.contains(words[i])) {
+            if (map.containsKey(key)) {
+                if (!map.get(key).equals(word)) {
                     return false;
                 }
-                
-                map.put(key, words[i]);
-                visitedWords.add(words[i]);
-            } else if (!map.get(key).equals(words[i])) {
+            } else {
+                if (visited.contains(word)) {
                     return false;
+                }
+                visited.add(word);
+                map.put(key, word);
             }
-            
         }
+
         return true;
     }
 }
