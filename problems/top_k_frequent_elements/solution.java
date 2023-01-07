@@ -4,27 +4,18 @@ class Solution {
         for (int num : nums) {
             map.put(num, map.getOrDefault(num, 0) + 1);
         }
-        
-        List<Integer>[] buckets = new List[nums.length + 1];
-        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
-            if (buckets[entry.getValue()] == null) {
-                buckets[entry.getValue()] = new LinkedList<>();
+
+        Queue<Integer> queue = new PriorityQueue<>((a, b) -> map.get(a) - map.get(b));
+        for (int num : map.keySet()) {
+            queue.offer(num);
+            if (queue.size() > k) {
+                queue.poll();
             }
-            
-            buckets[entry.getValue()].add(entry.getKey());
         }
-        
+
         int[] result = new int[k];
-        for (int i = buckets.length - 1; k >= 0 && i >= 0; --i) {
-            List<Integer> elements = buckets[i];
-            if (elements == null || elements.isEmpty()) {
-                continue;
-            }
-            
-            Iterator<Integer> iter = elements.iterator();
-            while (k > 0 && iter.hasNext()) {
-                result[--k] = iter.next();
-            }
+        for (int i = k - 1; i >= 0; --i) {
+            result[i] = queue.poll();
         }
         return result;
     }
