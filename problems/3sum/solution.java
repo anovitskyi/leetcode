@@ -7,34 +7,51 @@ class Solution {
             if (i > 0 && nums[i] == nums[i - 1]) {
                 continue;
             }
+
+            List<List<Integer>> twoSums = twoSum(nums, i + 1, nums.length - 1, 0 - nums[i]);
             
-            findSum(nums, i, result);
+            for (List<Integer> twoSum : twoSums) {
+                twoSum.add(nums[i]);
+                result.add(twoSum);
+            }
         }
         
         return result;
     }
-    
-    private void findSum(int[] nums, int start, List<List<Integer>> result) {
-        int left = start + 1;
-        int right = nums.length - 1;
-        
+
+    private List<List<Integer>> twoSum(int[] nums, int l, int r, int target) {
+        List<List<Integer>> result = new ArrayList<>();
+        int left = l;
+        int right = r;
+
         while (left < right) {
+            if (left > l && nums[left] == nums[left - 1]) {
+                ++left;
+                continue;
+            }
+
+            if (right < r && nums[right] == nums[right + 1]) {
+                --right;
+                continue;
+            }
+
             int sum = nums[left] + nums[right];
-            
-            if (sum + nums[start] == 0) {
-                result.add(Arrays.asList(nums[start], nums[left], nums[right]));
-                do {
-                    ++left;
-                } while (left < right && nums[left] == nums[left - 1]);
-                
-                do {
-                    --right;
-                } while (left < right && nums[right] == nums[right + 1]);
-            } else if (sum + nums[start] > 0) {
+
+            if (sum == target) {
+                List<Integer> twoSum = new ArrayList<>();
+                twoSum.add(nums[left]);
+                twoSum.add(nums[right]);
+                result.add(twoSum);
+
+                ++left;
+                --right;
+            } else if (sum > target) {
                 --right;
             } else {
                 ++left;
             }
         }
+
+        return result;
     }
 }
