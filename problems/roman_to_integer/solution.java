@@ -1,6 +1,6 @@
 class Solution {
-    
-    private static final Map<Character, Integer> map = new HashMap<>();
+
+    private static final Map<Character, Integer> map = new HashMap<>(); 
     
     static {
         map.put('I', 1);
@@ -11,24 +11,38 @@ class Solution {
         map.put('D', 500);
         map.put('M', 1000);
     }
-    
+
     public int romanToInt(String s) {
-        int result = map.get(s.charAt(0));
-        
-        for (int i = 1; i < s.length(); ++i) {
-            result += map.get(s.charAt(i));
+        int result = 0;
+
+        for (int i = s.length() - 1; i >= 0; --i) {
+            int prev = i + 1 < s.length() ? map.get(s.charAt(i + 1)) : 0;
+            int curr = map.get(s.charAt(i));
             
-            if (map.get(s.charAt(i)) > map.get(s.charAt(i - 1))) {
-                result -= map.get(s.charAt(i - 1)) * 2;
+            if (curr < prev) {
+                result -= curr;
+            } else {
+                result += curr;
             }
         }
-        
+
         return result;
     }
 }
 
-/*
+/**
 
+    I
+    II
+    III
+    IV
+    V
+    VI
+    VII
+    VIII
+    IX
+    X
+    XI
     XII
     XIII
     XIV
@@ -38,11 +52,8 @@ class Solution {
     XVIII
     XIX
     XX
-    XXI
-    XXII
-    XXIII
-    XXIV
-    XXV
-    XXV
+    XX
 
-*/
+
+
+ */
