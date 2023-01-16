@@ -1,29 +1,35 @@
 class Solution {
     public int characterReplacement(String s, int k) {
-        int[] tab = new int[26];
+        Map<Character, Integer> map = new HashMap<>();
+        int result = 0;
         int left = 0;
         int right = 0;
-        int result = 0;
-        
+
         while (right < s.length()) {
-            ++tab[s.charAt(right) - 'A'];
+            char rch = s.charAt(right);
+            map.put(rch, map.getOrDefault(rch, 0) + 1);
             ++right;
-            
+
             int max = 0;
-            for (int i = 0; i < tab.length; ++i) {
-                if (tab[i] > max) {
-                    max = tab[i];
+            for (int value : map.values()) {
+                if (value > max) {
+                    max = value;
                 }
             }
-            
-            if (right - left - max > k) {
-                --tab[s.charAt(left) - 'A'];
-                ++left;   
+
+            int distance = right - left;
+            if (distance - max > k) {
+                char lch = s.charAt(left);
+                map.put(lch, map.get(lch) - 1);
+                ++left;
+                --distance;
             }
-            
-            result = Math.max(result, right - left);
+
+            if (distance > result) {
+                result = distance;
+            }
         }
-        
+
         return result;
     }
 }
