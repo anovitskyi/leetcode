@@ -9,54 +9,53 @@ class Solution {
             char ch = t.charAt(i);
             map.put(ch, map.getOrDefault(ch, 0) + 1);
         }
-        
-        int foundLetters = 0;
+
+        int resultLeft = -1;
+        int resultRight = -1;
         int left = 0;
         int right = 0;
-        int leftResult = -1;
-        int rightResult = s.length();
-        
+        int size = map.size();
+
         while (right < s.length()) {
-            char rightCh = s.charAt(right);
-            if (map.containsKey(rightCh)) {
-                int prev = map.get(rightCh);
-                map.put(rightCh, prev - 1);
+            char rch = s.charAt(right);
+            if (map.containsKey(rch)) {
+                int count = map.get(rch);
+                map.put(rch, count - 1);
                 
-                if (prev == 1) {
-                    ++foundLetters;
+                if (count == 1) {
+                    --size;
                 }
             }
             ++right;
-            
-            if (foundLetters == map.size()) {
-                while (!map.containsKey(s.charAt(left)) || map.get(s.charAt(left)) < 0) {
-                    if (map.containsKey(s.charAt(left))) {
-                        map.put(s.charAt(left), map.get(s.charAt(left)) + 1);
+
+            if (size == 0) {
+                while (left < right) {
+                    char lch = s.charAt(left);
+
+                    if (map.getOrDefault(lch, Integer.MIN_VALUE) >= 0) {
+                        break;
+                    } else if (map.containsKey(lch)) {
+                        map.put(lch, map.get(lch) + 1);
                     }
+
                     ++left;
                 }
-                
-                if (right - left < rightResult - leftResult) {
-                    leftResult = left;
-                    rightResult = right; 
+
+                if (resultLeft == -1 || right - left < resultRight - resultLeft) {
+                    resultLeft = left;
+                    resultRight = right;    
                 }
-                
-                map.put(s.charAt(left), map.get(s.charAt(left)) + 1);
-                --foundLetters;
+
+                char lch = s.charAt(left);
+                map.put(lch, map.get(lch) + 1);
+                ++size;
                 ++left;
             }
         }
-        
-        if (leftResult == -1) {
+
+        if (resultLeft == -1) {
             return "";
         }
-        
-        return s.substring(leftResult, rightResult);
+        return s.substring(resultLeft, resultRight);
     }
 }
-
-/*
-                |
-    ADOBECODEBANC
-             |
-*/
