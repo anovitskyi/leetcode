@@ -4,33 +4,50 @@ class Solution {
             return false;
         }
 
-        int[] desArr = new int[26];
-        int[] currArr = new int[26];
-
+        Map<Character, Integer> map = new HashMap<>();
         for (int i = 0; i < s1.length(); ++i) {
-            ++desArr[s1.charAt(i) - 'a'];
-            ++currArr[s2.charAt(i) - 'a'];
+            char ch = s1.charAt(i);
+            map.put(ch, map.getOrDefault(ch, 0) + 1);
+        }
+
+        int foundLetters = 0;
+        for (int i = 0; i < s1.length(); ++i) {
+            char ch = s2.charAt(i);
+
+            if (!map.containsKey(ch)) {
+                continue;
+            }
+
+            int count = map.get(ch);
+            if (count == 1) {
+                ++foundLetters;
+            }
+            map.put(ch, count - 1);
         }
 
         for (int i = s1.length(); i < s2.length(); ++i) {
-            if (areSame(desArr, currArr)) {
+            if (foundLetters == map.size()) {
                 return true;
             }
 
-            --currArr[s2.charAt(i - s1.length()) - 'a'];
-            ++currArr[s2.charAt(i) - 'a'];
-        }
+            char rch = s2.charAt(i);
+            if (map.containsKey(rch)) {
+                int count = map.get(rch);
+                if (count == 1) {
+                    ++foundLetters;
+                }
+                map.put(rch, count - 1);
+            }
 
-        return areSame(desArr, currArr);
-    }
-
-    private boolean areSame(int[] source, int[] target) {
-        for (int i = 0; i < source.length; ++i) {
-            if (source[i] != target[i]) {
-                return false;
+            char lch = s2.charAt(i - s1.length());
+            if (map.containsKey(lch)) {
+                int count = map.get(lch);
+                if (count == 0) {
+                    --foundLetters;
+                }
+                map.put(lch, count + 1);
             }
         }
-
-        return true;
+        return foundLetters == map.size();
     }
 }
