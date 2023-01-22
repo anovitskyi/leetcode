@@ -6,18 +6,24 @@ class Solution {
         }
 
         int result = 0;
+
         for (int num : nums) {
             if (set.contains(num - 1)) {
                 continue;
             }
 
-            int length = 1;
-            while (set.contains(num + 1)) {
-                ++length;
-                ++num;
+            int currResult = 1;
+            int target = num + 1;
+            while (set.contains(target)) {
+                ++target;
+                ++currResult;
             }
-            result = Math.max(result, length);
+            
+            if (currResult > result) {
+                result = currResult;
+            }
         }
+
         return result;
     }
 }
