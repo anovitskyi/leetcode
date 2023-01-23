@@ -1,9 +1,9 @@
 class Solution {
     public int characterReplacement(String s, int k) {
         Map<Character, Integer> map = new HashMap<>();
-        int result = 0;
         int left = 0;
         int right = 0;
+        int result = 0;
 
         while (right < s.length()) {
             char rch = s.charAt(right);
@@ -17,17 +17,14 @@ class Solution {
                 }
             }
 
-            int distance = right - left;
-            if (distance - max > k) {
+            int remainingChars = right - left - max;
+            if (remainingChars > k) {
                 char lch = s.charAt(left);
                 map.put(lch, map.get(lch) - 1);
                 ++left;
-                --distance;
             }
 
-            if (distance > result) {
-                result = distance;
-            }
+            result = Math.max(result, right - left);
         }
 
         return result;
