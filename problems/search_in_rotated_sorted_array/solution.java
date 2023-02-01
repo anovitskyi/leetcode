@@ -2,19 +2,33 @@ class Solution {
     public int search(int[] nums, int target) {
         int left = 0;
         int right = nums.length - 1;
-        
+
         if (nums[left] > nums[right]) {
-            int pivot = findPivot(nums, left, right);
-            if (target <= nums[right]) {
-                left = pivot + 1;
-            } else {
+            int tmpL = left;
+            int tmpR = right;
+            int pivot = -1;
+            
+            while (tmpL <= tmpR) {
+                int mid = (tmpR - tmpL) / 2 + tmpL;
+
+                if (nums[mid] <= nums[right]) {
+                    tmpR = mid - 1;
+                } else {
+                    pivot = mid;
+                    tmpL = mid + 1;
+                }
+            }
+
+            if (target >= nums[left]) {
                 right = pivot;
+            } else {
+                left = pivot + 1;
             }
         }
-        
+
         while (left <= right) {
-            int mid = left + (right - left) / 2;
-            
+            int mid = (right - left) / 2 + left;
+
             if (nums[mid] == target) {
                 return mid;
             } else if (nums[mid] > target) {
@@ -23,24 +37,31 @@ class Solution {
                 left = mid + 1;
             }
         }
-        
+
         return -1;
     }
-    
-    private int findPivot(int[] nums, int left, int right) {
-        int lastPivotIndex = left;
-        
-        while (left <= right) {
-            int mid = left + (right - left) / 2;
-            
-            if (nums[mid] > nums[nums.length - 1]) {
-                lastPivotIndex = mid;
-                left = mid + 1;
-            } else {
-                right = mid - 1;
-            }
-        }
-        
-        return lastPivotIndex;
-    }
 }
+
+/*
+           |       
+    [1, 2, 3, 0]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ */
