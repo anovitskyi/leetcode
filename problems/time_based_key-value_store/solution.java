@@ -1,41 +1,44 @@
 class TimeMap {
-    
-    private final Map<String, List<Value>> map = new HashMap<>();
+
+    private final Map<String, List<Pair>> store = new HashMap<>();
     
     public void set(String key, String value, int timestamp) {
-        map.computeIfAbsent(key, k -> new ArrayList<>()).add(new Value(timestamp, value));
+        store.computeIfAbsent(key, x -> new ArrayList<>()).add(new Pair(timestamp, value));
     }
     
     public String get(String key, int timestamp) {
-        List<Value> list = map.getOrDefault(key, Collections.emptyList());
-        
-        if (list.isEmpty() || list.get(0).timestamp > timestamp) {
+        List<Pair> values = store.get(key);
+        if (values == null) {
             return "";
         }
-        
+
         int left = 0;
-        int right = list.size() - 1;
-        int result = left;
-        
+        int right = values.size() - 1;
+        int result = -1;
+
         while (left <= right) {
-            int middle = left + (right - left) / 2;
-            
-            if (list.get(middle).timestamp <= timestamp) {
-                result = middle;
-                left = middle + 1;
+            int mid = (right - left) / 2 + left;
+            Pair midPair = values.get(mid);
+
+            if (midPair.timestamp <= timestamp) {
+                result = mid;
+                left = mid + 1;
             } else {
-                right = middle - 1;
+                right = mid - 1;
             }
         }
-        
-        return list.get(result).value;
+
+        if (result == -1) {
+            return "";
+        }
+        return values.get(result).value;
     }
-    
-    private class Value {
-        private final int timestamp;
-        private final String value;
-        
-        Value(int timestamp, String value) {
+
+    class Pair {
+        final int timestamp;
+        final String value;
+
+        Pair(int timestamp, String value) {
             this.timestamp = timestamp;
             this.value = value;
         }
