@@ -3,18 +3,18 @@ class Solution {
         int[] result = new int[temperatures.length];
         Stack<int[]> stack = new Stack<>();
 
-        for (int i = result.length - 1; i >= 0; --i) {
-            while (!stack.isEmpty() && stack.peek()[0] <= temperatures[i]) {
+        for (int i = temperatures.length - 1; i >= 0; --i) {
+            while (!stack.isEmpty() && temperatures[i] >= stack.peek()[0]) {
                 stack.pop();
             }
 
-            if (stack.isEmpty()) {
-                result[i] = 0;
-            } else {
-                result[i] = stack.peek()[1] - i;
+            int daysToWait = 0;
+            if (!stack.isEmpty()) {
+               daysToWait = stack.peek()[1] - i;
             }
 
-            stack.push(new int[] {temperatures[i], i});
+            result[i] = daysToWait;
+            stack.push(new int[]{temperatures[i], i});
         }
 
         return result;
