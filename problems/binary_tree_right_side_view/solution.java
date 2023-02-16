@@ -1,35 +1,20 @@
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode() {}
- *     TreeNode(int val) { this.val = val; }
- *     TreeNode(int val, TreeNode left, TreeNode right) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
- * }
- */
 class Solution {
     public List<Integer> rightSideView(TreeNode root) {
         List<Integer> result = new ArrayList<>();
-        traverse(root, result, 0);
+        traverse(root, 0, result);
         return result;
     }
-    
-    private void traverse(TreeNode root, List<Integer> list, int level) {
+
+    private void traverse(TreeNode root, int level, List<Integer> result) {
         if (root == null) {
             return;
         }
-        
-        if (list.size() <= level) {
-            list.add(root.val);
+
+        if (level >= result.size()) {
+            result.add(root.val);
         }
-        
-        traverse(root.right, list, level + 1);
-        traverse(root.left, list, level + 1);
+
+        traverse(root.right, level + 1, result);
+        traverse(root.left, level + 1, result);
     }
 }
