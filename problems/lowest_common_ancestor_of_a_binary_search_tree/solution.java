@@ -1,15 +1,25 @@
 class Solution {
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        if (root == null || root == p || root == q) {
-            return root;
-        }
-        
-        if (root.val > p.val && root.val > q.val) {
-            return lowestCommonAncestor(root.left, p, q);
-        } else if (root.val < p.val && root.val < q.val) {
-            return lowestCommonAncestor(root.right, p, q);
+        TreeNode min = null;
+        TreeNode max = null;
+        if (p.val < q.val) {
+            min = p;
+            max = q;
         } else {
+            min = q;
+            max = p;
+        }
+
+        return findLowestAncestor(root, min, max);
+    }
+
+    private TreeNode findLowestAncestor(TreeNode root, TreeNode min, TreeNode max) {
+        if (min.val <= root.val && root.val <= max.val) {
             return root;
+        } else if (root.val <= min.val) {
+            return findLowestAncestor(root.right, min, max);
+        } else {
+            return findLowestAncestor(root.left, min, max);
         }
     }
 }
