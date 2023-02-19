@@ -1,23 +1,22 @@
 class Solution {
     public int kthSmallest(TreeNode root, int k) {
-        List<Integer> result = new ArrayList<>(k);
-        traverse(root, k, result);
-        return result.get(k - 1);   
+        return findSmallest(root, new int[] {k});
     }
 
-    private void traverse(TreeNode root, int k, List<Integer> result) {
+    private int findSmallest(TreeNode root, int[] k) {
         if (root == null) {
-            return;
+            return -1;
         }
 
-        traverse(root.left, k, result);
-
-        if (result.size() < k) {
-            result.add(root.val);
-        } else {
-            return;
+        int left = findSmallest(root.left, k);
+        if (left != -1) {
+            return left;
         }
 
-        traverse(root.right, k, result);
+        if (--k[0] == 0) {
+            return root.val;
+        }
+
+        return findSmallest(root.right, k);
     }
 }
