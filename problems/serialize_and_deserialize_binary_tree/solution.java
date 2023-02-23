@@ -1,48 +1,50 @@
 public class Codec {
 
-    private static final String sep = ",";
-    private static final String nullVal = "null";
-    
-    // Encodes a tree to a single string.
+    private static final String SEPARATOR = ",";
+    private static final String NULL = "null";
+
     public String serialize(TreeNode root) {
-        StringBuilder builder = new StringBuilder();
-        dfs(root, builder);
-        return builder.toString();
-    }
-    
-    private void dfs(TreeNode node, StringBuilder builder) {
-        if (node == null) {
-            builder.append(nullVal);
-            return;
-        }
-        
-        builder.append(node.val);
-        
-        builder.append(sep);
-        dfs(node.left, builder);
-        
-        builder.append(sep);
-        dfs(node.right, builder);
+        StringBuilder b = new StringBuilder();
+        serializePreOrder(root, b);
+        return b.toString();
     }
 
-    // Decodes your encoded data to tree.
-    public TreeNode deserialize(String data) {
-        String[] tab = data.split(sep);
-        return rdfs(tab, new int[] {0});
+    private void serializePreOrder(TreeNode root, StringBuilder b) {
+        if (root == null) {
+            if (!b.isEmpty()) {
+                b.append(SEPARATOR);
+            }
+            b.append(NULL);
+            return;
+        }
+
+        if (!b.isEmpty()) {
+            b.append(SEPARATOR);
+        }
+        b.append(root.val);
+        serializePreOrder(root.left, b);
+        serializePreOrder(root.right, b);
     }
-    
-    private TreeNode rdfs(String[] tab, int[] index) {
-        if (tab[index[0]].equals(nullVal)) {
+
+    public TreeNode deserialize(String data) {
+        String[] tab = data.split(SEPARATOR);
+        int[] index = new int[] {0};
+        return deserializePreOrder(tab, index);
+    }
+
+    private TreeNode deserializePreOrder(String[] data, int[] index) {
+        if (index[0] >= data.length || data[index[0]].equals(NULL)) {
+            ++index[0];
             return null;
         }
-        
-        TreeNode node = new TreeNode(Integer.parseInt(tab[index[0]]));
+
+        int val = Integer.parseInt(data[index[0]]);
         ++index[0];
-        node.left = rdfs(tab, index);
-        ++index[0];
-        node.right = rdfs(tab, index);
+
+        TreeNode node = new TreeNode(val);
+        node.left = deserializePreOrder(data, index);
+        node.right = deserializePreOrder(data, index);
+
         return node;
     }
-    
-    // 1,2,null,null,3,4,null,null,5,null,null
 }
