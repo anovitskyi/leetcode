@@ -3,42 +3,64 @@ class Trie {
     private final TrieNode root = new TrieNode();
     
     public void insert(String word) {
-        TrieNode last = root;
+        TrieNode node = root;
         
         for (int i = 0; i < word.length(); ++i) {
-            last = last.nodes.computeIfAbsent(word.charAt(i), x -> new TrieNode());
+            int index = word.charAt(i) - 'a';
+
+            TrieNode nextNode = null;
+            if (node.children[index] == null) {
+                nextNode = new TrieNode();
+                node.children[index] = nextNode;
+            } else {
+                nextNode = node.children[index];
+            }
+
+            node = nextNode;
         }
-        
-        last.isEndOfWord = true;
+
+        node.isEndOfWord = true;
     }
     
     public boolean search(String word) {
-        TrieNode last = getLastNode(word);
-        return last != null && last.isEndOfWord;
+        TrieNode node = root;
+        
+        for (int i = 0; i < word.length(); ++i) {
+            int index = word.charAt(i) - 'a';
+
+            if (node.children[index] == null) {
+                return false;
+            }
+            node = node.children[index];
+        }
+        
+        return node.isEndOfWord;
     }
     
     public boolean startsWith(String prefix) {
-        return getLastNode(prefix) != null;
-    }
-    
-    private TrieNode getLastNode(String word) {
-        TrieNode last = root;
-        
-        for (int i = 0; i < word.length(); ++i) {
-            char ch = word.charAt(i);
-            
-            if (!last.nodes.containsKey(ch)) {
-                return null;
+        TrieNode node = root;
+
+        for (int i = 0; i < prefix.length(); ++i) {
+            int index = prefix.charAt(i) - 'a';
+
+            if (node.children[index] == null) {
+                return false;
             }
-            
-            last = last.nodes.get(ch);
+            node = node.children[index];
         }
-        
-        return last;
+        return true;
     }
-    
+
     private class TrieNode {
         boolean isEndOfWord = false;
-        final Map<Character, TrieNode> nodes = new HashMap<>();
+        TrieNode[] children = new TrieNode[26];
     }
 }
+
+/**
+ * Your Trie object will be instantiated and called as such:
+ * Trie obj = new Trie();
+ * obj.insert(word);
+ * boolean param_2 = obj.search(word);
+ * boolean param_3 = obj.startsWith(prefix);
+ */
