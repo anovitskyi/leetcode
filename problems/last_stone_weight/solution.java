@@ -4,15 +4,20 @@ class Solution {
         for (int stone : stones) {
             queue.offer(stone);
         }
-        
+
         while (queue.size() > 1) {
-            int diff = queue.poll() - queue.poll();
-            
-            if (diff != 0) {
+            int first = queue.poll();
+            int second = queue.poll();
+
+            int diff = first - second;
+            if (diff > 0) {
                 queue.offer(diff);
             }
         }
-        
-        return queue.isEmpty() ? 0 : queue.poll();
+
+        if (queue.isEmpty()) {
+            return 0;
+        }
+        return queue.poll();
     }
 }
