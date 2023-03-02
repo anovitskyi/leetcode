@@ -2,40 +2,35 @@ class Solution {
     public int findKthLargest(int[] nums, int k) {
         return quickSelect(nums, k - 1, 0, nums.length - 1);
     }
-    
-    private int quickSelect(int[] nums, int k, int left, int right) {
-        int current = left;
-        int last = left;
-        int pivot = right;
-        
-        while (current < pivot) {
-            if (nums[current] >= nums[pivot]) {
-                int tmp = nums[current];
-                nums[current] = nums[last];
-                nums[last] = tmp;
-                ++last;
+
+    private int quickSelect(int[] nums, int k, int start, int end) {
+        if (start > end) {
+            return Integer.MIN_VALUE;
+        }
+
+        int write = start;
+        int read = start;
+        while (read < end) {
+            if (nums[read] >= nums[end]) {
+                int tmp = nums[write];
+                nums[write] = nums[read];
+                nums[read] = tmp;
+                ++write;
             }
-            ++current;
+
+            ++read;
         }
-        
-        if (nums[last] < nums[pivot]) {
-            int tmp = nums[pivot];
-            nums[pivot] = nums[last];
-            nums[last] = tmp;   
-        }
-        
-        if (last == k) {
-            return nums[last];
-        } else if (last < k) {
-            return quickSelect(nums, k, last + 1, right);
+
+        int tmp = nums[write];
+        nums[write] = nums[end];
+        nums[end] = tmp;
+
+        if (write == k) {
+            return nums[write];
+        } else if (k > write) {
+            return quickSelect(nums, k, write + 1, end);
         } else {
-            return quickSelect(nums, k, left, last - 1);
+            return quickSelect(nums, k, start, write - 1);
         }
     }
 }
-
-/*
-    [5,6,4,3,2,1]
-    
-
-*/
