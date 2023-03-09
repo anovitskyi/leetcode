@@ -11,11 +11,11 @@ class Solution {
         return false;
     }
 
-    private boolean wordExist(char[][] board, int row, int col, String word, int index) {
-        if (index >= word.length()) {
+    private boolean wordExist(char[][] board, int row, int col, String word, int wordIndex) {
+        if (wordIndex >= word.length()) {
             return true;
         }
-        
+
         if (row < 0 || row >= board.length) {
             return false;
         }
@@ -24,16 +24,17 @@ class Solution {
             return false;
         }
 
-        if (board[row][col] != word.charAt(index)) {
+        if (board[row][col] != word.charAt(wordIndex)) {
             return false;
         }
-        char tmp = board[row][col];
-        board[row][col] = '.';
 
-        boolean result = wordExist(board, row - 1, col, word, index + 1) || wordExist(board, row + 1, col, word, index + 1) || wordExist(board, row, col - 1, word, index + 1) || wordExist(board, row, col + 1, word, index + 1);
+        char tmp = board[row][col];
+        board[row][col] = '0';
+
+        boolean nextLettersExist = wordExist(board, row - 1, col, word, wordIndex + 1) || wordExist(board, row, col - 1, word, wordIndex + 1) || wordExist(board, row + 1, col, word, wordIndex + 1) || wordExist(board, row, col + 1, word, wordIndex + 1);
 
         board[row][col] = tmp;
 
-        return result;
+        return nextLettersExist;
     }
 }
