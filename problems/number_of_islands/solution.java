@@ -1,34 +1,25 @@
 class Solution {
     public int numIslands(char[][] grid) {
-        int result = 0;
-        
+        int islands = 0;
+
         for (int i = 0; i < grid.length; ++i) {
             for (int j = 0; j < grid[i].length; ++j) {
                 if (grid[i][j] == '1') {
+                    ++islands;
                     visitIsland(grid, i, j);
-                    ++result;
                 }
             }
         }
-        
-        return result;
+
+        return islands;
     }
-    
+
     private void visitIsland(char[][] grid, int x, int y) {
-        if (x < 0 || x >= grid.length) {
+        if (x < 0 || x >= grid.length || y < 0 || y >= grid[x].length || grid[x][y] != '1') {
             return;
         }
-        
-        if (y < 0 || y >= grid[x].length) {
-            return;
-        }
-        
-        if (grid[x][y] != '1') {
-            return;
-        }
-        
-        grid[x][y] = '0';
-        
+
+        grid[x][y] = '2';
         visitIsland(grid, x - 1, y);
         visitIsland(grid, x + 1, y);
         visitIsland(grid, x, y - 1);
