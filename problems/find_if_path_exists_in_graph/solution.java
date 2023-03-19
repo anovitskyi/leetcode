@@ -1,39 +1,34 @@
 class Solution {
     public boolean validPath(int n, int[][] edges, int source, int destination) {
-        if (source == destination) {
-            return true;
-        }
-        
-        Map<Integer, Set<Integer>> graph = new HashMap<>();
-        for (int[] pair : edges) {
-            graph.computeIfAbsent(pair[0], x -> new HashSet<>()).add(pair[1]);
-            graph.computeIfAbsent(pair[1], x -> new HashSet<>()).add(pair[0]);
-        }
-
+        Map<Integer, List<Integer>> graph = convertToGraph(edges);
         return hasPath(graph, source, destination, new HashSet<>());
     }
 
-    private boolean hasPath(Map<Integer, Set<Integer>> graph, int source, int destination, Set<Integer> visited) {
-        if (!graph.containsKey(source)) {
-            return false;
-        }
-
-        if (visited.contains(source)) {
-            return false;
-        }
-
-        visited.add(source);
-
-        if (source == destination) {
+    private boolean hasPath(Map<Integer, List<Integer>> graph, int curr, int destination, Set<Integer> visited) {
+        if (curr == destination) {
             return true;
         }
 
-        for (int neighbour : graph.get(source)) {
+        if (visited.contains(curr)) {
+            return false;
+        }
+        visited.add(curr);
+
+        for (int neighbour : graph.get(curr)) {
             if (hasPath(graph, neighbour, destination, visited)) {
                 return true;
             }
         }
 
         return false;
+    }
+
+    private Map<Integer, List<Integer>> convertToGraph(int[][] edges) {
+        Map<Integer, List<Integer>> graph = new HashMap<>();
+        for (int[] edge : edges) {
+            graph.computeIfAbsent(edge[0], x -> new ArrayList<>()).add(edge[1]);
+            graph.computeIfAbsent(edge[1], x -> new ArrayList<>()).add(edge[0]);
+        }
+        return graph;
     }
 }
