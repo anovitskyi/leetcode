@@ -1,42 +1,55 @@
+import java.util.Collection;
+
 class Solution {
-    public int[] findOrder(int numCourses, int[][] prerequisites) {
-        Map<Integer, List<Integer>> map = new HashMap<>();
-        for (int[] p : prerequisites) {
-            map.computeIfAbsent(p[0], x -> new ArrayList<>()).add(p[1]);
-        }
+    public int[] findOrder(int numCourses, int[][] edges) {
+        Map<Integer, List<Integer>> graph = convertToGraph(edges);
         
-        Set<Integer> result = new LinkedHashSet<>(numCourses);
-        for (int i = 0; i < numCourses; ++i) {
-            if (!dfs(map, i, result, new HashSet<>())) {
+        Set<Integer> path = new LinkedHashSet<>(numCourses);
+        boolean[] visited = new boolean[numCourses];
+        for (int start = 0; start < numCourses; ++start) {
+            if (hasCycle(graph, start, path, visited)) {
                 return new int[0];
             }
         }
-        
-        int[] r = new int[numCourses];
-        int i = 0;
-        for (int num : result) {
-            r[i++] = num;
-        }
-        return r;
+
+        return convertToArray(path);
     }
-    
-    private boolean dfs(Map<Integer, List<Integer>> map, int curr, Set<Integer> result, Set<Integer> path) {
-        if (result.contains(curr)) {
+
+    private boolean hasCycle(Map<Integer, List<Integer>> graph, int node, Set<Integer> path, boolean[] visited) {
+        if (visited[node]) {
             return true;
         }
-        
-        if (path.contains(curr)) {
+
+        if (path.contains(node)) {
             return false;
         }
-        path.add(curr);
         
-        for (int next : map.getOrDefault(curr, Collections.emptyList())) {
-            if (!dfs(map, next, result, path)) {
-                return false;
+        visited[node] = true;
+        for (int neighbour : graph.getOrDefault(node, Collections.emptyList())) {
+            if (hasCycle(graph, neighbour, path, visited)) {
+                return true;
             }
         }
+        visited[node] = false;
+        path.add(node);
         
-        result.add(curr);
-        return true;
+        return false;
+    }
+
+    private int[] convertToArray(Collection<Integer> collection) {
+        int[] result = new int[collection.size()];
+        int i = 0;
+        for (int element : collection) {
+            result[i++] = element;
+        }
+        return result;
+    }
+
+    private Map<Integer, List<Integer>> convertToGraph(int[][] edges) {
+        Map<Integer, List<Integer>> graph = new HashMap<>();
+        for (int[] edge : edges) {
+            graph.computeIfAbsent(edge[0], x -> new ArrayList<>()).add(edge[1]);
+        }
+        return graph;
     }
 }
