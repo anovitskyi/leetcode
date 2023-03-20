@@ -1,37 +1,43 @@
 class Solution {
-    public boolean canFinish(int numCourses, int[][] prerequisites) {
-        Map<Integer, List<Integer>> graph = new HashMap<>();
-        for (int[] prereq : prerequisites) {
-            graph.computeIfAbsent(prereq[0], x -> new ArrayList<>()).add(prereq[1]);
-        }
-        
-        Set<Integer> visited = new HashSet<>();
-        for (int i = 0; i < numCourses; ++i) {
-            if (!dfs(graph, i, visited, new HashSet<>())) {
+    public boolean canFinish(int numCourses, int[][] edges) {
+        Map<Integer, List<Integer>> graph = convertToGraph(edges);
+
+        boolean[] visited = new boolean[numCourses];
+        for (int start = 0; start < numCourses; ++start) {
+            if (hasCycle(graph, start, visited)) {
                 return false;
             }
         }
-        
+
         return true;
     }
-    
-    private boolean dfs(Map<Integer, List<Integer>> graph, int curr, Set<Integer> visited, Set<Integer> path) {
-        if (visited.contains(curr)) {
+
+    private boolean hasCycle(Map<Integer, List<Integer>> graph, int node, boolean[] visited) {
+        if (visited[node]) {
             return true;
         }
-        
-        if (path.contains(curr)) {
+
+        if (graph.getOrDefault(node, Collections.emptyList()).isEmpty()) {
             return false;
         }
-        path.add(curr);
-        
-        for (int next : graph.getOrDefault(curr, Collections.emptyList())) {
-            if (!dfs(graph, next, visited, path)) {
-                return false;
+        visited[node] = true;
+
+        for (int neighbour : graph.get(node)) {
+            if (hasCycle(graph, neighbour, visited)) {
+                return true;
             }
         }
-        
-        visited.add(curr);
-        return true;
+
+        graph.put(node, Collections.emptyList());
+        visited[node] = false;
+        return false;
+    }
+
+    private Map<Integer, List<Integer>> convertToGraph(int[][] edges) {
+        Map<Integer, List<Integer>> graph = new HashMap<>();
+        for (int[] edge : edges) {
+            graph.computeIfAbsent(edge[0], x -> new ArrayList<>()).add(edge[1]);
+        }
+        return graph;
     }
 }
