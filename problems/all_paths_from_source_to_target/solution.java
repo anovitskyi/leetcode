@@ -1,20 +1,23 @@
 class Solution {
     public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
         List<List<Integer>> result = new ArrayList<>();
-        dfs(result, graph, 0, new ArrayList<>());
+        
+        traverseGraph(graph, 0, result, new ArrayList<>());
+
         return result;
     }
 
-    private void dfs(List<List<Integer>> result, int[][] graph, int index, List<Integer> curr) {
-        curr.add(index);
+    private void traverseGraph(int[][] graph, int node, List<List<Integer>> result, List<Integer> curr) {
+        curr.add(node);
 
-        if (index == graph.length - 1) {
-            result.add(curr);
-            return;
+        if (node == graph.length - 1) {
+            result.add(new ArrayList<>(curr));
+        } else {
+            for (int next : graph[node]) {
+                traverseGraph(graph, next, result, curr);
+            }
         }
 
-        for (int neighbour : graph[index]) {
-            dfs(result, graph, neighbour, new ArrayList<>(curr));
-        }
+        curr.remove(curr.size() - 1);
     }
 }
