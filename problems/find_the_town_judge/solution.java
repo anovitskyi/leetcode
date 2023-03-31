@@ -1,20 +1,23 @@
 class Solution {
     public int findJudge(int n, int[][] trust) {
-        Map<Integer, List<Integer>> trustors = new HashMap<>(n);
-        Map<Integer, List<Integer>> trustees = new HashMap<>(n);
+        Set<Integer> trustors = new HashSet<>();
+        Map<Integer, Integer> trustees = new HashMap<>();
 
         for (int[] pair : trust) {
-            trustors.computeIfAbsent(pair[0], x -> new ArrayList<>()).add(pair[1]);
-            trustees.computeIfAbsent(pair[1], x -> new ArrayList<>()).add(pair[0]);
+            trustors.add(pair[0]);
+            trustees.put(pair[1], trustees.getOrDefault(pair[1], 0) + 1);
         }
 
-        for (int judge = 1; judge <= n; ++judge) {
-            boolean doesNotTrustAnybody = !trustors.containsKey(judge);
-            boolean hasEnoughTrustees = trustees.getOrDefault(judge, Collections.emptyList()).size() == n - 1;
-
-            if (doesNotTrustAnybody && hasEnoughTrustees) {
-                return judge;
+        for (int candidate = 1; candidate <= n; ++candidate) {
+            if (trustors.contains(candidate)) {
+                continue;
             }
+
+            if (trustees.getOrDefault(candidate, 0) != n - 1) {
+                continue;
+            }
+
+            return candidate;
         }
 
         return -1;
