@@ -1,39 +1,34 @@
 class Solution {
-    private static final int TERMINAL_STATUS = 1;
-    private static final int VISITED_STATUS = 2;
-    private static final int SAFE_STATUS = 3;
-
     public List<Integer> eventualSafeNodes(int[][] graph) {
+        Map<Integer, Integer> statuses = new HashMap<>();
         List<Integer> result = new ArrayList<>();
-        int[] statuses = new int[graph.length];
 
-        for (int node = 0; node < graph.length; ++node) {
-            if (allChildrenAreSafe(graph, node, statuses)) {
-                result.add(node);
+        for (int i = 0; i < graph.length; ++i) {
+            if (isSafeNode(graph, statuses, i)) {
+                result.add(i);
             }
         }
 
         return result;
     }
 
-    private boolean allChildrenAreSafe(int[][] graph, int node, int[] statuses) {
-        if (statuses[node] == TERMINAL_STATUS || statuses[node] == VISITED_STATUS) {
-            return false;
+    private boolean isSafeNode(int[][] graph, Map<Integer, Integer> statuses, int node) {
+        if (statuses.containsKey(node)) {
+            return statuses.get(node) > 0;
         }
-        if (statuses[node] == SAFE_STATUS) {
+
+        if (graph[node].length == 0) {
+            statuses.put(node, 2);
             return true;
         }
-        
-        statuses[node] = VISITED_STATUS;
 
-        for (int next : graph[node]) {
-            if (!allChildrenAreSafe(graph, next, statuses)) {
-                statuses[node] = TERMINAL_STATUS;
+        statuses.put(node, 0);
+        for (int nextNode : graph[node]) {
+            if (!isSafeNode(graph, statuses, nextNode)) {
                 return false;
             }
         }
-
-        statuses[node] = SAFE_STATUS;
+        statuses.put(node, 1);
         return true;
     }
 }
