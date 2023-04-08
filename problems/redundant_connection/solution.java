@@ -1,30 +1,30 @@
 class Solution {
     public int[] findRedundantConnection(int[][] edges) {
-        Map<Integer, List<Integer>> graph = new HashMap<>();
+        Map<Integer, List<Integer>> graph = new HashMap<>(edges.length);
         for (int[] edge : edges) {
             graph.computeIfAbsent(edge[0], x -> new ArrayList<>()).add(edge[1]);
             graph.computeIfAbsent(edge[1], x -> new ArrayList<>()).add(edge[0]);
 
-            if (hasCycle(graph, -1, edge[0], new HashSet<>())) {
+            if (hasCycle(graph, edge[0], -1, new HashSet<>())) {
                 return edge;
             }
         }
 
-        return new int[0];
+        return new int[2];
     }
 
-    private boolean hasCycle(Map<Integer, List<Integer>> graph, int prev, int curr, Set<Integer> visited) {
-        if (visited.contains(curr)) {
+    private boolean hasCycle(Map<Integer, List<Integer>> graph, int node, int prev, Set<Integer> visited) {
+        if (visited.contains(node)) {
             return true;
         }
-        visited.add(curr);
+        visited.add(node);
 
-        for (int neighbour : graph.get(curr)) {
-            if (neighbour == prev) {
+        for (int next : graph.get(node)) {
+            if (next == prev) {
                 continue;
             }
 
-            if (hasCycle(graph, curr, neighbour, visited)) {
+            if (hasCycle(graph, next, node, visited)) {
                 return true;
             }
         }
