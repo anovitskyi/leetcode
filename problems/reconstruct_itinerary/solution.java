@@ -1,27 +1,23 @@
 class Solution {
     public List<String> findItinerary(List<List<String>> tickets) {
         Map<String, Queue<String>> graph = new HashMap<>();
-        for (List<String> pair : tickets) {
-            String from = pair.get(0);
-            String to = pair.get(1);
-
-            graph.computeIfAbsent(from, x -> new PriorityQueue<>()).offer(to);
+        for (List<String> ticket : tickets) {
+            graph.computeIfAbsent(ticket.get(0), x -> new PriorityQueue<>()).offer(ticket.get(1));
         }
 
         List<String> result = new ArrayList<>();
-        traverseAirports(graph, "JFK", result);
+        traverseFlights(graph, "JFK", result);
         Collections.reverse(result);
         return result;
     }
 
-    private void traverseAirports(Map<String, Queue<String>> graph, String source, List<String> result) {
-        Queue<String> nextAirports = graph.get(source);
-        if (nextAirports != null) {
-            while (!nextAirports.isEmpty()) {
-                traverseAirports(graph, nextAirports.poll(), result);
-            }
+    private void traverseFlights(Map<String, Queue<String>> graph, String city, List<String> result) {
+        Queue<String> nextAirports = graph.get(city);
+        
+        while (nextAirports != null && !nextAirports.isEmpty()) {
+            traverseFlights(graph, nextAirports.poll(), result);
         }
 
-        result.add(source);
+        result.add(city);
     }
 }
