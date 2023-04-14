@@ -1,32 +1,28 @@
 class Solution {
     public int longestCommonSubsequence(String text1, String text2) {
-        int result = 0;
-        
         int[][] dp = new int[text1.length()][text2.length()];
-        for (int i = text1.length() - 1; i >= 0; --i) {
-            for (int j = text2.length() - 1; j >= 0; --j) {
-                if (text1.charAt(i) == text2.charAt(j)) {
-                    int bottomright = i + 1 < text1.length() && j + 1 < text2.length() ? dp[i + 1][j + 1] : 0;
-                    dp[i][j] = 1 + bottomright;
+        int result = 0;
+
+        for (int row = text1.length() - 1; row >= 0; --row) {
+            for (int col = text2.length() - 1; col >= 0; --col) {
+                int dpVal = 0;
+
+                if (text1.charAt(row) == text2.charAt(col)) {
+                    int bottomright = row + 1 < text1.length() && col + 1 < text2.length() ? dp[row + 1][col + 1] : 0;
+                    dpVal = 1 + bottomright;
                 } else {
-                    int bottom = i + 1 < text1.length() ? dp[i + 1][j] : 0;
-                    int right = j + 1 < text2.length() ? dp[i][j + 1] : 0;
-                    dp[i][j] = Math.max(bottom, right);
+                    int bottom = row + 1 < text1.length() ? dp[row + 1][col] : 0;
+                    int right = col + 1 < text2.length() ? dp[row][col + 1] : 0;
+                    dpVal = Math.max(bottom, right);
                 }
-                
-                result = Math.max(result, dp[i][j]);
+
+                dp[row][col] = dpVal;
+                if (dp[row][col] > result) {
+                    result = dp[row][col];
+                }
             }
         }
-        
+
         return result;
     }
 }
-
-/**
-
-     a b c d e
-   a 1 0 0 0 0
-   c 0 0 1 0 0
-   e 0 0 0 0 1
-
- */
