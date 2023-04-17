@@ -1,70 +1,45 @@
 class Solution {
-    public int networkDelayTime(int[][] times, int n, int k) {
-        Map<Integer, Set<Destination>> graph = new HashMap<>();
-        for (int[] time : times) {
-            graph.computeIfAbsent(time[0] - 1, node -> new TreeSet<>())
-                .add(new Destination(time[1] - 1, time[2]));
+    public int networkDelayTime(int[][] connections, int target, int source) {
+        Map<Integer, List<int[]>> graph = new HashMap<>();
+        Map<Integer, Integer> times = new HashMap<>();
+
+        for (int[] connection : connections) {
+            int from = connection[0];
+            int[] to = new int[] {connection[1], connection[2]};
+
+            graph.computeIfAbsent(from, x -> new ArrayList<>()).add(to);
         }
-        
-        int[] signalTimes = new int[n];
-        for (int i = 0; i < n; ++i) {
-            signalTimes[i] = Integer.MAX_VALUE;
+
+        for (List<int[]> list : graph.values()) {
+            Collections.sort(list, (a, b) -> b[1] - a[1]);
         }
-        signalTimes[k - 1] = 0;
-        
-        traverseNodes(graph, k - 1, signalTimes);
-        
-        int result = 0;
-        for (int i = 0; i < n; ++i) {
-            if (i != k - 1 && signalTimes[i] == Integer.MAX_VALUE) {
-                return -1;
-            }
+
+        Stack<int[]> stack = new Stack<>();
+        stack.push(new int[] {source, 0});
+
+        while (!stack.isEmpty()) {
+            int[] pop = stack.pop();
+            int node = pop[0];
+            int time = pop[1];
             
-            result = Math.max(result, signalTimes[i]);
-        }
-        return result;
-    }
-    
-    private void traverseNodes(Map<Integer, Set<Destination>> graph, int node, int[] signalTimes) {
-        Set<Destination> destinations = graph.get(node);
-        if (destinations == null) {
-            return;
-        }
-        
-        int currSignalTime = signalTimes[node];
-        for (Destination dest : destinations) {
-            if (dest.time + currSignalTime >= signalTimes[dest.node]) {
+            if (time >= times.getOrDefault(node, Integer.MAX_VALUE)) {
                 continue;
             }
+            times.put(node, time);
             
-            signalTimes[dest.node] = dest.time + currSignalTime;
-            traverseNodes(graph, dest.node, signalTimes);
-        }
-    }
-    
-    private class Destination implements Comparable<Destination> {
-        final int node;
-        final int time;
-        
-        Destination(int node, int time) {
-            this.node = node;
-            this.time = time;
-        }
-        
-        @Override
-        public int compareTo(Destination other) {
-            int diff = time - other.time;
-            
-            if (diff == 0) {
-                return node - other.node;
+            for (int[] neighbour : graph.getOrDefault(node, Collections.emptyList())) {
+                stack.push(new int[] {neighbour[0], neighbour[1] + time});
             }
-            
-            return diff;
         }
-        
-        @Override
-        public String toString() {
-            return "[" + node + ", " + time + "]";
+
+        int result = -1;
+        for (int node = 1; node <= target; ++node) {
+            if (!times.containsKey(node)) {
+                return -1;
+            }
+
+            result = Math.max(result, times.get(node));
         }
+        return result;
     }
 }
