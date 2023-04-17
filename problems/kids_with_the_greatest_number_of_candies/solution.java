@@ -1,20 +1,15 @@
 class Solution {
     public List<Boolean> kidsWithCandies(int[] candies, int extraCandies) {
         int max = -1;
-        for (int i = 0; i < candies.length; ++i) {
-            if (candies[i] > max) {
-                max = candies[i];
-            }
-            
-            candies[i] += extraCandies;
+        for (int amount : candies) {
+            max = Math.max(max, amount);
         }
-        
-        List<Boolean> list = new LinkedList<>();
-        
-        for (int i = 0; i < candies.length; ++i) {
-            list.add(candies[i] >= max);
+        max -= extraCandies;
+
+        List<Boolean> result = new ArrayList<>(candies.length);
+        for (int amount : candies) {
+            result.add(amount >= max);
         }
-        
-        return list;
+        return result;
     }
 }
