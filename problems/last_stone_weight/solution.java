@@ -6,18 +6,15 @@ class Solution {
         }
 
         while (queue.size() > 1) {
-            int first = queue.poll();
-            int second = queue.poll();
+            int diff = Math.abs(queue.poll() - queue.poll());
 
-            int diff = first - second;
-            if (diff > 0) {
-                queue.offer(diff);
+            if (diff == 0) {
+                continue;
             }
+
+            queue.offer(diff);
         }
 
-        if (queue.isEmpty()) {
-            return 0;
-        }
-        return queue.poll();
+        return queue.isEmpty() ? 0 : queue.poll();
     }
 }
