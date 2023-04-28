@@ -4,6 +4,7 @@ class Solution {
             cost[i] += Math.min(cost[i - 1], cost[i - 2]);
         }
         
-        return Math.min(cost[cost.length - 1], cost[cost.length - 2]);
+        int last = cost.length - 1;
+        return Math.min(cost[last], cost[last - 1]);
     }
 }
