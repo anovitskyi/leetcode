@@ -1,25 +1,42 @@
 class Solution {
-
     public String frequencySort(String s) {
-        Map<Character, Integer> map = new HashMap<>();
+        Map<Character, Integer> counter = new HashMap<>();
+        List<Character> chars = new ArrayList<>(s.length());
         for (int i = 0; i < s.length(); ++i) {
             char ch = s.charAt(i);
-            map.put(ch, map.getOrDefault(ch, 0) + 1);
+            chars.add(ch);
+            counter.put(ch, counter.getOrDefault(ch, 0) + 1);
         }
 
-        Queue<Map.Entry<Character, Integer>> queue = new PriorityQueue<>((a, b) -> b.getValue() - a.getValue());
-        for (Map.Entry<Character, Integer> entry : map.entrySet()) {
-            queue.offer(entry);
-        }
+        Collections.sort(chars, ((a, b) -> {
+            int counterDiff = counter.get(b) - counter.get(a);
 
-        StringBuilder b = new StringBuilder();
-        while (!queue.isEmpty()) {
-            Map.Entry<Character, Integer> entry = queue.poll();
-            for (int i = 0; i < entry.getValue(); ++i) {
-                b.append(entry.getKey());
+            if (counterDiff != 0) {
+                return counterDiff;
             }
+
+            return b - a;
+        }));
+        StringBuilder b = new StringBuilder();
+        for (char ch : chars) {
+            b.append(ch);
         }
         return b.toString();
     }
-
 }
+
+
+/**
+
+    loveleetcode
+
+    e: 4
+    l: 2
+    o: 2
+    v: 1
+    t: 1
+    c: 1
+    d: 1
+
+    eeee
+ */
