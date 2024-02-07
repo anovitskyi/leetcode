@@ -1,5 +1,6 @@
 class Solution {
-    private static final Map<Character, List<Character>> numbers = Map.of(
+
+    private static final Map<Character, List<Character>> mapper = Map.of(
         '2', List.of('a', 'b', 'c'),
         '3', List.of('d', 'e', 'f'),
         '4', List.of('g', 'h', 'i'),
@@ -11,28 +12,25 @@ class Solution {
     );
 
     public List<String> letterCombinations(String digits) {
-        if (digits.isEmpty()) {
-            return Collections.emptyList();
-        }
-        
         List<String> result = new ArrayList<>();
-        StringBuilder builder = new StringBuilder();
+        if (digits.isEmpty()) {
+            return result;
+        }
 
-        backtrack(digits, 0, result, builder);
-        
+        backtrack(digits, 0, new StringBuilder(), result);
         return result;
     }
 
-    private void backtrack(String digits, int index, List<String> result, StringBuilder builder) {
+    private void backtrack(String digits, int index, StringBuilder builder, List<String> result) {
         if (index >= digits.length()) {
             result.add(builder.toString());
             return;
         }
 
-        List<Character> possibleLetters = numbers.getOrDefault(digits.charAt(index), Collections.emptyList());
-        for (char letter : possibleLetters) {
+        List<Character> letters = mapper.get(digits.charAt(index));
+        for (char letter : letters) {
             builder.append(letter);
-            backtrack(digits, index + 1, result, builder);
+            backtrack(digits, index + 1, builder, result);
             builder.deleteCharAt(builder.length() - 1);
         }
     }
