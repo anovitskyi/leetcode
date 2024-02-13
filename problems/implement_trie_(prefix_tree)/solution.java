@@ -1,59 +1,43 @@
 class Trie {
 
-    private final TrieNode root = new TrieNode();
+    private final Node root = new Node();
     
     public void insert(String word) {
-        TrieNode node = root;
-        
+        Node node = root;
+
         for (int i = 0; i < word.length(); ++i) {
-            int index = word.charAt(i) - 'a';
-
-            TrieNode nextNode = null;
-            if (node.children[index] == null) {
-                nextNode = new TrieNode();
-                node.children[index] = nextNode;
-            } else {
-                nextNode = node.children[index];
-            }
-
-            node = nextNode;
+            char ch = word.charAt(i);
+            node = node.children.computeIfAbsent(ch, x -> new Node());
         }
 
         node.isEndOfWord = true;
     }
+
+    private Node getLastNodeFor(String word) {
+        Node node = root;
+
+        for (int i = 0; i < word.length() && node != null; ++i) {
+            char ch = word.charAt(i);
+            node = node.children.get(ch);
+        }
+
+        return node;
+    }
     
     public boolean search(String word) {
-        TrieNode node = root;
-        
-        for (int i = 0; i < word.length(); ++i) {
-            int index = word.charAt(i) - 'a';
-
-            if (node.children[index] == null) {
-                return false;
-            }
-            node = node.children[index];
-        }
-        
-        return node.isEndOfWord;
+        Node lastNode = getLastNodeFor(word);
+        return lastNode != null && lastNode.isEndOfWord;
     }
     
     public boolean startsWith(String prefix) {
-        TrieNode node = root;
-
-        for (int i = 0; i < prefix.length(); ++i) {
-            int index = prefix.charAt(i) - 'a';
-
-            if (node.children[index] == null) {
-                return false;
-            }
-            node = node.children[index];
-        }
-        return true;
+        return getLastNodeFor(prefix) != null;
     }
 
-    private class TrieNode {
+    private static class Node {
+
+        final Map<Character, Node> children = new HashMap<>();
         boolean isEndOfWord = false;
-        TrieNode[] children = new TrieNode[26];
+
     }
 }
 
