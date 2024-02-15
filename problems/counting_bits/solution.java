@@ -1,39 +1,37 @@
 class Solution {
     public int[] countBits(int n) {
-        int[] result = new int[n + 1];
-        if (n > 0) {
-            result[1] = 1;   
+        int[] ans = new int[n + 1];
+
+        int counter = 0;
+        for (int i = 0; i <= n; ++i) {
+            ans[i] = countOnes(i);
         }
+
+        return ans;
+    }
+
+    private int countOnes(int num) {
+        int counter = 0;
         
-        for (int i = 2; i <= n; ++i) {
-            result[i] = result[i / 2] + result[i % 2];
+        while (num > 0) {
+            counter += num % 2;
+            num /= 2;
         }
-        
-        return result;
+
+        return counter;
     }
 }
-
 /**
 
-0: 0 -> 0
+    6  => 0110
+    7  => 0111
+    8  => 1000
+    9  => 1001
+    10 => 1010
+    11 => 1011
+    12 => 1100
+    13 => 1101
+    14 => 1110
+    15 => 1111
 
-1: 1 -> 1
-
-2: 10 -> 1
-3: 11 -> 2
-
-4: 100 -> 1
-5: 101 -> 2
-6: 110 -> 2
-7: 111 -> 3
-
-8: 1000 -> 1
-9: 1001 -> 2
-10: 1010 -> 2
-11: 1011 -> 3
-12: 1100 -> 2
-13: 1101 -> 3
-14: 1110 -> 3
-15: 1111 -> 4
-
-**/
+ */
