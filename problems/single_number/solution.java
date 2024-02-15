@@ -1,9 +1,20 @@
 class Solution {
     public int singleNumber(int[] nums) {
-        int res = 0;
-        for (int num : nums) {
-            res = res ^ num;
+        int result = nums[0];
+
+        for (int i = 1; i < nums.length; ++i) {
+            result ^= nums[i];
         }
-        return res;
+
+        return result;
     }
 }
+
+/**
+    10
+    01
+    11
+    10
+    01
+
+ */
